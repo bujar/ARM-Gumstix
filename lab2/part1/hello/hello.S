@@ -18,6 +18,11 @@
 	.align 2
 
 _start:
+	@ Calls the write system call with 
+	@ arg1 = STDOUT_FILENO
+	@ arg2 = address of "Hello world!\n"
+	@ arg3 = size of Hello world string
+	@ and exits with status code of 0 
 	mov 	r0, #STDOUT_FILENO
 	ldr	r1, .L1
 	mov	r2, #13
