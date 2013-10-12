@@ -3,7 +3,8 @@
 @ Authors: Bujar Tagani <btagani@andrew.cmu.edu>
 @          Jonathan Lim <jlim2@andrew.cmu.edu>
 @          Luo Wu <luow@andrew.cmu.edu>
-@ Date:    The current time & date
+@ Date:    Sat Oct 12 16:14:44 EDT 2013
+
 
 #include <bits/swi.h>
 #include <bits/fileno.h>
