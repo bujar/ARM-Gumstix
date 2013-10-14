@@ -14,7 +14,7 @@
 _start:
 	@ Needs more code.
 	@ 0. save registers that would be used
-	@ since the are undefined in, it is not necessary
+	@ since the registers are undefined in the begining, it is not necessary
 	
 	@ 1. place values on stack into r0 and r1
 	ldr sp, r0		/* loader argc into r0 */
