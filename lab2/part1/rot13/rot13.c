@@ -4,55 +4,61 @@
  * Authors: Bujar Tagani <btagani@andrew.cmu.edu>
  *          Jonathan Lim <jlim2@andrew.cmu.edu>
  *	    Luo Wu <luow@andrew.cmu.edu>
- * Date:    SUN Oct 13 21:32:12 EDT 2013
+ * Date:    Mon Oct 14 04:44:21 UTC 2013
  */
-#include <stdio.h>
+
 #include <unistd.h>
 #include <stdlib.h>
 
-void rot13(char arr[], int len)
+#define BUFLEN 128
+void rot13(char buf[], int buf_len)
 {
-	int i = 0;
-	for (; i<=len; i++)
-	{
-		if(arr[i] >= 65 && arr[i] <= 77)
-		arr[i] = arr[i]+13;
+    int i = 0;
+    for (; i<=buf_len; i++){
+        if(buf[i] >= 65 && buf[i] <= 77)
+	    buf[i] = buf[i]+13;
 		
-		else if(arr[i] >= 97 && arr[i] <= 109)
-		arr[i] = arr[i]+13;
+	else if(buf[i] >= 97 && buf[i] <= 109)
+	    buf[i] = buf[i]+13;
 		
-		else if (arr[i] >= 110 && arr[i] <= 122)
-		arr[i] = arr[i]-13;
+	else if (buf[i] >= 110 && buf[i] <= 122)
+ 	    buf[i] = buf[i]-13;
 		
-		else if(arr[i] >= 78 && arr[i] <= 90)
-		arr[i] = arr[i]-13;
-		
-	}
+	else if(buf[i] >= 78 && buf[i] <= 90)
+	    buf[i] = buf[i]-13;
+
+	/* Leave buf[i] unchanged if it's not alphabet value*/
+
+    }
 }
 
-int main(void) 
-{
-	char buf[128];
-	int buf_len = 0;
-	do 
-	{
-		buf_len = read(0, buf, 128);
+int main(int argc, char **argv){
+    
+    char input_buf[BUFLEN];
+    int nread = 0;
 	
-		if (buf_len == 0)
-		exit(0);
+    /* main loop */
+    while( (nread = read(STDIN_FILENO, input_buf, BUFLEN)) > 0){
 	
-		else if (buf_len < 0)
-		exit(1);
+	/* encrypt the input */
+	rot13(input_buf, nread);	
 	
-		rot13(buf, buf_len);	
-	
-		if (write(1, buf, buf_len) < 0)
-		exit(1);
-	
+	int nwrite = 0;
+	int nleft = nread;
+		
+	/* write the encrypted input to STDOUT */
+	while(nleft > 0){
+	    if((nwrite = write(STDOUT_FILENO, input_buf, nleft)) < 0)
+	        exit(1);
+		nleft -= nwrite;
+	    }
 	}
 
-	while (buf_len != EOF);
+	if(nread == 0) 
+	    exit(0);
+	else 
+	    exit(1);
 
-	exit(0);
+	return 0; /* unreachable */
 }
 
