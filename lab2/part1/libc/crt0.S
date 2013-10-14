@@ -12,12 +12,11 @@
 
 	.global	_start
 _start:
-	@ Needs more code.
 	@ 0. save registers that would be used
 	@ since the registers are undefined in the begining, it is not necessary
 	
 	@ 1. place values on stack into r0 and r1
-	ldr sp, r0		/* loader argc into r0 */
+	ldr r0, sp		/* loader argc into r0 */
 	add r1, sp, #4		/* loader argv into r1 */
 
 	@ 2. call main
