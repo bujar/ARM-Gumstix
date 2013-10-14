@@ -8,7 +8,7 @@ LOAD_ADDR = 0xa2000000
 CRT0    = ../libc/crt0.o
 LDLIBS  = ../libc/libc.a
 
-objects = rot13.o
+objects = rot13_2.o
 
 default: rot13.bin
 
