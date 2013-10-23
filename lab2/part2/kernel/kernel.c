@@ -7,7 +7,18 @@
  */
 
 int main(int argc, char *argv[]) {
-	/* Needs more code. */
 
-	return -255;
+
+/* call install handler function */
+
 }
+
+int install_custom_handler()
+{
+/*
+* go to mem addr of UBoot SWI Handler
+* and modify first instruction to jump
+* to our custom S_Handler.S function
+*/
+}
+
