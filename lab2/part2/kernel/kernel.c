@@ -30,7 +30,8 @@ int install_custom_handler(Custom_S_Handler){
 
 // the opcode for ldr pc, [pc, #imm12] would be b1110 0101 x001 1111 1111 xxxx xxxx xxxx 
 if(((*SWI_VECTOR) & 0xe51ff000) != 0xe51ff000)
-	exit(0x0badc0de)			//will determine use with exit later
+	puts("instruction unrecognized!");
+	exit(0x0badc0de);			//will determine use with exit later
 
 /*
 * go to mem addr of UBoot SWI Handler
@@ -40,7 +41,7 @@ if(((*SWI_VECTOR) & 0xe51ff000) != 0xe51ff000)
 */
 
 
-*UBOOT_SWI = 0xe51ff004			//optcode for ldr pc, [pc, #-4]
+*UBOOT_SWI = 0xe51ff004;			//optcode for ldr pc, [pc, #-4]
 *(UBOOT_SWI + 1) = Custom_S_Handler
 
 }
