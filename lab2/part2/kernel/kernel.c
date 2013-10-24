@@ -26,7 +26,9 @@ int install_custom_handler(Custom_S_Handler)
 *else, exit with status 0x0badc0de 
 */
 
-
+// the opcode for ldr pc, [pc, #imm12] would be b1110 0101 xx01 1111 1111 xxxx xxxx xxxx 
+if(((*SWI_VECTOR) & 0xe51ff000) != 0xe51ff000)
+	exit(0x0badc0de)			//will determine use with exit later
 
 /*
 * go to mem addr of UBoot SWI Handler
