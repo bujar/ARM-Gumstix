@@ -6,27 +6,29 @@
  * Date:   The current time & date
  */
 
-#define SWI_VECTOR 0x08
-#define UBOOT_SWI 0x28		
-//#define LDR_OPCODE (opcode for the instruction LDR pc, [pc, #-4]
+#define SWI_VECTOR ((int *) 0x08)
+#define LDR_OPCODE 0xe59ff000 // opcode for the instruction LDR pc, [pc, #0]
 
 int main(int argc, char *argv[]) {
 
 
-install_custom_handler((void *) S_Handler);	//takes address our S_HAndler.S function 
+   install_custom_handler((void *) S_Handler);	//takes address our S_HAndler.S function 
 
 }
 
-int install_custom_handler(Custom_S_Handler)
-{
+int install_custom_handler(Custom_S_Handler){
 
-/* 
-*check whether SWI vector at 0x8 contains a instruction like ldr pc, [pc, #imm12] 
-*if contains, isntall handler
-*else, exit with status 0x0badc0de 
-*/
+/* check whether SWI vector at 0x8 contains a 'ldr pc, [pc, #imm12]' */
+   int *ptr = SWI_VECTOR;
+   if(*ptr & LDR_OPCODE) 
+ 
 
-// the opcode for ldr pc, [pc, #imm12] would be b1110 0101 xx01 1111 1111 xxxx xxxx xxxx 
+
+
+/*else, exit with status 0x0badc0de 
+ */
+
+// the opcode for ldr pc, [pc, #imm12] would be b1110 0101 x001 1111 1111 xxxx xxxx xxxx 
 if(((*SWI_VECTOR) & 0xe51ff000) != 0xe51ff000)
 	exit(0x0badc0de)			//will determine use with exit later
 
