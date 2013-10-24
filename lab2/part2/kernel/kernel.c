@@ -6,19 +6,28 @@
  * Date:   The current time & date
  */
 
+#define SWI_VECTOR 0x08
+#define UBOOT_SWI 0x28
+//#define LDR_OPCODE (opcode for the instruction LDR pc, [pc, #-4]
+
 int main(int argc, char *argv[]) {
 
 
-/* call install handler function */
+install_custom_handler((void *) S_Handler);	//takes address our S_HAndler.S function 
 
 }
 
-int install_custom_handler()
+int install_custom_handler(Custom_S_Handler)
 {
 /*
 * go to mem addr of UBoot SWI Handler
-* and modify first instruction to jump
-* to our custom S_Handler.S function
+* and modify first instruction to change pc
+* and 2nd instruction to address of custom 
+* S_Handler.S function
 */
+
+*UBOOT_SWI = LDR_OPCODE
+*(UBOOT_SWI + 1) = Custom_S_Handler
+
 }
 
