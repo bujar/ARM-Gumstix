@@ -1,24 +1,29 @@
 /*
  * kernel.c: Kernel main (entry) function
  *
- * Author: Group Member 1 <email address>
- *         Group Member 2 <email address>
+ * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu> 
  * Date:   The current time & date
  */
 
-void C_SWI_Handler(unsigned swi_num, unsigned *regs)
-{
+#include <bits/swi.h>
+
+int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 	int r0;
+    r0 = 2; //must change
 
 	switch (swi_num) {
-	case READ_SWI:
-
-	case WRITE_SWI:
-
-	case EXIT_SWI:
-
-	default:
-
+	   case READ_SWI:
+          break;
+	   case WRITE_SWI:
+          break;
+	   case EXIT_SWI:
+          break;
+	   default:
+          break;
 	}
-	return r0;
+
+    return r0;
+
 }

@@ -1,15 +1,20 @@
-CC      = gcc
-OBJCOPY = objcopy
-CFLAGS  = -O2 -ffixed-r8 -ffreestanding -Wall -Werror -nostdinc \
+#CC      = gcc
+#OBJCOPY = objcopy
+CFLAGS  = -g -O2 -ffixed-r8 -ffreestanding -Wall -Werror -nostdinc \
           -I ../uboot/include -I include
 ASFLAGS = -nostdinc -I ../uboot/include -I include
 LDFLAGS = -nostdlib -Wl,-N,-Ttext,$(LOAD_ADDR)
+
+# cross compiler options
+CC		= arm-linux-gcc
+AR      = arm-linux-ar
+OBJCOPY = arm-linux-objcopy
 
 LOAD_ADDR = 0xa3000000
 
 STUBS = ../uboot/stubs.o
 
-objects = kernel.o
+objects = kernel.o S_Handler.o C_SWI_Handler.o userSetup.o
 
 default: kernel.bin
 
