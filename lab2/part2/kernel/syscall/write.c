@@ -6,9 +6,9 @@
 * 4. return with the number of characters to stdout
 */
 
-#include
-#include "fileno.h"
-#include "errno.h"
+#include "../../uboot/include/bits/types.h"
+#include "../include/bits/fileno.h"
+#include "../include/bits/errno.h"
 #define MAX_WRITE_SIZE 0x4000000
 
 ssize_t write(int fd, const void *buf, size_t count)
@@ -26,7 +26,7 @@ ssize_t write(int fd, const void *buf, size_t count)
   if(count > MAX_WRITE_SIZE)
      {
 	puts("buf too large!");
-""	return -EFAULT;	
+	return -EFAULT;	
      }
 
   buf_begin = (int) buf;	//determine the range of the buf and check
@@ -38,11 +38,13 @@ ssize_t write(int fd, const void *buf, size_t count)
      }
 	
   // 3. write characters from the buffer to stdout until the buffer is empty
-  for(i = count; i > 0; i--) 	//use count down to save clock cycles 
+  /*for(i = count; i > 0; i--) 	//use count down to save clock cycles 
      {
-	puts((void *)buf);
-	buf++;
+	puts(buf);		//trying to use putc
+	buf++;	
      }
+*/				
+	puts(buf);	
 	  
   // 4. return with the number of characters to stdout
   return count;
