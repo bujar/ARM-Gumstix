@@ -12,16 +12,18 @@ ssize_t read (int fd, void *buf, size_t count)
 	if ( fd != STDOUT_FILENO)
 	return -EBADF;
 
-	while(((c = getc()) != EOT) && (bytes_read < count)) {
+	while(((c = getc()) != 4) && (bytes_read < count)) {	//EOT = 4
 		if (c == 127) {		//ascii code for backspace
 			bytes_read--;
 			buf[bytes_read] = '\0'; 	//remove last char
 			puts('\b \b');		//indicate backspace was pressed
+	
 		}
 
-		else if (c == '\n') {
+		else if (c == '\n' || '\r') {
 			putc('\n');
 			buf[bytes_read] = c;
+			return bytes_read;
 		}
 		
 		else {
