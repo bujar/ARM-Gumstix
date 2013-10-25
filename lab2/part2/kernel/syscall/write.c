@@ -1,7 +1,7 @@
 /*
 * write syscall:
 * 1. check the file descriptor 
-* 2. check the size of buf and the address of buf
+* 2. check the size of buf and the address range of buf as well as NULL pointer
 * 3. write characters from the buffer to stdout until the buffer is empty
 * 4. return with the number of characters to stdout
 */
@@ -9,7 +9,7 @@
 #include "../../uboot/include/bits/types.h"
 #include "../include/bits/fileno.h"
 #include "../include/bits/errno.h"
-#define MAX_WRITE_SIZE 0x4000000
+#define MAX_WRITE_SIZE 0x4000000	//64MB; size of SDRAM
 
 ssize_t write(int fd, const void *buf, size_t count)
 {
@@ -23,30 +23,32 @@ ssize_t write(int fd, const void *buf, size_t count)
      }
  
   // 2. check the size of buf and the address of buf
-  if(count > MAX_WRITE_SIZE)
+  if(count > MAX_WRITE_SIZE || count < 0)	//check size of buf 
      {
-	puts("buf too large!");
+	puts("count size err!");
 	return -EFAULT;	
      }
 
-  buf_begin = (int) buf;	//determine the range of the buf and check
-  buf_end = ((int) buf) + count;
+/*  buf_begin = (int) buf;		//low bound of buf
+  buf_end = ((int) buf) + count;	//high bound of buf
+
+  //check the range of buffer, it automaticlly ignores NULL pointer
   if((buf_begin < 0xa0000000) || (buf_end > 0xa3ffffff))
      {
-	puts("out of write address range!");
+	puts("buf address range error!");
 	return -EFAULT;	
      }
-	
+*/	
   // 3. write characters from the buffer to stdout until the buffer is empty
-  /*for(i = count; i > 0; i--) 	//use count down to save clock cycles 
+  for(i = 0; i < count; i++) 		 
      {
-	puts(buf);		//trying to use putc
-	buf++;	
+	putc(((const char *)buf)[i]); 			
      }
-*/				
-	puts(buf);	
+				
+//	puts(buf);	
 	  
   // 4. return with the number of characters to stdout
-  return count;
+  return count;				//
 }
+
 
