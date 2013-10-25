@@ -14,14 +14,13 @@
 #include <exports.h>
 
 extern void S_Handler();
-extern void userSetup();
+extern void userSetup(int argc, char **argv);
 
 int install_custom_handler(int my_SWIaddr);
 
 int main(int argc, char *argv[]) {
    install_custom_handler((int) &S_Handler);	//takes address our S_Handler.S function 
-   printf("argc is %d\n", argc);
-   userSetup();
+   userSetup(argc, argv);
    //call function to change to usermode
    // mask 
    return 0;
@@ -40,11 +39,11 @@ int install_custom_handler(int Custom_S_Handler){
    }
    else if((opcode|U_MASK) == LDR_OPCODE){
       printf("we have a negative LDR\n");
-	  //exit(0x0badc0de);			//will determine use with exit later
+	  return 0x0badc0de;			//will determine use with exit later
    }
    else{
       printf("NOT a LDR instruction\n");
-	  //exit(0x0badc0de);			//will determine use with exit later
+	  return 0x0badc0de;			//will determine use with exit later
    }
 
    int offset = (*ptr & 0x00000FFF);
@@ -56,6 +55,10 @@ int install_custom_handler(int Custom_S_Handler){
    printf("jump table address entry is %x\n", UBOOT_SWI_ADDR);
    
    //modify the first two instructions of the orig. SWI handler
+
+
+
+   //NEED TO SAVE THE INSTRUCTIONS I AM REPLACING
    *UBOOT_SWI_ADDR = (LDR_OPCODE ^ U_MASK) | 0x04; 
    *(UBOOT_SWI_ADDR + 1) = Custom_S_Handler;
    return 0;
