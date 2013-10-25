@@ -8,7 +8,6 @@
 .file  "userSetup.S"
 .text
 .global userSetup
-.global UBOOT_RetAddr
 
 userSetup:
 	/* saving SVC regs, not sure if we need to do this */
