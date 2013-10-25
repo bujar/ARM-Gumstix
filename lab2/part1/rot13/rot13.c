@@ -36,7 +36,7 @@ void print_args(int argc, char **argv){
    int i;
    char c[2] = "\n";
    for(i = 0; i < argc; argc++){
-      write(STDOUT_FILENO, &argv[i], BUFLEN);
+      write(STDOUT_FILENO, argv[i], 1);
       write(STDOUT_FILENO, c, 1);
    }
 }

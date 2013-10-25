@@ -18,8 +18,9 @@ userSetup:
 	STMFD	sp!, {r4-r11, lr} 	@store on SVC stack	
 	
 	/* store LR to a global for exit */
-	LDR 	r4, =UBOOT_RetAddr
+	/*LDR 	r4, =UBOOT_RetAddr
 	STR	lr, [r4]
+    */
 
 	/*since we need r0, we use r4 as a scratch reg.*/
 	MRS	r4, cpsr
@@ -31,17 +32,8 @@ userSetup:
 	LDR	sp, =0xa3000000		@ user stack set up
 	
 	/* What are the values of r0, r1 at this time (gdb)?*/
-
-    
     /* copy all the pointers and push them on the user stack */
 
-    /*
-     while r0 is not zero
-         r1 stores pointer to first element in argv array
-		 store this onto the user stack
-         point to the next place
-    */
-	
 	MOV		r4, r0        @r4 = argc
 	MOV		r5, #0		  @r5 = 0
 loop:    

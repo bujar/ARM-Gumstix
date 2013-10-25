@@ -10,7 +10,7 @@ ssize_t read (int fd, void *buf, size_t count)
 	if (count > 0x4000000)
 	return -EFAULT;
 
-	if ( fd != STDOUT_FILENO)
+	if ( fd != STDIN_FILENO)
 	return -EBADF;
 
 	while(((c = getc()) != 4) && (bytes_read < count)) {	//EOT = 4
@@ -24,8 +24,9 @@ ssize_t read (int fd, void *buf, size_t count)
 		else if (c == '\n' || '\r') {
 			putc('\n');
 			cbuf[bytes_read] = c;
-			return bytes_read;
-		}
+            bytes_read++;
+		    break;
+        }
 		
 		else {
 			putc(c);

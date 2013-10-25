@@ -24,7 +24,11 @@ extern void kernelExit();
 int install_custom_handler(int my_SWIaddr);
 
 int main(int argc, char *argv[]) {
-   install_custom_handler((int) &S_Handler);	//takes address our S_Handler.S function 
+   int status = install_custom_handler((int) &S_Handler);	//takes address our S_Handler.S function 
+   if(status != 0){
+      return status;
+   }
+
    userSetup(argc, argv);
    //call function to change to usermode
    // mask 
