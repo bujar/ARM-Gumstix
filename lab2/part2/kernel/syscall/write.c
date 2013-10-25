@@ -29,7 +29,7 @@ ssize_t write(int fd, const void *buf, size_t count)
 	return -EFAULT;	
      }
 
-/*  buf_begin = (int) buf;		//low bound of buf
+  buf_begin = (int) buf;		//low bound of buf
   buf_end = ((int) buf) + count;	//high bound of buf
 
   //check the range of buffer, it automaticlly ignores NULL pointer
@@ -38,7 +38,7 @@ ssize_t write(int fd, const void *buf, size_t count)
 	puts("buf address range error!");
 	return -EFAULT;	
      }
-*/	
+	
   // 3. write characters from the buffer to stdout until the buffer is empty
   for(i = 0; i < count; i++) 		 
      {
