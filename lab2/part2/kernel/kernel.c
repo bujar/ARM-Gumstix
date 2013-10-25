@@ -15,9 +15,13 @@
 
 extern void S_Handler();
 extern void userSetup(int argc, char **argv);
+<<<<<<< HEAD
 unsigned int Uboot_swi_instruction1;
 unsigned int Uboot_swi_instruction2;
 int *UBOOT_SWI_ADDR;
+=======
+extern void kernelExit();
+>>>>>>> 847cd34ea768a360f1e24f5c5cfa3e513faf7c98
 
 int install_custom_handler(int my_SWIaddr);
 
@@ -65,6 +69,10 @@ int install_custom_handler(int Custom_S_Handler){
 	
    *UBOOT_SWI_ADDR = (LDR_OPCODE ^ U_MASK) | 0x04; 
    *(UBOOT_SWI_ADDR + 1) = Custom_S_Handler;
+   
+   // a return that can help exit the program with dynamic exit status
+   // kernelExit();
    return 0;
 }
+
 
