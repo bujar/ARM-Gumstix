@@ -64,8 +64,8 @@ int install_custom_handler(int Custom_S_Handler){
    *(UBOOT_SWI_ADDR + 1) = Custom_S_Handler;
    
    // a return that can help exit the program with dynamic exit status
-   kernelExit();
-   //return 0;
+   // kernelExit();
+   return 0;
 }
 
 
