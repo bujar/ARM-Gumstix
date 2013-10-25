@@ -15,13 +15,11 @@
 
 extern void S_Handler();
 extern void userSetup(int argc, char **argv);
-<<<<<<< HEAD
 unsigned int Uboot_swi_instruction1;
 unsigned int Uboot_swi_instruction2;
 int *UBOOT_SWI_ADDR;
-=======
+
 extern void kernelExit();
->>>>>>> 847cd34ea768a360f1e24f5c5cfa3e513faf7c98
 
 int install_custom_handler(int my_SWIaddr);
 

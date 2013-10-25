@@ -17,6 +17,10 @@ userSetup:
     */
 	STMFD	sp!, {r4-r11, lr} 	@store on SVC stack	
 	
+	/* store LR to a global for exit */
+	LDR 	r4, =UBOOT_RetAddr
+	STR	lr, [r4]
+
 	/*since we need r0, we use r4 as a scratch reg.*/
 	MRS	r4, cpsr
 	BIC r4, r4, #3          @ change to user mode

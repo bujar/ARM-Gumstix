@@ -13,11 +13,21 @@
 .global exit
 
 exit:
-	LDR	r1, =0x5c0009c0		@address of first instruction UBOOT_SWI
-	LDR	r2, =0xe51fd980		@original optcode at 0x5c0009c0
-	LDR	r3, =0xe24dda41		@original optcode at 0x5c0009c4
+	LDR 	r1, =UBOOT_SWI_ADDR	@get the address of UBOOT_SWI_ADDR 
+	LDR 	r2, =UBOOT_swi_instruction1 		
+	LDR	r3, =UBOOT_swi_instruction2
+	LDR	r1, [r1] 		@get the value of UBOOT_SWI_ADDR	
+	LDR	r2, [r2]		@get the value of UBOOT_swi_instruction1
+	LDR	r3, [r3]		@get the value of UBOOT_swi_instruction2
 	STR	r2, [r1]		@restore the first instruction
 	STR	r3, [r1, #4]		@restore the second instruction
-	MOV	pc, r1	
+
+	@LDR	r1, =0x5c0009c0		@address of first instruction UBOOT_SWI
+	@LDR	r2, =0xe51fd980		@original optcode at 0x5c0009c0
+	@LDR	r3, =0xe24dda41		@original optcode at 0x5c0009c4
+	@STR	r2, [r1]		@restore the first instruction
+	@STR	r3, [r1, #4]		@restore the second instruction
+	LDR	r4, =UBOOT_RetAddr	@get the address of UBOOT_RetAddr
+	LDR	pc, [r4]		@to go back to UBOOT	
 	
 	
