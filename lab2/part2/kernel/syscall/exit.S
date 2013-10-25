@@ -10,7 +10,7 @@
 
 .file	"exit.S"
 .text
-.global exit:
+.global exit
 
 exit:
 	LDR	r1, =0x5c0009c0		@address of first instruction UBOOT_SWI

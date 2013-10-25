@@ -6,9 +6,10 @@
 * 4. return with the number of characters to stdout
 */
 
-#include "../../uboot/include/bits/types.h"
-#include "../include/bits/fileno.h"
-#include "../include/bits/errno.h"
+#include <bits/fileno.h>
+#include <bits/errno.h>
+#include <exports.h>
+
 #define MAX_WRITE_SIZE 0x4000000	//64MB; size of SDRAM
 
 ssize_t write(int fd, const void *buf, size_t count)
