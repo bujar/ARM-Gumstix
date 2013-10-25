@@ -14,7 +14,8 @@ LOAD_ADDR = 0xa3000000
 
 STUBS = ../uboot/stubs.o
 
-objects = kernel.o S_Handler.o C_SWI_Handler.o userSetup.o
+objects = kernel.o S_Handler.o C_SWI_Handler.o userSetup.o syscall/read.o \
+			syscall/write.o syscall/exit.o
 
 default: kernel.bin
 
