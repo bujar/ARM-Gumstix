@@ -26,11 +26,26 @@ userSetup:
 	/* I think we can just use pseudo instructions addresses */
 	LDR	sp, =0xa3000000		@ user stack set up
 	
-	/* What are the values of r0, r1 at this time (gdb)?
-	 * r0 I think can be an arbitrary int value. r1 has to be
-	 * a pointer to an array. So I think we should try to 
-	 * set values for r0 and r1 here
-	 */
-	STMFD	sp!, {r0, r1}	@ push argc argv to stack
+	/* What are the values of r0, r1 at this time (gdb)?*/
+
+    
+    /* copy all the pointers and push them on the user stack */
+
+    /*
+     while r0 is not zero
+         r1 stores pointer to first element in argv array
+		 store this onto the user stack
+         point to the next place
+    */
+	
+	MOV		r4, r0        @r4 = argc
+	MOV		r5, #0		  @r5 = 0
+loop:    
+	LDR		r2, [r1, r5] 
+	ADD		r5, r5, #4
+	STMFD	sp!, {r2} 
+	SUBS	r4, r4, #1
+	BGT		loop 
+	
 	LDR	pc, =0xa2000000		@ jump to user program
 
