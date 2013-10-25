@@ -33,23 +33,23 @@ ssize_t write(int fd, const void *buf, size_t count)
   buf_begin = (int) buf;		//low bound of buf
   buf_end = ((int) buf) + count;	//high bound of buf
 
-  //check the range of buffer, it automaticlly ignores NULL pointer
+  //check if the buffer exceeds the SDRAM, it automaticlly ignores NULL pointer
   if((buf_begin < 0xa0000000) || (buf_end > 0xa3ffffff))
      {
 	puts("buf address range error!");
 	return -EFAULT;	
      }
-	
+  
+
   // 3. write characters from the buffer to stdout until the buffer is empty
   for(i = 0; i < count; i++) 		 
      {
-	putc(((const char *)buf)[i]); 			
+	putc(((char *)buf)[i]); 			
      }
 				
-//	puts(buf);	
-	  
   // 4. return with the number of characters to stdout
-  return count;				//
+  return count;				//assume putc would not fail
 }
 
+	
 
