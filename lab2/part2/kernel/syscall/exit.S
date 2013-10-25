@@ -18,6 +18,6 @@ exit:
 	LDR	r3, =0xe24dda41		@original optcode at 0x5c0009c4
 	STR	r2, [r1]		@restore the first instruction
 	STR	r3, [r1, #4]		@restore the second instruction
-	MOV	pc, r1	
+	LDR	pc, =UBOOT_RetAddr	@will change to go back to the last function of kernel.c	
 	
 	
