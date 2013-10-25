@@ -15,6 +15,10 @@
 
 extern void S_Handler();
 extern void userSetup(int argc, char **argv);
+unsigned int Uboot_swi_instruction1;
+unsigned int Uboot_swi_instruction2;
+int *UBOOT_SWI_ADDR;
+
 extern void kernelExit();
 
 int install_custom_handler(int my_SWIaddr);
@@ -51,15 +55,16 @@ int install_custom_handler(int Custom_S_Handler){
    printf("immediate offset is %d\n", offset);
 
    int *jumpentryaddr = (int *)(SWI_VECTOR + 0x8 + offset);
-   int *UBOOT_SWI_ADDR = (int *)*jumpentryaddr;
+   UBOOT_SWI_ADDR = (int *)*jumpentryaddr;
    printf("jump table address is %p\n", jumpentryaddr);
    printf("jump table address entry is %x\n", UBOOT_SWI_ADDR);
    
    //modify the first two instructions of the orig. SWI handler
 
 
-
-   //NEED TO SAVE THE INSTRUCTIONS I AM REPLACING
+   Uboot_swi_instruction1 = *UBOOT_SWI_ADDR;
+   Uboot_swi_instruction2 = *(UBOOT_SWI_ADDR + 1);
+	
    *UBOOT_SWI_ADDR = (LDR_OPCODE ^ U_MASK) | 0x04; 
    *(UBOOT_SWI_ADDR + 1) = Custom_S_Handler;
    
