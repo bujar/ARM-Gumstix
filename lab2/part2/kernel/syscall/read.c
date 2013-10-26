@@ -23,19 +23,23 @@ ssize_t read (int fd, void *buf, size_t count)
 			putc('\n');
 			cbuf[bytes_read] = c;
 			bytes_read++;
-			//printf("%d",bytes_read);
+			printf("I read %d characters\n\n",bytes_read);
 			return bytes_read;
 			break;
 		case 127:
+			if (bytes_read>0)	
 			bytes_read-=2;
-			cbuf[bytes_read] = '\0';
-			puts("\b \b");
+			cbuf[bytes_read+1] = '\0';
+			putc('\b');
+			putc(' ');
+			putc('\b');
+			break;
 		default:
 			putc(c);
 			cbuf[bytes_read] = c;
 		}
 	}
-//	printf("%d",bytes_read);
+    printf("I read %d characters\n\n",bytes_read);
 	cbuf[bytes_read+1] = 0;
 	return bytes_read;
 }
