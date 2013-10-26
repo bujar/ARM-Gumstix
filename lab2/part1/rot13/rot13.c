@@ -36,7 +36,10 @@ void print_args(int argc, char **argv){
    int i;
    char c[2] = "\n";
    for(i = 0; i < argc; i++){
-      write(STDOUT_FILENO, argv[i], 1);
+      char *scan;
+      for(scan = argv[i]; *scan != '\0'; scan++){
+         write(STDOUT_FILENO, scan, 1);
+      }
       write(STDOUT_FILENO, c, 1);
    }
 }
