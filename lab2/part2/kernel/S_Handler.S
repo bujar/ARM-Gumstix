@@ -18,18 +18,22 @@
 
 S_Handler:
 
-	SUB	sp, sp, #4
+	@SUB	sp, sp, #4
 	STMFD	sp!, {r0-r12, lr}
-	MRS	r2, spsr
-	STR	r2, [sp, #14*4]
+	@MRS	r2, spsr
+	@STR	r2, [sp, #14*4]
 	MOV	r1, sp
 	LDR	r0, =SVC_r8	@restore r8
 	LDR	r8, [r0]
 	LDR	r0, [lr, #-4]
 	BIC	r0, r0, #0xff000000
 	BL	C_SWI_Handler
-	LDR	r2, [sp, #14*4]
-	MSR	spsr, r2
-	LDMFD	sp!, {r0-r12, lr}
-	ADD 	sp, sp, #4
+	@LDR	r2, [sp, #14*4]
+	@MSR	spsr, r2
+	LDMFD	sp!, {r0-r12, lr} /*r0-r12... */
+    PUSH	{r2}
+	LDR		r2, =GLOBALRET
+	LDR		r0, [r2]
+	POP		{r2}
+	@ADD 	sp, sp, #8  /*used to be #4 */
 	MOVS	pc, lr

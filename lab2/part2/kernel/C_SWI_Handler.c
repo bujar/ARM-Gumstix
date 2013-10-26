@@ -12,6 +12,8 @@
 
 #include "syscall.h"
 
+extern unsigned int GLOBALRET;
+
 int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 	int r0;
 	void *r1;
@@ -24,11 +26,11 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 
 	switch (swi_num) {
 	   case READ_SWI:
-			r0 = read(r0, r1, r2);
+			GLOBALRET = read(r0, r1, r2);
 		    break;
 
 	   case WRITE_SWI:
-          	r0 = write(r0, r1, r2);
+          	GLOBALRET = write(r0, r1, r2);
 			break;
 	   case EXIT_SWI:
 			exit(r0);

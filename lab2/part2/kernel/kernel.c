@@ -16,7 +16,7 @@
 
 unsigned int SVC_r8;
 unsigned int UBOOT_RetAddr; //global addr
-
+unsigned int GLOBALRET;
 extern void S_Handler();
 extern int userSetup(int argc, char **argv);
 unsigned int UBoot_swi_instruction1;
