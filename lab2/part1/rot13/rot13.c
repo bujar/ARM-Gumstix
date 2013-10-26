@@ -47,7 +47,7 @@ void print_args(int argc, char **argv){
 
 int main(int argc, char **argv){
     
-    print_args(argc, argv);
+    //print_args(argc, argv);
     char input_buf[BUFLEN];
     int nread = 0;
 	
