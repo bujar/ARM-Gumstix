@@ -22,10 +22,10 @@ userSetup:
 	STR	lr, [r4]
     
 	/*since we need r0, we use r4 as a scratch reg.*/
-	MRS	r4, cpsr
-	BIC r4, r4, #3          @ change to user mode
-    ORR r4, r4, #0x60   @ disable FIQ and IRQ bits
-	MSR	cpsr, r4
+	MRS	r12, cpsr
+	BIC r12, r12, #3          @ change to user mode
+    ORR r12, r12, #0x60   @ disable FIQ and IRQ bits
+	MSR	cpsr, r12
 
 	/* I think we can just use pseudo instructions addresses */
 	LDR	sp, =0xa3000000		@ user stack set up
@@ -33,18 +33,30 @@ userSetup:
 	/* What are the values of r0, r1 at this time (gdb)?*/
     /* copy all the pointers and push them on the user stack */
 
+
 	MOV		r4, r0        @r4 = argc
-	MOV		r5, r4
-	LSL		r5, #2
+	MOV		r5, r4     	  
+	LSL		r5, #2		  @r5 = displace from argv[0]
 loop:    
-	LDR		r2, [r1, r5] 
-	ADD		r5, r5, #-4
+	LDR		r2, [r1, r5]  @r2 = MEM[r1+r5]
+	SUB		r5, r5, #4    @r5 = r5 - 4
 	STMFD	sp!, {r2} 
 	SUBS	r4, r4, #1
-	BGT		loop 
+	BNE		loop 
 
-	PUSH	{r0}	
-	MOV		lr, pc
+	PUSH 	{r0}
+
+/*
+	STMFD	sp!, {r0} 
+	MOV		r1, #2 
+	STMFD	sp!, {r1}
+	MOV		r1, #3 
+	STMFD	sp!, {r1}
+	MOV		r1, #4 
+	STMFD	sp!, {r1}
+*/
+
+    #MOV		lr, pc
 	LDR		pc, =0xa2000000		@ jump to user program
     SWI 	0x900001            @ calling exit SWI
 
