@@ -46,16 +46,6 @@ loop:
 
 	PUSH 	{r0}
 
-/*
-	STMFD	sp!, {r0} 
-	MOV		r1, #2 
-	STMFD	sp!, {r1}
-	MOV		r1, #3 
-	STMFD	sp!, {r1}
-	MOV		r1, #4 
-	STMFD	sp!, {r1}
-*/
-
     #MOV		lr, pc
 	LDR		pc, =0xa2000000		@ jump to user program
     SWI 	0x900001            @ calling exit SWI
