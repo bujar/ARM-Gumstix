@@ -34,14 +34,16 @@ userSetup:
     /* copy all the pointers and push them on the user stack */
 
 	MOV		r4, r0        @r4 = argc
-	MOV		r5, #0		  @r5 = 0
+	MOV		r5, r4
+	LSL		r5, #2
 loop:    
 	LDR		r2, [r1, r5] 
-	ADD		r5, r5, #4
+	ADD		r5, r5, #-4
 	STMFD	sp!, {r2} 
 	SUBS	r4, r4, #1
 	BGT		loop 
-	
+
+	PUSH	{r0}	
 	MOV		lr, pc
 	LDR		pc, =0xa2000000		@ jump to user program
     SWI 	0x900001            @ calling exit SWI
