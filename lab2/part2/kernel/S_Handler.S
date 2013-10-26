@@ -17,11 +17,14 @@
 .global S_Handler
 
 S_Handler:
+
 	SUB	sp, sp, #4
 	STMFD	sp!, {r0-r12, lr}
 	MRS	r2, spsr
 	STR	r2, [sp, #14*4]
 	MOV	r1, sp
+	LDR	r0, =SVC_r8	@restore r8
+	LDR	r8, [r0]
 	LDR	r0, [lr, #-4]
 	BIC	r0, r0, #0xff000000
 	BL	C_SWI_Handler
