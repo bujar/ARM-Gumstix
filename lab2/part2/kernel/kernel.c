@@ -65,17 +65,14 @@ int install_custom_handler(int Custom_S_Handler){
    printf("jump table address is %p\n", jumpentryaddr);
    printf("jump table address entry is %x\n", UBOOT_SWI_ADDR);
    
-   //modify the first two instructions of the orig. SWI handler
-
-
+   //Store first two instructions of UBoot SWI so we can restore later
    UBoot_swi_instruction1 = *UBOOT_SWI_ADDR;
    UBoot_swi_instruction2 = *(UBOOT_SWI_ADDR + 1);
 	
+   //Replace first two instructions of UBoot SWI to go to S_Handler.S
    *UBOOT_SWI_ADDR = (LDR_OPCODE ^ U_MASK) | 0x04; 
    *(UBOOT_SWI_ADDR + 1) = Custom_S_Handler;
    
-   // a return that can help exit the program with dynamic exit status
-   // kernelExit();
    return 0;
 }
 
