@@ -21,7 +21,7 @@ ssize_t read (int fd, void *buf, size_t count)
 	
 		}
 
-		else if (c == '\n' || '\r') {
+		else if ( (c == '\n') || (c == '\r')) {
 			putc('\n');
 			cbuf[bytes_read] = c;
 			bytes_read++;
