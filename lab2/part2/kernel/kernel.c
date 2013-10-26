@@ -13,14 +13,15 @@
 
 #include <exports.h>
 
+unsigned int SVC_r8;
 unsigned int UBOOT_RetAddr; //global addr
+
 extern void S_Handler();
 extern int userSetup(int argc, char **argv);
 unsigned int UBoot_swi_instruction1;
 unsigned int UBoot_swi_instruction2;
 int *UBOOT_SWI_ADDR;
 
-extern void kernelExit();
 
 int install_custom_handler(int my_SWIaddr);
 

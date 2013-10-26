@@ -12,6 +12,11 @@ _start:
 	PUSH	r4
 	LDR 	r4, =UBOOT_RetAddr
         STR     lr, [r4]
+	
+	@ storing into global variable original r8 so we can preserve throughout
+	LDR	r4, =SVC_r8	
+	STR	r8, [r4]
+	
 	pop 	r4
 
 	@ Branch immediately to main without altering the execution environment.
