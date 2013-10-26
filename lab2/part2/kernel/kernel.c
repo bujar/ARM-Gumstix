@@ -1,9 +1,10 @@
 /*
  * kernel.c: Kernel main (entry) function
  *
- * Author: Group Member 1 <email address>
- *         Group Member 2 <email address>
- * Date:   The current time & date
+ * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ *  Date:  Oct 25. 2013
  */
 
 #define SWI_VECTOR 0x08
