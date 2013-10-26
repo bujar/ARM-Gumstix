@@ -11,7 +11,7 @@ _start:
 	@store the lr for later exit use
 	PUSH	{r4}
 	LDR 	r4, =UBOOT_RetAddr
-        STR     lr, [r4]
+    STR     lr, [r4]
 	
 	@ storing into global variable original r8 so we can preserve throughout
 	LDR	r4, =SVC_r8	

@@ -35,7 +35,7 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
           	break;
 	   default:
 			printf("Invalid SWI called");
-          		return(0x0badc0de);
+            return(0x0badc0de);
 	}
 
     return r0;
