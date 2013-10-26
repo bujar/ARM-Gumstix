@@ -12,23 +12,23 @@ LOAD_ADDR = 0xa2000000
 CRT0    = ../libc/crt0.o
 LDLIBS  = ../libc/libc.a
 
-objects = writetest.o
+objects = readtest.o
 
-default: writetest.bin
+default: readtest.bin
 
 .PHONY: default clean clobber
 
-writetest.bin: writetest
+readtest.bin: readtest
 	$(OBJCOPY) -O binary $< $@
 
-writetest: $(objects)
+readtest: $(objects)
 	$(CC) $(LDFLAGS) -o $@ $(CRT0) $^ $(LDLIBS)
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 clean:
-	rm -f writetest $(objects)
+	rm -f readtest $(objects)
 
 clobber: clean
-	rm -f writetest.bin
+	rm -f readtest.bin

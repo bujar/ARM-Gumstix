@@ -1,4 +1,11 @@
 /*
+ * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ *  Date:  Oct 25. 2013
+ */
+
+/*
 * write syscall:
 * 1. check the file descriptor 
 * 2. check the size of buf and the address range of buf as well as NULL pointer

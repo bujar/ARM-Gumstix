@@ -9,7 +9,7 @@
 	.global	_start
 _start:
 	@store the lr for later exit use
-	PUSH	r4
+	PUSH	{r4}
 	LDR 	r4, =UBOOT_RetAddr
         STR     lr, [r4]
 	
@@ -17,7 +17,7 @@ _start:
 	LDR	r4, =SVC_r8	
 	STR	r8, [r4]
 	
-	pop 	r4
+	pop 	{r4}
 
 	@ Branch immediately to main without altering the execution environment.
 	@ This indirection is needed to guarantee that the program entry point is

@@ -42,7 +42,7 @@ loop:
 	SUB		r5, r5, #4    @r5 = r5 - 4
 	STMFD	sp!, {r2} 
 	SUBS	r4, r4, #1
-	BNE		loop 
+	BGE		loop 
 
 	PUSH 	{r0}
 
