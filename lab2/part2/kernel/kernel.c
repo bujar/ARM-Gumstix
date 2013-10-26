@@ -13,10 +13,11 @@
 
 #include <exports.h>
 
+unsigned int UBOOT_RetAddr; //global addr
 extern void S_Handler();
-extern void userSetup(int argc, char **argv);
-unsigned int Uboot_swi_instruction1;
-unsigned int Uboot_swi_instruction2;
+extern int userSetup(int argc, char **argv);
+unsigned int UBoot_swi_instruction1;
+unsigned int UBoot_swi_instruction2;
 int *UBOOT_SWI_ADDR;
 
 extern void kernelExit();
@@ -29,10 +30,9 @@ int main(int argc, char *argv[]) {
       return status;
    }
 
-   userSetup(argc, argv);
-   //call function to change to usermode
-   // mask 
-   return 0;
+   status = userSetup(argc, argv);
+   
+   return status;
 }
 
 int install_custom_handler(int Custom_S_Handler){
@@ -66,8 +66,8 @@ int install_custom_handler(int Custom_S_Handler){
    //modify the first two instructions of the orig. SWI handler
 
 
-   Uboot_swi_instruction1 = *UBOOT_SWI_ADDR;
-   Uboot_swi_instruction2 = *(UBOOT_SWI_ADDR + 1);
+   UBoot_swi_instruction1 = *UBOOT_SWI_ADDR;
+   UBoot_swi_instruction2 = *(UBOOT_SWI_ADDR + 1);
 	
    *UBOOT_SWI_ADDR = (LDR_OPCODE ^ U_MASK) | 0x04; 
    *(UBOOT_SWI_ADDR + 1) = Custom_S_Handler;
