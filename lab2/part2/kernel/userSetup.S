@@ -12,6 +12,9 @@
 userSetup:
 	STMFD	sp!, {r4-r11, lr} 	@store on SVC stack	
 	
+	LDR 	r12, =SP_ADD
+	STR	sp, [r12]
+		
 	/*since we need r0, we use r4 as a scratch reg.*/
 	MRS	r12, cpsr
 	BIC 	r12, r12, #3          	@ change to user mode

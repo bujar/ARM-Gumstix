@@ -12,7 +12,16 @@
 
 	.global	_start
 _start:
-	@store the lr so we can use it to exit
+	@store the lr and other registers so we can use it to exit
+	SUB	sp, sp, #4
+	STMFD   sp!, {r0-r12, lr}       @store on SVC stack
+	
+	PUSH	{r12}			@store the pc to global varibales
+        LDR     r12, =SP_ADD
+	SUB	sp, sp, #4
+        STR     sp, [r12]
+	ADD  	sp, sp, #4
+	pop	{r12}
 
 	PUSH	{r4}			@ use r4 as scratch reg
 	LDR 	r4, =UBOOT_RetAddr
