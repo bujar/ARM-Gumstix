@@ -26,7 +26,7 @@ exit:
 	LDR 	r4, =SP_ADD
 	LDR	sp, [r4]	
 	LDMIA	sp, {r0-r12, lr}
-	add 	pc, pc, #4
+	add 	sp, sp, #4
 	mov	pc, lr
 	
    	@LDR	r4, =UBOOT_RetAddr	@get the address of UBOOT_RetAddr
