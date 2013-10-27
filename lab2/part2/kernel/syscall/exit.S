@@ -25,7 +25,7 @@ exit:
 
 	LDR 	r4, =SP_ADD
 	LDR	sp, [r4]	
-	LDMIA	sp, {r0-r12, lr}
+	LDMIA	sp!, {r0-r12, lr}
 	add 	sp, sp, #4
 	mov	pc, lr
 	
