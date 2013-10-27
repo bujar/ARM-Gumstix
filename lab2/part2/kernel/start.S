@@ -1,23 +1,28 @@
 @ start.S: Kernel startup routine
+@ We modified this file so we can grab the 
+@ initial lr and r8 upon entering kernel.
 @
-@ Author: Mike Kasick <mkasick@andrew.cmu.edu>
-@ Date:   Tue, 23 Oct 2007 11:20:33 -0400
+@ Authors: Bujar Tagani <btagani@cmu.edu>
+	  Jonathan Lim <jlim2@cmu.edu>
+	  Luo Wu <luow@cmu.edu>
+@ Date:   SAT, 26 Oct 2013 07:20:33 -0400
 
 	.file	"start.S"
 	.text
 
 	.global	_start
 _start:
-	@store the lr for later exit use
-	PUSH	{r4}
+	@store the lr so we can use it to exit
+
+	PUSH	{r4}			@ use r4 as scratch reg
 	LDR 	r4, =UBOOT_RetAddr
-    STR     lr, [r4]
+	STR     lr, [r4]
 	
-	@ storing into global variable original r8 so we can preserve throughout
+	@ store r8 in global value so we can preserve throughout
 	LDR	r4, =SVC_r8	
 	STR	r8, [r4]
 	
-	pop 	{r4}
+	pop 	{r4}			@restore value of r4
 
 	@ Branch immediately to main without altering the execution environment.
 	@ This indirection is needed to guarantee that the program entry point is

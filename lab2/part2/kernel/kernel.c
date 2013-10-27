@@ -37,12 +37,18 @@ int main(int argc, char *argv[]) {
    return status;
 }
 
+
+/* This function will hicjack the first two instructions
+ * of UBoot's SWI Handler and make it jump to our own
+ * SWI Handler S_Handler.S
+ */
 int install_custom_handler(int Custom_S_Handler){
 
    /* check whether SWI vector at 0x8 contains a 'ldr pc, [pc, #imm12]' */
    /* the opcode for ldr pc, [pc, #imm12] would be b1110 0101 x001 1111 1111 xxxx xxxx xxxx */
    int *ptr = (int *)SWI_VECTOR;
    printf("ptr entry has value of %x\n", *ptr);
+   
    int opcode = (*ptr & LDR_OPCODE);
    if( opcode == LDR_OPCODE){
       printf("we have a positive LDR\n");

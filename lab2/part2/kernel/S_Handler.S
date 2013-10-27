@@ -30,10 +30,10 @@ S_Handler:
 	BL	C_SWI_Handler
 	@LDR	r2, [sp, #14*4]
 	@MSR	spsr, r2
-	LDMFD	sp!, {r0-r12, lr} /*r0-r12... */
-    PUSH	{r2}
-	LDR		r2, =GLOBALRET
-	LDR		r0, [r2]
-	POP		{r2}
+	LDMFD	sp!, {r0-r12, lr}
+	PUSH	{r2}
+	LDR	r2, =GLOBALRET	@We want to preserve return of SWI
+	LDR	r0, [r2]	@store return (r0) into GLOBALRET
+	POP	{r2}
 	@ADD 	sp, sp, #8  /*used to be #4 */
 	MOVS	pc, lr

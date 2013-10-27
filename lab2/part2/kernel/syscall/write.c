@@ -55,7 +55,7 @@ ssize_t write(int fd, const void *buf, size_t count)
      }
 				
   // 4. return with the number of characters to stdout
-  return count;				//assume putc would not fail
+  return count;
 }
 
 	
