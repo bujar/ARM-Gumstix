@@ -23,9 +23,13 @@ exit:
 	STR	r2, [r1]		@restore the first instruction
 	STR	r3, [r1, #4]		@restore the second instruction
 
+	LDR 	r4, =SP_ADD
+	LDR	sp, [r4]	
+	LDMIA	sp, {r0-r12, lr}
+	mov	pc, lr
 	
-   	LDR	r4, =UBOOT_RetAddr	@get the address of UBOOT_RetAddr
-	LDR	pc, [r4]		@to go back to UBOOT	
+   	@LDR	r4, =UBOOT_RetAddr	@get the address of UBOOT_RetAddr
+	@LDR	pc, [r4]		@to go back to UBOOT	
 	
 	
     /* hardcoded values - not using these */
