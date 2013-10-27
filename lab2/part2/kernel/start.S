@@ -13,11 +13,12 @@
 	.global	_start
 _start:
 	@store the lr and other registers so we can use it to exit
+	SUB	sp, sp, #4
 	STMFD   sp!, {r0-r12, lr}       @store on SVC stack
 	
 	PUSH	{r12}			@store the pc to global varibales
         LDR     r12, =SP_ADD
-	SUB	sp, sp, #-4
+	SUB	sp, sp, #4
         STR     sp, [r12]
 	ADD  	sp, sp, #4
 	pop	{r12}
