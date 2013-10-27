@@ -16,13 +16,13 @@ _start:
 
 	PUSH	{r4}			@ use r4 as scratch reg
 	LDR 	r4, =UBOOT_RetAddr
-	STR     lr, [r4]
+	STR	lr, [r4]
 	
 	@ store r8 in global value so we can preserve throughout
 	LDR	r4, =SVC_r8	
 	STR	r8, [r4]
 	
-	pop 	{r4}			@restore value of r4
+	pop	{r4}			@restore value of r4
 
 	@ Branch immediately to main without altering the execution environment.
 	@ This indirection is needed to guarantee that the program entry point is
