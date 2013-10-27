@@ -14,6 +14,7 @@
 
 #include <exports.h>
 
+unsigned int SP_ADD;
 unsigned int SVC_r8;
 unsigned int UBOOT_RetAddr; //global addr
 unsigned int GLOBALRET;
