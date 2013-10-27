@@ -1,11 +1,11 @@
-#CC      = gcc
-#AR      = ar
+CC      = gcc
+AR      = ar
 CFLAGS  = -O2 -ffreestanding -Wall -Werror -nostdinc -I include
 ASFLAGS = -nostdinc -I include
 
 #cross compiler options
-CC		= arm-linux-gcc
-AR 		= arm-linux-ar
+#CC		= arm-linux-gcc
+#AR 		= arm-linux-ar
 
 objects = errno.o exit.o read.o write.o
 

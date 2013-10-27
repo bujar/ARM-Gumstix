@@ -1,14 +1,14 @@
-#CC      = gcc
-#OBJCOPY = objcopy
+CC      = gcc
+OBJCOPY = objcopy
 CFLAGS  = -g -O2 -ffixed-r8 -ffreestanding -Wall -Werror -nostdinc \
           -I ../uboot/include -I include
 ASFLAGS = -nostdinc -I ../uboot/include -I include
 LDFLAGS = -nostdlib -Wl,-N,-Ttext,$(LOAD_ADDR)
 
 # cross compiler options
-CC		= arm-linux-gcc
-AR      = arm-linux-ar
-OBJCOPY = arm-linux-objcopy
+#CC		= arm-linux-gcc
+#AR      = arm-linux-ar
+#OBJCOPY = arm-linux-objcopy
 
 LOAD_ADDR = 0xa3000000
 
