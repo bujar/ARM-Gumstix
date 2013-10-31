@@ -10,8 +10,23 @@
  */
 
 #include <asm.h>
+#include <bits/swi.h>
 
 	.file "read.S"
 
 FUNC(read)
-	@ Add code here.  Put your names at the top.
+	@ Success returns positive value or 0.
+    @ If error, return errno=abs(r0)
+    @    and return -1
+
+    swi READ_SWI
+    cmp r0, #0
+    movge   pc, lr
+    asr r1, r0, #31 
+    add r0, r0, r1
+    eor r0, r0, r1
+    ldr r1, =errno
+    str r0, [r1]
+    mov r0, #-1 
+    mov pc, lr
+
