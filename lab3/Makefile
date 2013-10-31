@@ -52,7 +52,6 @@ CWARNINGS_SAFE = -Wall -Wextra -Wno-unused-parameter -Wpointer-arith \
 CWARNINGS = -Werror $(CWARNINGS_SAFE) 
 =======
 CWARNINGS = -Werror $(CWARNINGS_SAFE)
->>>>>>> 3a8d0b7d1ecd47f57ab700d10ccd9ba555ef4cc8
 CWARNINGS1 = $(CWARNINGS_SAFE) $(CWARNINGS_NOISY)
 
 KCFLAGS = -O3 -ffreestanding -ffixed-r8 -nostdinc $(CWARNINGS)
