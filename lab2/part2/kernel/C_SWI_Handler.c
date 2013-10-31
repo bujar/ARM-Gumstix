@@ -25,11 +25,11 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 
 	switch (swi_num) {
 	   case READ_SWI:
-		GLOBALRET = read(r0, r1, r2);
+		r0 = read(r0, r1, r2);
 		break;
 
 	   case WRITE_SWI:
-          	GLOBALRET = write(r0, r1, r2);
+        r0 = write(r0, r1, r2);
 		break;
 	   case EXIT_SWI:
 		exit(r0);

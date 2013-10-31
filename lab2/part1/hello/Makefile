@@ -1,11 +1,11 @@
-CC      = gcc
-OBJCOPY = objcopy
+CC      = arm-linux-arm-linux-arm-linux-gcc
+OBJCOPY = "arm-linux-objcopy"
 ASFLAGS = -nostdinc -I ../libc/include
 LDFLAGS = -nostdlib -Wl,-Ttext,$(LOAD_ADDR) 
 
 #cross compiler options
-#CC		= arm-linux-gcc
-#OBJCOPY = arm-linux-objcopy
+#CC		= arm-linux-arm-linux-arm-linux-arm-linux-gcc
+#OBJCOPY = arm-linux-"arm-linux-objcopy"
 
 LOAD_ADDR = 0xa2000000
 
