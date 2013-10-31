@@ -27,6 +27,7 @@ exit:
 	LDR	sp, [r4]		@to go back to UBOOT	
 
 	@ADD	sp, sp, #4*18
-	LDMFD	sp!, {r0-r12, lr} @ restore state
+	ADD sp, sp, #4
+	LDMFD	sp!, {r1-r12, lr} @ restore state
 	MOV	pc, lr
 
