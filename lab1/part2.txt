@@ -1,0 +1,52 @@
+Group 37
+Bujar Tagani - btagani
+Jonathan Lim - jlim2
+Luo Wu - luow
+
+Version 1 optimized
+Made it a count down loop for every character in d[]
+By doing this, in .L4 we can use subs, bge instead of add, cmp, bge.
+This improved memory and time by having one less instruction for each outer loop
+
+.L9 seems like the first operation in a do-while loop,
+We got rid of the .L9 instruction sub r3. r3. #23 cmp, bgt, instructions and left the modulo
+operation as a while loop in .L7. This gets rid of a branch instruction and lets us leverage the
+same sub, cpm, bgt instructions in .L7. This reduced the overall number of instructions.
+
+Got rid of ldrb and cmp in .L13 which checks whether that letter is already in s[]. We felt this was
+unnecessary so we got rid of this check. If the letter already exists, store it into s[] anyway. This
+reduces the total number of instructions.
+
+Total Cost 381
+
+
+Version 2 optimized
+When we optimized again, we tried to reduce the overall memory cost by removing 
+unnecessary instructions which load, store, and mov values. instead of using stmfd
+to store the values we don't want to change, and lmfd to load them back, we got rid
+of these instructions and decided to only use registers which we know were not needed
+for the rest of the program to execute properly - therefore we can change these registers
+without the need to restore their old values. This let us remove instructions which moved 
+values around to different registers. 
+We performed subs r9, r5, #0 to leverage the value of r5 as 8 to use in our counter r9 
+while simultaneously checking if r9 is less than or equal to 0 in our next instruction ble. We were able
+to remove 5 total instructions by doing this, decreasing the memory usage. r4, r5, and 
+r6 were not used at all in the rest of the program since these registers should not be changed. 
+We instead used r9 as a counter and ip for storing temporary values.
+
+Total Cost 348
+
+Version 3 optimized
+Discovered a bug in .L13 - we realized that since we are decrementing, we need to check whether characters
+with the same %23 are getting replaced correctly. Our solution about eliminating ldrb and cmp in .L13 only 
+works for when you are incrementing through the loop because each replacement goes in order. However, when
+decrementing and having the test case PENGUIN7 does not yield the correct result. 7 and N have the same %23
+so they replace eachother. When decrementing the replacement was backwards and the character 7 did not show 
+up in the final string. To correct this, we went back to the original count upwards loop instead of having to
+do the ascii replacement check in .L13
+Additional optimizations were done in the modulo loop. Previously, we got rid of the do while loop and just now
+discovered the importance of it. We kept the do while loop and unrolled the loop in .L7 to sub, cmp, subgt, cmp, bgt.
+Since we know that in our test case PENGUINS, most letters need to do -23 three times, this optimization gives the
+opportunity to perform three straight -23 without looping - thus reducing the number of branch instructions.
+
+Final Cost 337

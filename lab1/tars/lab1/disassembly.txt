@@ -1,0 +1,21 @@
+btagani, jlim2, luow
+disassembly.txt
+
+1. What is the entry point address of the program?
+ 0x82dc
+
+2. What is the name of the first function branched to in the program?
+ __libc_start_main
+
+3. What is the key difference between the output of objdump -d(hello-d.txt)
+and objdump -D (hello-bigd.txt)
+ -d: outputs only sections which are expected to contain instructions.
+ -D: outputs all sections whether they are expected to contain instructions or not.
+
+4. Is the interpretation of the instructions under the .rodata section of 
+hello-bigd.txt correct? What does this interpretation mean?
+ The .rodata section cantains constant, read only data. In this case, 
+ it contains the string "Hello World", and the special character "!". 
+ This is the correct interpretation and is exactly what we expected to be
+ in this section. This data contains the data that needs to be executed in
+ our printf instruction.

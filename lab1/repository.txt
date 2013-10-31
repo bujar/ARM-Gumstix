@@ -1,0 +1,11 @@
+1. "file1" and "file2" contain text.
+	file1:	This is version 1.0 of file1.
+		This should be verion 2.0 of file1.
+	file2: 	This if version 1.0 of file2.
+
+2. userid: "rgandhi"
+
+3. Revision 2:	Mon, 21 Sep 2009 15:35:00
+		"updated file 1"
+   Revision 1:	Mon, 21 Sep 2009 15:33:09
+		"initial version"
