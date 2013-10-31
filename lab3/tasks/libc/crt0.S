@@ -7,11 +7,15 @@
  */
 
 #include <asm.h>
+<<<<<<< HEAD
 #include <bits/swi.h>
+=======
+>>>>>>> 3a8d0b7d1ecd47f57ab700d10ccd9ba555ef4cc8
 
 	.file "crt0.S"
 
 FUNC(_start)
+<<<<<<< HEAD
 
     /* void _start(void){
      *    int argc;
@@ -31,3 +35,6 @@ FUNC(_start)
     swi EXIT_SWI
 
 
+=======
+	@ needs code.  Put your names at the top.
+>>>>>>> 3a8d0b7d1ecd47f57ab700d10ccd9ba555ef4cc8

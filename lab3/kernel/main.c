@@ -5,6 +5,7 @@
 #include <arm/interrupt.h>
 #include <arm/timer.h>
 
+<<<<<<< HEAD
 #include "globals.h"
 
 uint32_t global_data;
@@ -17,6 +18,10 @@ uint32_t global_data;
 #  define debug_printf(...)
 #endif
 
+=======
+uint32_t global_data;
+
+>>>>>>> 3a8d0b7d1ecd47f57ab700d10ccd9ba555ef4cc8
 int kmain(int argc, char** argv, uint32_t table)
 {
 	app_startup(); /* bss is valid after this point */
@@ -26,6 +31,7 @@ int kmain(int argc, char** argv, uint32_t table)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 /* This function will hijack U-Boot's SWI handler by
  * replacing the first two instructions
@@ -78,3 +84,5 @@ int install_handler(int vec_pos, int custom_handler){
    return 0;
 }
 
+=======
+>>>>>>> 3a8d0b7d1ecd47f57ab700d10ccd9ba555ef4cc8

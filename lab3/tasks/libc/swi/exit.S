@@ -10,9 +10,17 @@
  */
 
 #include <asm.h>
+<<<<<<< HEAD
 #include <bits/swi.h>
 
 	.file "exit.S"
 
 exit:
     swi EXIT_SWI
+=======
+
+	.file "exit.S"
+
+FUNC(exit)
+	@ Add code here.  Put your name at the top.
+>>>>>>> 3a8d0b7d1ecd47f57ab700d10ccd9ba555ef4cc8
