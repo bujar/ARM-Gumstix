@@ -22,25 +22,11 @@ exit:
 	LDR	r3, [r3]		@get the value of UBOOT_swi_instruction2
 	STR	r2, [r1]		@restore the first instruction
 	STR	r3, [r1, #4]	@restore the second instruction
+   	
+    LDR	r4, =UBOOT_SP	@get the address of UBOOT_RetAddr
+	LDR	sp, [r4]		@to go back to UBOOT	
 
-	LDMFD	sp!, {r0-r12, lr} @does this restore state?
-	mov 	r0, lr
-	bl	exit_help
+	@ADD	sp, sp, #4*18
+	LDMFD	sp!, {r0-r12, lr} @ restore state
 	MOV	pc, lr
 
-	/*
-	LDR 	r4, =SP_ADD
-	LDR	sp, [r4]	
-	LDMIA	sp!, {r1-r12, lr}
-	add 	sp, sp, #4
-	mov	pc, lr
-	
-   	@LDR	r4, =UBOOT_RetAddr	@get the address of UBOOT_RetAddr
-	@LDR	pc, [r4]		@to go back to UBOOT	
-	*/
-    /* hardcoded values - not using these */
-	@LDR	r1, =0x5c0009c0		@address of first instruction UBOOT_SWI
-	@LDR	r2, =0xe51fd980		@original optcode at 0x5c0009c0
-	@LDR	r3, =0xe24dda41		@original optcode at 0x5c0009c4
-	@STR	r2, [r1]		@restore the first instruction
-	@STR	r3, [r1, #4]		@restore the second instruction

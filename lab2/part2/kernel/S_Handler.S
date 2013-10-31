@@ -32,9 +32,5 @@ S_Handler:
 	MSR	spsr, r2                 @ restore SPSR from r2
 	ADD	sp, sp, #4               @ remove r0 from the top of stack
 	LDMFD	sp!, {r1-r12, lr}    @ unstack user's registers
-	@PUSH	{r2} 
-	@LDR	r2, =GLOBALRET	@We want to preserve return of SWI
-	@LDR	r0, [r2]	@store return (r0) into GLOBALRET
-	@POP	{r2}
 	ADD 	sp, sp, #4           @ remove space used to store SPSR 
 	MOVS	pc, lr

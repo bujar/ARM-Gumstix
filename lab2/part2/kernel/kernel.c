@@ -16,8 +16,7 @@
 
 unsigned int SP_ADD;
 unsigned int SVC_r8;
-unsigned int UBOOT_RetAddr; //global addr
-unsigned int GLOBALRET;
+unsigned int UBOOT_SP; //global addr
 extern void S_Handler();
 extern int userSetup(int argc, char **argv);
 unsigned int UBoot_swi_instruction1;
@@ -39,7 +38,7 @@ int main(int argc, char *argv[]) {
 }
 
 
-/* This function will hicjack the first two instructions
+/* This function will hijack the first two instructions
  * of UBoot's SWI Handler and make it jump to our own
  * SWI Handler S_Handler.S
  */
