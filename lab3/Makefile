@@ -48,7 +48,7 @@ CWARNINGS_NOISY = -Wformat=2 -Wstrict-aliasing=2 -Wshadow -Wcast-qual \
 CWARNINGS_SAFE = -Wall -Wextra -Wno-unused-parameter -Wpointer-arith \
 	-Wwrite-strings -Wsystem-headers
 
-CWARNINGS = -Werror $(CWARNINGS_SAFE)
+CWARNINGS = -Werror $(CWARNINGS_SAFE) 
 CWARNINGS1 = $(CWARNINGS_SAFE) $(CWARNINGS_NOISY)
 
 KCFLAGS = -O3 -ffreestanding -ffixed-r8 -nostdinc $(CWARNINGS)

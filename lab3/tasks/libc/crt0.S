@@ -7,8 +7,27 @@
  */
 
 #include <asm.h>
+#include <bits/swi.h>
 
 	.file "crt0.S"
 
 FUNC(_start)
-	@ needs code.  Put your names at the top.
+
+    /* void _start(void){
+     *    int argc;
+     *    char **argv;
+     *
+     *    exit(main(argc, argv));
+     *
+     */
+    
+	@ 0. save registers that would be used
+    @ since the registers are undefined in the beginning, 
+    @ it is not necessary
+    
+    ldr r0, [sp]        /* loader argc into r0 */
+    add r1, sp, #4      /* loader argv into r1 */
+    bl main
+    swi EXIT_SWI
+
+
