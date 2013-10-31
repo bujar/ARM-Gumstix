@@ -23,8 +23,8 @@ S_Handler:
 	MRS	r2, spsr                 @ get SPSR into gp register 
 	STR	r2, [sp, #14*4]          @ store SPSR above gp registers
 	MOV	r1, sp                   @ pointer to parameter on stack
-	@LDR	r0, =SVC_r8	@restore r8  
-	@LDR	r8, [r0]
+	LDR	r0, =SVC_r8	@restore r8  
+	LDR	r8, [r0]
 	LDR	r0, [lr, #-4]            @ extract SWI number
 	BIC	r0, r0, #0xff000000      
 	BL	C_SWI_Handler            @ goto handler

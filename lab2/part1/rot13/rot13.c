@@ -47,7 +47,7 @@ void print_args(int argc, char **argv){
 
 int main(int argc, char **argv){
     
-    //print_args(argc, argv);
+   print_args(argc, argv);
    int i;
    char c[2] = {'\n'};
    for(i = 0; i < argc; i++){
