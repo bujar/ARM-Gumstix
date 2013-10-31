@@ -24,6 +24,8 @@ exit:
 	STR	r3, [r1, #4]	@restore the second instruction
 
 	LDMFD	sp!, {r0-r12, lr} @does this restore state?
+	mov 	r0, lr
+	bl	exit_help
 	MOV	pc, lr
 
 	/*
