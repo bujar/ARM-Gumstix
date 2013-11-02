@@ -10,13 +10,20 @@
 #include <bits/fileno.h>
 #include <bits/errno.h>
 
+#define SDRAM_END 0xa3ffffff
+#define SDRAM_START 0xa0000000
+
 ssize_t read (int fd, void *buf, size_t count)
 {
 	char c;
 	ssize_t bytes_read;
 	char *cbuf = (char *)buf;
+	int buf_begin, buf_end;
 	
-	if (count > 0x4000000)
+	buf_begin = (int) buf;
+	buf_end = ((int) buf) + count;
+
+	if (buf_begin < SDRAM_START || buf_end > SDRAM_END)
 	return -EFAULT;
 
 	if (fd != STDIN_FILENO)
@@ -26,34 +33,36 @@ ssize_t read (int fd, void *buf, size_t count)
 	 * until user input is EOT or newline/return. c=getc() stores input into
 	 * char c.
 	 */
-	for(bytes_read = 0; ((c=getc()) != 4) && (bytes_read<count); bytes_read++)
-	{
+	for(b_read = 0; ((c=getc()) != 4)&&(b_read<count); b_read++)
+	{	
 		switch (c)
 		{
-		case '\n':		//Newline and Return case
-		case '\r':
+		   case '\n':
+		   case '\r':
+		   {
 			putc('\n');
-			cbuf[bytes_read] = c;
-			bytes_read++;
-			//printf("I read %d characters\n\n",bytes_read);
-			return bytes_read;
+			cbuf[b_read] = c;
+			b_read++;
+			return b_read;
 			break;
-
-		case 127:		//Backspace and Delete case
-			if (bytes_read>0)	
-			bytes_read-=2;			// -2 because when we loop again, bytes_read++
-			cbuf[bytes_read+1] = '\0';	//putting null char at the end of buffer
+		   }	// return/newline case
+		   case 127:
+		   {
+			if (b_read>0)	
+			b_read-=2;
 			putc('\b');
 			putc(' ');
 			putc('\b');
 			break;
-
-		default:				//default case - keep looping and reading characters
+		   }	// backspace/delete case
+			
+		   default:
+		   {
 			putc(c);
-			cbuf[bytes_read] = c;
+			cbuf[b_read] = c;
+		   }	//default keeps looping until EOT
 		}
+
+
+		return bytes_read;	//only reach this when c = EOT
 	}
-    		//printf("I read %d characters\n\n",bytes_read);
-		cbuf[bytes_read+1] = '\0';
-		return bytes_read;			//only reach this when c = EOT
-}
