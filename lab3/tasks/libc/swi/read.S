@@ -19,6 +19,8 @@ FUNC(read)
     @ If error, return errno=abs(r0)
     @    and return -1
 
+    STMFD sp!, {r0-r12, lr}
+    
     swi READ_SWI
     cmp r0, #0
     movge   pc, lr
@@ -28,4 +30,6 @@ FUNC(read)
     ldr r1, =errno
     str r0, [r1]
     mov r0, #-1 
+
+    LDMFD sp!, {r1-r12, lr}
     mov pc, lr

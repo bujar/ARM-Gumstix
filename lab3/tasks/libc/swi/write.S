@@ -18,7 +18,9 @@ FUNC(write)
     @ Success returns positive value or 0.
     @ If error, return errno=abs(r0)
     @    and return -1
-
+   
+    STMFD sp!, {r0-r12, lr}
+	
     swi WRITE_SWI
     cmp r0, #0
     movge   pc, lr
@@ -29,5 +31,8 @@ FUNC(write)
     ldr r0, [r1]
     str r0, [r1]
     mov r0, #-1 
+    
+    LDMFD sp!, {r1-r12, lr}
     mov pc, lr
 
+    
