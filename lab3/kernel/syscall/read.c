@@ -16,12 +16,12 @@
 ssize_t read (int fd, void *buf, size_t count)
 {
 	char c;
-	ssize_t bytes_read;
+	ssize_t b_read;
 	char *cbuf = (char *)buf;
-	int buf_begin, buf_end;
+	unsigned int buf_begin, buf_end;
 	
-	buf_begin = (int) buf;
-	buf_end = ((int) buf) + count;
+	buf_begin = (unsigned int) buf;
+	buf_end = ((unsigned int) buf) + count;
 
 	if (buf_begin < SDRAM_START || buf_end > SDRAM_END)
 	return -EFAULT;
@@ -33,27 +33,26 @@ ssize_t read (int fd, void *buf, size_t count)
 	 * until user input is EOT or newline/return. c=getc() stores input into
 	 * char c.
 	 */
-	for(b_read = 0; ((c=getc()) != 4)&&(b_read<count); b_read++)
+	for(b_read = 0; ((c=getc()) != 4) && ((size_t) b_read<count); b_read++)
 	{	
 		switch (c)
 		{
 		   case '\n':
 		   case '\r':
 		   {
-			putc('\n');
-			cbuf[b_read] = c;
-			b_read++;
-			return b_read;
-			break;
+		       putc('\n');
+			   cbuf[b_read] = c;
+			   b_read++;
+			   return b_read;
 		   }	// return/newline case
 		   case 127:
 		   {
-			if (b_read>0)	
-			b_read-=2;
-			putc('\b');
-			putc(' ');
-			putc('\b');
-			break;
+		       if (b_read>0)	
+		           b_read-=2;
+		       putc('\b');
+		       putc(' ');
+		       putc('\b');
+		       break;
 		   }	// backspace/delete case
 			
 		   default:
@@ -62,7 +61,7 @@ ssize_t read (int fd, void *buf, size_t count)
 			cbuf[b_read] = c;
 		   }	//default keeps looping until EOT
 		}
+    }
 
-
-		return bytes_read;	//only reach this when c = EOT
-	}
+	return b_read;	//only reach this when c = EOT
+}

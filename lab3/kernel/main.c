@@ -7,8 +7,6 @@
 
 #include "globals.h"
 
-uint32_t global_data;
-
 #define DEBUG 1
 
 #ifdef DEBUG
@@ -17,16 +15,31 @@ uint32_t global_data;
 #  define debug_printf(...)
 #endif
 
+/* globals */ //move to elsewhere later?
 uint32_t global_data;
+unsigned int SVC_r8;
+unsigned int UBOOT_SP; //global addr
+unsigned int UBOOT_SWI_INST1;
+unsigned int UBOOT_SWI_INST2;
+int *UBOOT_SWI_ADDR;
+
+/* functions */
+extern void S_Handler();
+extern int userSetup(int argc, char **argv);
+int install_handler(int vec_pos, int my_SWIaddr);
 
 int kmain(int argc, char** argv, uint32_t table)
 {
 	app_startup(); /* bss is valid after this point */
 	global_data = table;
+    
+    int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler);
+	if(status != 0){
+        return status;
+    }
 
-	/* Add your code here */
-
-	return 0;
+    status = userSetup(argc, argv);
+    return status;
 }
 
 /* This function will hijack U-Boot's SWI handler by
@@ -37,12 +50,8 @@ int kmain(int argc, char** argv, uint32_t table)
 
 int install_handler(int vec_pos, int custom_handler){
    int *vec_ptr, *jumpentryaddr;
-   int offset, opcode;
-
-   //globals to be moved later
-   int UBOOT_SWI_ADDR;
-   int UBOOT_SWI_INST1;
-   int UBOOT_SWI_INST2;
+   int offset;
+   unsigned int opcode;
 
    /* does vector entry contains a 'ldr pc, [pc, #imm12]'? */
    
@@ -52,12 +61,12 @@ int install_handler(int vec_pos, int custom_handler){
    if( opcode == LDR_OPCODE){
       debug_printf("we have a positive LDR\n");
    }   
-   else if((opcode|U_MASK) == LDR_OPCODE){
+   else if((opcode|UP_BIT_MASK) == LDR_OPCODE){
       debug_printf("we have a negative LDR\n");
       return 0x0badc0de;           
    }   
    else{
-      debuf_printf("NOT a LDR instruction\n");
+      debug_printf("NOT a LDR instruction\n");
       return 0x0badc0de;           
    }   
 
@@ -70,13 +79,13 @@ int install_handler(int vec_pos, int custom_handler){
    UBOOT_SWI_INST2 = *(UBOOT_SWI_ADDR + 1); 
 
    //Replace first two instructions of UBoot SWI
-   *UBOOT_SWI_ADDR = (LDR_OPCODE ^ U_MASK) | 0x04;
+   *UBOOT_SWI_ADDR = (LDR_OPCODE ^ UP_BIT_MASK) | 0x04; //ldr pc, [pc, #4]
    *(UBOOT_SWI_ADDR + 1) = custom_handler;
 
    debug_printf("vector position entry has value of %x\n", *vec_ptr);
    debug_printf("immediate offset is %d\n", offset);
    debug_printf("jump table address is %p\n", jumpentryaddr);
-   debug_printf("jump table address entry is %x\n", UBOOT_SWI_ADDR);
+   debug_printf("jump table address entry is %p\n", UBOOT_SWI_ADDR);
    return 0;
 }
 

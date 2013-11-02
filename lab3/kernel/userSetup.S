@@ -9,16 +9,16 @@
 .text
 .global userSetup
 
-#define USER_ADDR 0xa0000000
-
+#define USER_PROG_ADDR 0xa0000000
+#define USER_STACK_ADDR 0xa3000000
 userSetup:
 		
 	MRS	r12, cpsr
-	BIC r12, r12, #3        @ change to user mode
-	ORR r12, r12, #0x60  	@ disable FIQ and IRQ bits
+	BIC r12, r12, #3         @ change to user mode
+	ORR r12, r12, #0x60  	 @ disable FIQ and IRQ bits
 	MSR	cpsr, r12
 
-	LDR	sp, =0xa3000000		@ user stack set up
+	LDR	sp, =USER_STACK_ADDR @ user stack set up
 	
     /* push the argv arguments on the user stack by copying
      * all the pointers and push them on the user stack. */

@@ -17,21 +17,22 @@
 #include <bits/errno.h>
 #include <exports.h>
 
-#define MAX_WRITE_SIZE 0x4000000	//64MB; size of SDRAM
+#define MAX_WRITE_SIZE  0x4000000	//64MB; size of SDRAM
+#define FREE_BEGIN_ADDR 0xa0000000
 
 ssize_t write(int fd, const void *buf, size_t count)
 {
-  int i, buf_begin, buf_end;
+  unsigned int i, buf_begin, buf_end;
 
   // 1. check the file descriptor 
-  if(fd != STDOUT_FILENO)  	//the file descriptor for stdout of uboot is 1
+  if(fd != STDOUT_FILENO)
      {  
 	puts("file descriptor error!");	
 	return -EBADF;
      }
  
   // 2. check the size of buf and the address of buf
-  if(count > MAX_WRITE_SIZE || count < 0)	//check size of buf 
+  if(count > MAX_WRITE_SIZE)	//check size of buf 
      {
 	puts("count size err!");
 	return -EFAULT;	
@@ -41,7 +42,7 @@ ssize_t write(int fd, const void *buf, size_t count)
   buf_end = ((int) buf) + count;	//high bound of buf
 
   //check if the buffer exceeds the SDRAM, it automaticlly ignores NULL pointer
-  if((buf_begin < 0xa0000000) || (buf_end > 0xa3ffffff))
+  if((buf_begin < FREE_BEGIN_ADDR) || (buf_end > 0xa3ffffff))
      {
 	puts("buf address range error!");
 	return -EFAULT;	

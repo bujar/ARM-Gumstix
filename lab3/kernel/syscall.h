@@ -6,7 +6,7 @@
 #ifndef SYSCALL_H
 #define SYSCALL_H
 
-#include <bits/types.h>
+#include <types.h>
 
 void exit(int status);
 ssize_t read(int fd, void *buf, size_t count);

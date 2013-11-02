@@ -14,8 +14,8 @@
 
 exit:
 	LDR r1, =UBOOT_SWI_ADDR	@get the address of UBOOT_SWI_ADDR 
-	LDR r2, =UBoot_swi_instruction1 		
-	LDR	r3, =UBoot_swi_instruction2
+	LDR r2, =UBOOT_SWI_INST1 		
+	LDR	r3, =UBOOT_SWI_INST2
     
 	LDR	r1, [r1] 		@get the value of UBOOT_SWI_ADDR	
 	LDR	r2, [r2]		@get the value of UBOOT_swi_instruction1
