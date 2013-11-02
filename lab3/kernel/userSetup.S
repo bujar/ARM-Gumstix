@@ -33,7 +33,7 @@ loop:
 	BGE	loop 		    @ loop until you push all arguments
 	PUSH {r0}           @ push argc on top
 
-	LDR	pc, =USER_STACK_ADDR  @ jump to user program
+	LDR	pc, =USER_PROG_ADDR  @ jump to user program
 
 	/* ideally program should never come back here */
 
