@@ -18,8 +18,8 @@
 
 /* globals */ //move to elsewhere later?
 uint32_t global_data;
-unsigned int SVC_r8 = 0;
-unsigned int UBOOT_SP = 0; //global addr
+unsigned int SVC_r8 = 1;
+unsigned int UBOOT_SP = 1; //global addr
 unsigned int UBOOT_SWI_INST1;
 unsigned int UBOOT_SWI_INST2;
 unsigned int UBOOT_IRQ_INST1;
@@ -44,11 +44,11 @@ int kmain(int argc, char** argv, uint32_t table)
             return status;
         }
 
-   /* status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
+    status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
 	if(status != 0){
             return status;
         }
-    */
+    
     status = userSetup(argc, argv);
     	return status; 
 }
@@ -103,7 +103,7 @@ int install_handler(int vec_pos, int custom_handler){
    }	
 
 
-   //Replace first two instructions of UBoot SWI
+   //Replace first two instructions of UBoot SWI / IRQ
    *UBOOT_handler_addr = (LDR_OPCODE ^ UP_BIT_MASK) | 0x04; //ldr pc, [pc, #4]
    *(UBOOT_handler_addr + 1) = custom_handler;
 
