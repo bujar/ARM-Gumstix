@@ -7,8 +7,12 @@
  */
 
 #include <asm.h>
+#include <bits/swi.h>
 
 	.file "sleep.S"
 
 FUNC(sleep)
-	@ Add code here.  Put your names at the top.
+	STMFD 	sp!, {r1-r12, lr}
+	SWI	SLEEP_SWI
+	LDMFD	sp!, {r1-r12, lr}
+	MOV	pc, lr

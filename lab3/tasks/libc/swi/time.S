@@ -7,8 +7,12 @@
  */
 
 #include <asm.h>
+#include <bits/swi.h>
 
 	.file "time.S"
 
 FUNC(time)
-	@ Add code here.  Put your name at the top.
+	STMFD 	sp!, {r1-r12, lr}
+	SWI	TIME_SWI
+	LDMFD	sp!, {r1-r12, lr}
+	MOV	pc, lr
