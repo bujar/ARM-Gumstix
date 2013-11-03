@@ -16,13 +16,12 @@
 
 I_Handler:
 
-	STMFD	sp!, {r0-r12, lr}
-	
+	STMFD	sp!, {r0-r12, lr}	@store user reg on stack
 	LDR	r0, =SVC_r8		@restore r8
 	LDR	r8, [r0]
 	BL	C_IRQ_Handler
-
-	LDMFD	sp!, {r0-r12, lr}
+	ADD	sp, sp, #4		@make sp = r1
+	LDMFD	sp!, {r1-r12, lr}	@unstack user reg
 	SUBS	pc, lr, #4
 /* I found this code on infocenter.arm website for making IRQ
    re-entrant. Looks a little confusing but let's use it as a 
