@@ -30,6 +30,7 @@ int *UBOOT_IRQ_ADDR;
 
 /* functions */
 extern void S_Handler();
+extern void I_Handler();
 extern int userSetup(int argc, char **argv);
 int install_handler(int vec_pos, int my_SWIaddr);
 
@@ -43,13 +44,13 @@ int kmain(int argc, char** argv, uint32_t table)
             return status;
         }
 
-    int status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
+   /* status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
 	if(status != 0){
             return status;
         }
-
+    */
     status = userSetup(argc, argv);
-    	return status;
+    	return status; 
 }
 
 /* This function will hijack U-Boot's SWI/IRQ handler by
