@@ -20,8 +20,10 @@ FUNC(write)
     @    and return -1
    
     STMFD sp!, {r0-r12, lr}
-	
     swi WRITE_SWI
+    add sp, sp, #4
+    LDMFD sp!, {r1-r12, lr}
+    
     cmp r0, #0
     movge   pc, lr
     asr r1, r0, #31 
@@ -31,8 +33,6 @@ FUNC(write)
     ldr r0, [r1]
     str r0, [r1]
     mov r0, #-1 
-    
-    LDMFD sp!, {r1-r12, lr}
     mov pc, lr
 
     

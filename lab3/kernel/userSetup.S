@@ -9,8 +9,9 @@
 .text
 .global userSetup
 
-#define USER_PROG_ADDR 0xa0000000
+#define USER_PROG_ADDR  0xa0000000
 #define USER_STACK_ADDR 0xa3000000
+
 userSetup:
 		
 	MRS	r12, cpsr
