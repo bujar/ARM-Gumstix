@@ -7,6 +7,7 @@
 
 #include "globals.h"
 
+
 #define DEBUG 1
 
 #ifdef DEBUG
@@ -17,14 +18,19 @@
 
 /* globals */ //move to elsewhere later?
 uint32_t global_data;
-unsigned int SVC_r8;
-unsigned int UBOOT_SP; //global addr
+unsigned int SVC_r8 = 1;
+unsigned int UBOOT_SP = 1; //global addr
 unsigned int UBOOT_SWI_INST1;
 unsigned int UBOOT_SWI_INST2;
+unsigned int UBOOT_IRQ_INST1;
+unsigned int UBOOT_IRQ_INST2; 
+
 int *UBOOT_SWI_ADDR;
+int *UBOOT_IRQ_ADDR;
 
 /* functions */
 extern void S_Handler();
+extern void I_Handler();
 extern int userSetup(int argc, char **argv);
 int install_handler(int vec_pos, int my_SWIaddr);
 
@@ -35,21 +41,26 @@ int kmain(int argc, char** argv, uint32_t table)
     
     int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler);
 	if(status != 0){
-        return status;
-    }
+            return status;
+        }
 
+    status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
+	if(status != 0){
+            return status;
+        }
+    
     status = userSetup(argc, argv);
-    return status;
+    	return status; 
 }
 
-/* This function will hijack U-Boot's SWI handler by
+/* This function will hijack U-Boot's SWI/IRQ handler by
  * replacing the first two instructions
- * of UBoot's SWI Handler and make it jump to our own
- * SWI Handler S_Handler.S
+ * of UBoot's SWI/IRQ Handler and make it jump to our own
+ * SWI/IRQ Handler at S_Handler.S or I_Handler.S
  */
 
 int install_handler(int vec_pos, int custom_handler){
-   int *vec_ptr, *jumpentryaddr;
+   int *vec_ptr, *jumpentryaddr, *UBOOT_handler_addr;
    int offset;
    unsigned int opcode;
 
@@ -70,22 +81,36 @@ int install_handler(int vec_pos, int custom_handler){
       return 0x0badc0de;           
    }   
 
-   offset = (*vec_ptr & 0x00000FFF);
+   offset = (*vec_ptr & LDR_IMM_MASK);
    jumpentryaddr = (int *)(vec_pos + 0x8 + offset);
-   UBOOT_SWI_ADDR = (int *)*jumpentryaddr;
+   UBOOT_handler_addr = (int *)*jumpentryaddr;
    
+   if(vec_pos == SWI_VECTOR_ADDR){
    //  Store first two instructions of UBoot SWI
-   UBOOT_SWI_INST1 = *UBOOT_SWI_ADDR;
-   UBOOT_SWI_INST2 = *(UBOOT_SWI_ADDR + 1); 
+   	UBOOT_SWI_ADDR = UBOOT_handler_addr;
+   	UBOOT_SWI_INST1 = *UBOOT_SWI_ADDR;
+   	UBOOT_SWI_INST2 = *(UBOOT_SWI_ADDR + 1); 
+   }
+   else if(vec_pos == IRQ_VECTOR_ADDR){		
+   //  Store first two instructions of UBoot IRQ
+   	UBOOT_IRQ_ADDR = UBOOT_handler_addr;
+   	UBOOT_IRQ_INST1 = *UBOOT_IRQ_ADDR;
+  	UBOOT_IRQ_INST2 = *(UBOOT_IRQ_ADDR + 1); 
+   }
+   else{
+   //  Allow adding more interrupt such as FIQ in later lab 
+      	debug_printf("Interrupt style neither SWI nor IRQ");
+   }	
 
-   //Replace first two instructions of UBoot SWI
-   *UBOOT_SWI_ADDR = (LDR_OPCODE ^ UP_BIT_MASK) | 0x04; //ldr pc, [pc, #4]
-   *(UBOOT_SWI_ADDR + 1) = custom_handler;
+
+   //Replace first two instructions of UBoot SWI / IRQ
+   *UBOOT_handler_addr = (LDR_OPCODE ^ UP_BIT_MASK) | 0x04; //ldr pc, [pc, #4]
+   *(UBOOT_handler_addr + 1) = custom_handler;
 
    debug_printf("vector position entry has value of %x\n", *vec_ptr);
    debug_printf("immediate offset is %d\n", offset);
    debug_printf("jump table address is %p\n", jumpentryaddr);
-   debug_printf("jump table address entry is %p\n", UBOOT_SWI_ADDR);
+   debug_printf("jump table address entry is %p\n", UBOOT_handler_addr);
    return 0;
 }
 
