@@ -41,21 +41,17 @@ int kmain(int argc, char** argv, uint32_t table)
 	global_data = table;
     
     int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler);
-	if(status != 0){
-            return status;
-        }
+	if (status != 0) return status;
 
     status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
-	if(status != 0){
-            return status;
-        }
+	if (status != 0) return status;
 
     /*Interrupt Controller - enables timer interrupts*/
     reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
     reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
     
     status = userSetup(argc, argv);
-    	return status; 
+    return status; 
 }
 
 /* This function will hijack U-Boot's SWI/IRQ handler by
@@ -69,8 +65,7 @@ int install_handler(int vec_pos, int custom_handler){
    int offset;
    unsigned int opcode;
 
-   /* does vector entry contains a 'ldr pc, [pc, #imm12]'? */
-   
+   /* does vector entry contains a 'ldr pc, [pc, #imm12]'? */  
    vec_ptr = (int *)vec_pos;
    
    opcode = (*vec_ptr & LDR_OPCODE);
@@ -107,9 +102,8 @@ int install_handler(int vec_pos, int custom_handler){
       	debug_printf("Interrupt style neither SWI nor IRQ");
    }	
 
-
    //Replace first two instructions of UBoot SWI / IRQ
-   *UBOOT_handler_addr = (LDR_OPCODE ^ UP_BIT_MASK) | 0x04; //ldr pc, [pc, #4]
+   *UBOOT_handler_addr = OPCODE_LDR_NEXT; //ldr pc, [pc, #4]
    *(UBOOT_handler_addr + 1) = custom_handler;
 
    debug_printf("vector position entry has value of %x\n", *vec_ptr);
