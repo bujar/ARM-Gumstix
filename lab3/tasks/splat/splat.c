@@ -2,11 +2,32 @@
  *
  * @brief Displays a spinning cursor.
  *
- * Links to libc.
+ * @author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *          Jonathan Lim <jlim2@andrew.cmu.edu>
+ *          Norman Wu <luow@andrew.cmu.edu>
+ * @date: Mon Nov  4 20:28:29 EST 2013
  */
 
-int main(int argc, char** argv)
-{
-	/* Add code here -- put your names at the top. */
+#include <stdio.h>
+#include <unistd.h>
+
+#define SLEEPTIME 200
+int main(int argc, char** argv){
+	
+	for( ; ; ){
+		putchar('|');
+		sleep(SLEEPTIME);
+		putchar('\b');
+		putchar('/');
+		sleep(SLEEPTIME);
+		putchar('\b');
+		putchar('-');
+		sleep(SLEEPTIME);
+		putchar('\b');
+		putchar('\\');
+		sleep(SLEEPTIME);
+		putchar('\b');
+	}
+
 	return 0;
 }
