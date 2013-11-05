@@ -11,35 +11,37 @@
 #include <exports.h>
 #include "syscall.h"
 
-extern unsigned int GLOBALRET;	//store return value to preserve
-
 int C_SWI_Handler(unsigned swi_num, unsigned *regs){
-	int r0;
-	void *r1;
-	size_t r2;
-
-	/* Getting first three registers on stack */
-	r0 = (int) regs[0];		//file descriptor
-	r1 = (void *) regs[1];		//buffer array
-	r2 = (size_t) regs[2];		//size
-
+	int fd;
+	void *buf;
+	size_t size;
+	unsigned int status;
+	unsigned int millis;
+	
 	switch (swi_num) {
 	    case READ_SWI:
-	        r0 = read(r0, r1, r2);
-			break;
+			fd = regs[0];
+			buf = (void *) regs[1];
+			size = (size_t) regs[2];
+	        return read(fd, buf, size);
 		
 		case WRITE_SWI:
-        	r0 = write(r0, r1, r2);
-			break;
+			fd = regs[0];
+			buf = (void *) regs[1];
+			size = (size_t) regs[2];
+        	return write(fd, buf, size);
 		
 		case EXIT_SWI:
-			exit(r0);
-          	break;
+			status = regs[0];
+			exit(status);
 		
 		case SLEEP_SWI:
+			millis = regs[0];
+			sleep(millis);
 			break;
 
 		case TIME_SWI:
+			time();
 			break;
 
 		default:
@@ -47,6 +49,5 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 			return(0x0badc0de);
 	}
 
-    return r0;
-
+    return 0;
 }
