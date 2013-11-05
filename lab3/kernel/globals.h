@@ -17,3 +17,5 @@
 #define LDR_IMM_MASK     0x00000FFF 
 #define OPCODE_LDR_NEXT  ((LDR_OPCODE ^ UP_BIT_MASK) | 0x04)
 
+/* timer constants */
+#define MS_PER_TICK		10

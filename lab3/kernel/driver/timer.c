@@ -1,14 +1,15 @@
-#include<exports.h>
-#include<types.h>
-#include<arm/timer.h>
-#include<arm/reg.h>
+#include <exports.h>
+#include <types.h>
+#include <arm/timer.h>
+#include <arm/reg.h>
 
 #define S_TO_MS 1000
+#define MS_PER_TICK 10
 
 volatile size_t num_timer_tick;
 
+/*function prototypes */
 void timer_init(void);
-	
 void timer_inc(void);
 	
 /* in this function, we configure the OS timer register */
