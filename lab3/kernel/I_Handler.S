@@ -22,16 +22,8 @@ I_Handler:
 	LDR	r0, =SVC_r8		@restore r8
 	LDR	r8, [r0]
 
-	MRS	ip, cpsr		@disable IRQ interrupts
-	ORR	ip, ip, #PSR_IRQ
-	MSR	cpsr, ip
-
 	BL	C_IRQ_Handler
 	
-	MRS	ip, cpsr		@enable interrupts
-	EOR	ip, ip, #PSR_IRQ
-	MSR	cpsr, ip
-
 	ADD	sp, sp, #4		@make sp = r1
 	LDMFD	sp!, {r1-r12, lr}	@unstack user reg
 	SUBS	pc, lr, #4
