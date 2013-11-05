@@ -26,7 +26,6 @@ exit:
     LDR	r4, =UBOOT_SP	@get the address of UBOOT_RetAddr
 	LDR	sp, [r4]		@to go back to UBOOT	
 
-	@ADD	sp, sp, #4*18
 	ADD sp, sp, #4
 	LDMFD	sp!, {r1-r12, lr} @ restore state
 	MOV	pc, lr

@@ -2,7 +2,7 @@
  *
  * Authors: Bujar Tagani <btagani@andrew.cmu.edu>
  *  	    Jonathan Lim <jlim2@andrew.cmu.edu>
- *	    Norman Wu <luow@andrew.cmu.edu>
+ * 			Norman Wu <luow@andrew.cmu.edu>
  * Date: Sat Nov  2 19:03:43 EDT 2013
  */
 

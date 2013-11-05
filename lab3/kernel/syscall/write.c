@@ -8,7 +8,7 @@
 /*
 * write syscall:
 * 1. check the file descriptor 
-* 2. check the size of buf and the address range of buf as well as NULL pointer
+* 2. check size of buf and address range of buf as well as NULL pointer
 * 3. write characters from the buffer to stdout until the buffer is empty
 * 4. return with the number of characters to stdout
 */
