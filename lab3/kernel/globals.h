@@ -15,5 +15,5 @@
 #define LDR_OPCODE       0xe59ff000 // LDR pc, [pc, #0]
 #define UP_BIT_MASK      0x00800000 // detect UP bit
 #define LDR_IMM_MASK     0x00000FFF 
-
+#define OPCODE_LDR_NEXT  ((LDR_OPCODE ^ UP_BIT_MASK) | 0x04)
 
