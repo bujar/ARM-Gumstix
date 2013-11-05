@@ -33,6 +33,7 @@ int *UBOOT_IRQ_ADDR;
 extern void S_Handler();
 extern void I_Handler();
 extern int userSetup(int argc, char **argv);
+extern void timer_inc(void);
 int install_handler(int vec_pos, int my_SWIaddr);
 
 int kmain(int argc, char** argv, uint32_t table)
@@ -45,6 +46,9 @@ int kmain(int argc, char** argv, uint32_t table)
 
     status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
 	if (status != 0) return status;
+    
+    /* init the timer driver */
+    timer_init();
 
     /*Interrupt Controller - enables timer interrupts*/
     reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
