@@ -4,6 +4,7 @@
 #include <arm/exception.h>
 #include <arm/interrupt.h>
 #include <arm/timer.h>
+#include <arm/reg.h>
 
 #include "globals.h"
 
@@ -48,6 +49,10 @@ int kmain(int argc, char** argv, uint32_t table)
 	if(status != 0){
             return status;
         }
+
+    /*Interrupt Controller - enables timer interrupts*/
+    reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
+    reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
     
     status = userSetup(argc, argv);
     	return status; 
