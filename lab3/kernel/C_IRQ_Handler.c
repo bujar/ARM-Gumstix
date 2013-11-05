@@ -7,8 +7,10 @@
 #include <exports.h>
 #include "syscall.h"
 
+extern void timer_inc(void);
+
 void C_IRQ_Handler (void)
 {
-	time_inc();
+	timer_inc();
 	//timer stuff - will come back to this
 }
