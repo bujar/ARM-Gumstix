@@ -43,7 +43,7 @@ void timer_inc(void)
     //reset the OSSR[M0]bit
     reg_set(OSTMR_OSSR_ADDR, OSTMR_OSSR_M0);
     
-    //reset the OSMR0 to 0
-    reg_write(OSTMR_OSMR_ADDR(0), 0);
+    //reset the OSCR to 0
+    reg_write(OSTMR_OSCR_ADDR, 0);
 }
 
