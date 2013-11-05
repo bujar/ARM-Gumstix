@@ -8,7 +8,7 @@
 
 #define MS_PER_TICK 10
 
-extern unsigned long num_timer_tick;
+extern volatile unsigned long num_timer_tick;
 
 unsigned long time(void){
 	unsigned long msec = num_timer_tick * MS_PER_TICK;
