@@ -24,19 +24,27 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 	r2 = (size_t) regs[2];		//size
 
 	switch (swi_num) {
-	   case READ_SWI:
-		r0 = read(r0, r1, r2);
-		break;
-
-	   case WRITE_SWI:
-        r0 = write(r0, r1, r2);
-		break;
-	   case EXIT_SWI:
-		exit(r0);
+	    case READ_SWI:
+	        r0 = read(r0, r1, r2);
+			break;
+		
+		case WRITE_SWI:
+        	r0 = write(r0, r1, r2);
+			break;
+		
+		case EXIT_SWI:
+			exit(r0);
           	break;
-	   default:
-		printf("Invalid SWI called");
-		return(0x0badc0de);
+		
+		case SLEEP_SWI:
+			break;
+
+		case TIME_SWI:
+			break;
+
+		default:
+			printf("Invalid SWI called");
+			return(0x0badc0de);
 	}
 
     return r0;
