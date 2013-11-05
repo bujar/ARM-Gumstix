@@ -33,7 +33,7 @@ int *UBOOT_IRQ_ADDR;
 extern void S_Handler();
 extern void I_Handler();
 extern int userSetup(int argc, char **argv);
-extern void timer_inc(void);
+extern void timer_init(void);
 int install_handler(int vec_pos, int my_SWIaddr);
 
 int kmain(int argc, char** argv, uint32_t table)
