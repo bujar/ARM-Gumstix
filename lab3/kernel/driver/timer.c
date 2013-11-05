@@ -18,6 +18,8 @@ void timer_init(void)
     size_t num_clock;
     
     //calculate the clocks for a time unit: 10ms for now
+    //Will change to the following line if set to 10ms
+    //num_clock = OSTMR_FREQ/OS_TICKS_PER_SEC;
     num_clock = OSTMR_FREQ/(S_TO_MS/MS_PER_TICK);
 
     //init OSCR to 0
