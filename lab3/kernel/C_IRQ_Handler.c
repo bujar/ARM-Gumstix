@@ -9,7 +9,6 @@
 
 void C_IRQ_Handler (void)
 {
-
+	time_inc();
 	//timer stuff - will come back to this
-
 }
