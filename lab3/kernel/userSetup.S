@@ -11,9 +11,20 @@
 
 #define USER_PROG_ADDR  0xa0000000
 #define USER_STACK_ADDR 0xa3000000
+#define IRQ_STACK_ADDR	0xa3ffffff
 
 userSetup:
+	
+	/* set up IRQ stack */
+	MRS	r12, cpsr
+	SUB r12, r12, #1		 @ SVC-> IRQ mode 
+	MSR	cpsr, r12
+	
+	LDR sp, =IRQ_STACK_ADDR
+	/* should I save the IRQ state before? */
+	/* should I disable FIQ and IRQ bits? */
 		
+	
 	MRS	r12, cpsr
 	BIC r12, r12, #3         @ change to user mode
 	ORR r12, r12, #0x60  	 @ disable FIQ and IRQ bits

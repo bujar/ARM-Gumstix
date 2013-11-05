@@ -12,7 +12,8 @@
  * extern num_timer_tick  from other file, should 
  * we keep volatile for the type of the variable?
  */
-extern volatile size_t num_timer_tick;
+
+extern volatile unsigned long num_timer_tick;
 
 void sleep(unsigned long ms){
 	unsigned long currTime = num_timer_tick * MS_PER_TICK;
