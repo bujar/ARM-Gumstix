@@ -17,16 +17,16 @@ int main(int argc, char** argv){
 	for( ; ; ){
 		putchar('|');
 		sleep(SLEEPTIME);
-		putchar('\b');
+		printf("\b \b");
 		putchar('/');
 		sleep(SLEEPTIME);
-		putchar('\b');
+		printf("\b \b");
 		putchar('-');
 		sleep(SLEEPTIME);
-		putchar('\b');
+		printf("\b \b");
 		putchar('\\');
 		sleep(SLEEPTIME);
-		putchar('\b');
+		printf("\b \b");
 	}
 
 	return 0;
