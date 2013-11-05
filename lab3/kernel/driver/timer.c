@@ -25,6 +25,6 @@ void timer_inc(void)
     //increment the number of the timer ticks
     ++num_timer_tick;
     //reset the OSMR0 to 0
-    reg_write(OSTMR_OSMR_ADDR(0), 0)
+    reg_write(OSTMR_OSMR_ADDR(0), 0);
 }
 
