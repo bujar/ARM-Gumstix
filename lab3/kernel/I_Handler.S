@@ -24,6 +24,10 @@ I_Handler:
 
 	BL	C_IRQ_Handler
 	
+	MRS	ip, cpsr		@restore IRQ - not sure if we need this
+	BIC	ip, ip, #PSR_IRQ
+	MSR	cpsr, ip
+		
 	ADD	sp, sp, #4		@make sp = r1
 	LDMFD	sp!, {r1-r12, lr}	@unstack user reg
 	SUBS	pc, lr, #4

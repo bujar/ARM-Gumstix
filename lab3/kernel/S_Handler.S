@@ -12,6 +12,8 @@
 *  C_SWI_Handler
 */
 
+#include <arm/psr.h>
+
 .file  "S_Handler.S"
 .text
 .global S_Handler
@@ -27,6 +29,11 @@ S_Handler:
 	LDR	r8, [r0]
 	LDR	r0, [lr, #-4]            @ extract SWI number
 	BIC	r0, r0, #0xff000000      
+
+	MRS	ip,cpsr			@enable IRQ
+	BIC	ip, ip, #PSR_IRQ	
+	MSR	cpsr, ip
+
 	BL	C_SWI_Handler            @ goto handler
 	LDR	r2, [sp, #14*4]          @ restore SPSR
 	MSR	spsr, r2                 @ restore SPSR from r2

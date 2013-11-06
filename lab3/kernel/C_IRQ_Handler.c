@@ -12,5 +12,4 @@ extern void timer_inc(void);
 void C_IRQ_Handler (void)
 {
 	timer_inc();
-	//timer stuff - will come back to this
 }

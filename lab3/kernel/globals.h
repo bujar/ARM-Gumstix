@@ -10,8 +10,11 @@
 
 /* kernel.c */
 /* Vector Table Globals */
-#define SWI_VECTOR_ADDR  0x08
-#define IRQ_VECTOR_ADDR  0x18
+
+#include <arm/exception.h>
+
+#define SWI_VECTOR_ADDR  GET_EXP_VEC_ADDR(EX_SWI)	//macro exception.h
+#define IRQ_VECTOR_ADDR  GET_EXP_VEC_ADDR(EX_IRQ)
 #define LDR_OPCODE       0xe59ff000 // LDR pc, [pc, #0]
 #define UP_BIT_MASK      0x00800000 // detect UP bit
 #define LDR_IMM_MASK     0x00000FFF 

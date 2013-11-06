@@ -22,6 +22,8 @@
 
 #ifndef ASSEMBLER
 
+#define GET_EXP_VEC_ADDR(exp) ((exp) * 4)	//macro from TA
+
 /* C function prototypes go here! Add your group name at the top! */
 
 #endif /* ASSEMBLER */
