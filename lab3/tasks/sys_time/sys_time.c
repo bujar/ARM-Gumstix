@@ -13,10 +13,10 @@
 
 #define SLEEPTIME 200
 int main(int argc, char** argv){
-	
-	for( ; ; ){
+	int i;	
+	for(i =0; i < 1000; i++ ){
 	     
-             printf("%ld\n",time());
+             printf("%ld\t ",time());
 	}
 
 	return 0;
