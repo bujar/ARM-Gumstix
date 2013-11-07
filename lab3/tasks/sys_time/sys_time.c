@@ -13,11 +13,11 @@
 
 #define SLEEPTIME 200
 int main(int argc, char** argv){
-	int i;	
-	volatile unsigned long temp; 
-	for(i =0; i < 1000; i++ ){
+	unsigned long temp; 
+	while(1){
+		 sleep(10);
 	     temp = time();
-             printf("%ld\t ", temp);
+         printf("%ld\t ", temp);
 	}
 
 	return 0;

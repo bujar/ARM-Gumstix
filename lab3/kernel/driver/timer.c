@@ -6,7 +6,7 @@
 #define S_TO_MS 1000
 #define MS_PER_TICK 10
 
-volatile size_t num_timer_tick;
+volatile unsigned int num_timer_tick;
 
 /*function prototypes */
 void timer_init(void);
