@@ -34,7 +34,7 @@
 #define OSTMR_OIER_E2         0x00000004   /* Enable match 2 */
 #define OSTMR_OIER_E3         0x00000008   /* Enable match 3 */
 
-#define OSTMR_FREQ            3686400      /* Oscillator frequency in hz */
+#define OSTMR_FREQ            3250000      /* Oscillator frequency in hz */
 
 #ifndef ASSEMBLER
 
