@@ -1,6 +1,6 @@
-/** @file splat.c
+/** @file sys_time.c
  *
- * @brief Displays a spinning cursor.
+ * @brief Displays how many seconds and miliseconds the system has been on.
  *
  * @author: Bujar Tagani <btagani@andrew.cmu.edu>
  *          Jonathan Lim <jlim2@andrew.cmu.edu>
@@ -11,14 +11,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define SLEEPTIME 200
 int main(int argc, char** argv){
-	unsigned long temp; 
-	while(1){
-		 sleep(10);
-	     temp = time();
-         printf("%ld\t ", temp);
-	}
-
+	unsigned long temp_ms, temp_s; 
+	sleep(23450);
+     	temp_ms = time();
+	temp_s =  temp_ms / 1000;
+	temp_ms %= 1000;
+       	printf("Our System has been running for %ld.%ld S \n ", temp_s,temp_ms);
 	return 0;
 }
