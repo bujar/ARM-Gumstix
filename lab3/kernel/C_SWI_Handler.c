@@ -41,8 +41,7 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 			break;
 
 		case TIME_SWI:
-			time();
-			break;
+			return time();
 
 		default:
 			printf("Invalid SWI called");
