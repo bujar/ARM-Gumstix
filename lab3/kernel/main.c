@@ -1,3 +1,12 @@
+/*
+ * main.c	Sets up kernel
+ *
+ * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu> 
+ * Date:   Thu Nov  7 00:01:35 EST 2013
+ */
+
 #include <exports.h>
 
 #include <arm/psr.h>

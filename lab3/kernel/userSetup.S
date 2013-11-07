@@ -21,11 +21,7 @@ userSetup:
 	MRS	r12, cpsr
 	SUB r12, r12, #1		 @ SVC-> IRQ mode 
 	MSR	cpsr, r12
-	
 	LDR sp, =IRQ_STACK_ADDR
-	/* should I save the IRQ state before? - no don't need to*/
-	/* should I disable FIQ and IRQ bits? - should be fine */
-		
 	
 	MRS	r12, cpsr
 	BIC	r12, r12, #0xFF			@clear all mode bits

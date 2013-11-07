@@ -1,3 +1,12 @@
+/*
+ * timer.c 	Sets up timer driver
+ *
+ * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu> 
+ * Date:   Thu Nov  7 00:01:35 EST 2013
+ */
+
 #include <exports.h>
 #include <types.h>
 #include <arm/timer.h>
@@ -35,6 +44,7 @@ void timer_init(void)
     reg_set(OSTMR_OIER_ADDR, OSTMR_OIER_E0);
 }
 
+//This function is called on all IRQ interrupts
 void timer_inc(void)
 {
     //increment the number of the timer ticks

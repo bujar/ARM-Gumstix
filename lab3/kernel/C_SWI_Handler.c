@@ -4,7 +4,7 @@
  * Author: Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu> 
- * Date:   The current time & date
+ * Date:   Thu Nov  7 00:01:35 EST 2013
  */
 
 #include <bits/swi.h>
