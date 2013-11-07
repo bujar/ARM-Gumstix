@@ -16,6 +16,12 @@
 extern volatile unsigned long num_timer_tick;
 
 void sleep(unsigned long ms){
-	unsigned long currTime = num_timer_tick * MS_PER_TICK;
-	while(( (num_timer_tick * MS_PER_TICK) - currTime) < ms);
+	unsigned long target_time, start_time;
+	start_time = num_timer_tick;
+	target_time = num_timer_tick + (ms/10);
+	while(num_timer_tick < target_time);
+
+//	currTime = num_timer_tick * MS_PER_TICK;
+//	while(( (num_timer_tick * MS_PER_TICK) - currTime) < ms);
+
 }
