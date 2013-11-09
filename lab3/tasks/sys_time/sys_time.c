@@ -13,7 +13,7 @@
 
 int main(int argc, char** argv){
 	unsigned long temp_ms, temp_s; 
-	sleep(23450);
+	sleep(atoi(argv[1]));
      	temp_ms = time();
 	temp_s =  temp_ms / 1000;
 	temp_ms %= 1000;
