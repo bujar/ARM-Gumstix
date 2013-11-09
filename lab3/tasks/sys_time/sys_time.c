@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 int main(int argc, char** argv){
 	unsigned long temp_ms, temp_s; 

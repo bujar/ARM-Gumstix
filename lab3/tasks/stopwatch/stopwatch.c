@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv){
 	char a;
-	int i,j = 0;
+	int i,j = 0, k = 0;
 	unsigned long start_time = 0, end_time = 0, tmp_s = 0, tmp_ms = 0;
 
 	printf("please press s to start to count time\nonce started please press r to record a time\nand press q to quit the stopwatch\n");
@@ -31,10 +31,11 @@ int main(int argc, char** argv){
 	}
 	switch(a){
 		case 's':
-			if(i > 1)
+			k++;
+			if(k > 1)
 			{
 			printf("\nalready started\n");
-			continue;	
+			break;	
 			}
 			start_time = time();
 			printf("\nstarted...\n");
@@ -48,7 +49,7 @@ int main(int argc, char** argv){
 			tmp_s = tmp_ms / 1000;
 			tmp_ms %= 1000;
 			j++;
-			printf("Record%d: %ld.%ld S \n ", j, tmp_s, tmp_ms);
+			printf("\nRecord%d: %ld.%ld S \n ", j, tmp_s, tmp_ms);
 			break;
 		default:
 			printf("\nwrong instruction, gonna ignore...");
