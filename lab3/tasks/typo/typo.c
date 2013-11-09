@@ -17,13 +17,15 @@
 int main (int argc, char **argv) {
 
 	while(1){
-		unsigned long start_time_ms, end_time_ms;
+		unsigned long start_time_ms;
+		unsigned long end_time_ms;
+   		unsigned long time_elapsed = 0; 
+		unsigned long time_elapsed_s;
+		unsigned long time_elapsed_ds;
 		char input_buf[BUFLEN];
 		int nleft = 0;
 		int nwrite = 0;
 		int nread = 0;
-   		unsigned long time_elapsed = 0; 
-		unsigned long time_elapsed_s, time_elapsed_ds;
    		start_time_ms = time();
    
    		putchar('>'); //print prompt
@@ -37,7 +39,7 @@ int main (int argc, char **argv) {
    		}
 
    		end_time_ms = time();
-     	time_elapsed = end_time_ms - start_time_ms;
+   		time_elapsed = end_time_ms - start_time_ms;
    		time_elapsed_s  = time_elapsed / MILLI_TO_SEC;
    		time_elapsed_ds = (time_elapsed % MILLI_TO_SEC) / 100;
 

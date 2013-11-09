@@ -12,6 +12,11 @@
 *  C_SWI_Handler
 */
 
+/* UPDATE: Going into SVC mode disabled IRQ
+ * so we updated S_Handler to enable before entering
+ * SWI system calls.
+ */
+
 #include <arm/psr.h>
 
 .file  "S_Handler.S"
@@ -21,11 +26,11 @@
 S_Handler:
 
 	SUB	sp, sp, #4               @ leave room on stack for SPSR
-	STMFD	sp!, {r0-r12, lr}    @ store user's gp registers
+	STMFD	sp!, {r0-r12, lr}    	@ store user's gp registers
 	MRS	r2, spsr                 @ get SPSR into gp register 
 	STR	r2, [sp, #14*4]          @ store SPSR above gp registers
 	MOV	r1, sp                   @ pointer to parameter on stack
-	LDR	r0, =SVC_r8	@restore r8  
+	LDR	r0, =SVC_r8		@restore r8  
 	LDR	r8, [r0]
 	LDR	r0, [lr, #-4]            @ extract SWI number
 	BIC	r0, r0, #0xff000000      
