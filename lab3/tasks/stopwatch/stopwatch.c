@@ -1,6 +1,6 @@
 /** @file stopwatch.c
  *
- * @brief program prints message after X milliseconds
+ * @This program is used to calculate the time for running.
  *
  * @author: Bujar Tagani <btagani@andrew.cmu.edu>
  *          Jonathan Lim <jlim2@andrew.cmu.edu>
@@ -11,9 +11,50 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+//#include <exports.h>
 
 int main(int argc, char** argv){
-	sleep(atoi(argv[1]));
-	printf("I've slept for %d milliseconds\n", atoi(argv[1]));
+	char a;
+	int i,j = 0;
+	unsigned long start_time = 0, end_time = 0, tmp_s = 0, tmp_ms = 0;
+
+	printf("please press s to start to count time\nonce started please press r to record a time\nand press q to quit the stopwatch\n");
+	 
+ for(i = 0; i < 100; i ++){
+	//scanf(%c,&a);
+	read(0, (void *)(&a), 1);
+	if(i == 0 && (a =='r'))
+	{
+	printf("\nplease start time watch first\n");
+	i = 0;
+	continue;	
+	}
+	switch(a){
+		case 's':
+			if(i > 1)
+			{
+			printf("\nalready started\n");
+			continue;	
+			}
+			start_time = time();
+			printf("\nstarted...\n");
+			break;
+		case 'q':
+			printf("\ngonna quit...\n");
+			return 1;
+		case 'r':
+			end_time = time();
+			tmp_ms = end_time - start_time;
+			tmp_s = tmp_ms / 1000;
+			tmp_ms %= 1000;
+			j++;
+			printf("Record%d: %ld.%ld S \n ", j, tmp_s, tmp_ms);
+			break;
+		default:
+			printf("\nwrong instruction, gonna ignore...");
+	}
+	//sleep(atoi(argv[1]));
+	//printf("I've slept for %d milliseconds\n", atoi(argv[1]));
+}	
 	return 0;
 }
