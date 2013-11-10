@@ -24,7 +24,9 @@ void sleep(unsigned long ms){
 	target_time = start_time + (ms/MS_PER_TICK); 
 	while(num_timer_tick < target_time);
 
-//	currTime = num_timer_tick * MS_PER_TICK;
-//	while(( (num_timer_tick * MS_PER_TICK) - currTime) < ms);
 
+	/*  --alternate version--
+     * currTime = num_timer_tick * MS_PER_TICK;
+     * while(( (num_timer_tick * MS_PER_TICK) - currTime) < ms);
+	 */
 }

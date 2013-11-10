@@ -3,8 +3,8 @@
  *
  * Authors: Bujar Tagani <btagani@andrew.cmu.edu>
  *          Jonathan Lim <jlim2@andrew.cmu.edu>
- *	    Luo Wu <luow@andrew.cmu.edu>
- * Date:    Mon Oct 14 04:44:21 UTC 2013
+ *	    	Luo Wu <luow@andrew.cmu.edu>
+ * Date: Mon Oct 14 04:44:21 UTC 2013
  */
 
 #include <unistd.h>

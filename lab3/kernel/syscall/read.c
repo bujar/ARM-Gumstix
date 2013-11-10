@@ -38,34 +38,34 @@ ssize_t read (int fd, void *buf, size_t count)
    * until user input is EOT or newline/return. c=getc() stores input into
    * char c.
    */
-  for(; ((c=getc()) != UBOOT_EOT) && ((size_t) b_read<count); b_read++)
-  {	
-     switch (c)
-     {
-	case '\n':
-	case '\r':
-	{
-	   putc('\n');
-	   cbuf[b_read] = c;
-	   b_read++;
-	   return b_read;
-	}	// prints '\n' to stdout and returns to user program
+   for(; ((c=getc()) != UBOOT_EOT) && ((size_t) b_read<count); b_read++)
+   {	
+      switch (c)
+      {
+	     case '\n':
+	     case '\r':
+	     {
+	        putc('\n');
+	        cbuf[b_read] = c;
+	        b_read++;
+	        return b_read;
+	     }	// prints '\n' to stdout and returns to user program
 	
-	case BACKSPACE:
-	{
-	   if (b_read>0)	
-	   b_read-=2;
-	   putc('\b');
-	   putc(' ');
-	   putc('\b');
-	   break;
-	}	//prints '\b' char to stdout
+    	 case BACKSPACE:
+	     {
+	        if (b_read>0)	
+	   		b_read-=2;
+	  		putc('\b');
+	   		putc(' ');
+	   		putc('\b');
+	   		break;
+		 }	//prints '\b' char to stdout
 			
-	default:
-	{
-	   putc(c);
-	   cbuf[b_read] = c;
-	}	//default keeps looping until EOT
+		 default:
+		 {
+	        putc(c);
+	        cbuf[b_read] = c;
+		 }	//default keeps looping until EOT
      }
   }
 
