@@ -22,14 +22,20 @@ int prg(int upbound)
 
 void print_input(int a, int symbol, int b)
 {	
-	printf("\nplease input the result of the follwoing math problem\n");
+	printf("\nPlease input the result of the followng math problem\n");
 	printf("%d %c %d = ", a, symbol_table[symbol], b);
 }
 
 int main(int argc, char** argv){
 	
-int a = 0, b = 0, i = 0, symbol = 0, point = 0, correct_result = 0;
+int a = 0;
+int b = 0;
+int i = 0;
+int symbol = 0;
+int  point = 0;
+int correct_result = 0;
 char result[5];
+
 for(i = 0; i < 10; i++)		
 {	
 	a = prg(91);
@@ -66,13 +72,15 @@ for(i = 0; i < 10; i++)
 	}
 
 	if(atoi(result) == correct_result){
-		printf("\nwell done, congrats!\n");
+		printf("\nCorrect!\n");
 		point += 1;
+		printf("Total Score: %d\n", point);
 	}
 	else{
-		printf("\nwrong answer, result is %d !\n", correct_result);
+		printf("\nWrong answer, result is %d !\n", correct_result);
+		printf("Total Score: %d\n", point);
 	}
 }
-	printf("you got %d point out of %d !\n", point, i);
+	printf("\nFinal Score: %d points out of %d !\n", point, i);
 return 1;
 }
