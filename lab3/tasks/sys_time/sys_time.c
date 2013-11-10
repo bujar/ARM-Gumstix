@@ -14,10 +14,14 @@
 
 int main(int argc, char** argv){
 	unsigned long temp_ms, temp_s; 
+	if(argc != 2){
+		printf("sys_time [milliseconds]\n");
+		exit(1);
+	}
 	sleep(atoi(argv[1]));
-     	temp_ms = time();
+    temp_ms = time();
 	temp_s =  temp_ms / 1000;
 	temp_ms %= 1000;
-       	printf("Our System has been running for %ld.%ld S \n ", temp_s,temp_ms);
+    printf("Our System has been running for %ld.%ld S \n ", temp_s,temp_ms);
 	return 0;
 }
