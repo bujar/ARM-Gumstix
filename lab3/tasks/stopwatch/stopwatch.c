@@ -25,7 +25,7 @@ int main(int argc, char** argv){
 	read(0, (void *)(&a), 1);
 	if(i == 0 && (a =='r'))
 	{
-	printf("\nplease start time watch first\n");
+	printf(" is the input, please start time watch first\n");
 	i = 0;
 	continue;	
 	}
@@ -34,14 +34,14 @@ int main(int argc, char** argv){
 			k++;
 			if(k > 1)
 			{
-			printf("\nalready started\n");
+			printf(" is the input, stopwatch already started\n");
 			break;	
 			}
 			start_time = time();
-			printf("\nstarted...\n");
+			printf(" is the input, stopwatch started...\n");
 			break;
 		case 'q':
-			printf("\ngonna quit...\n");
+			printf(" is the input, gonna quit...\n");
 			return 1;
 		case 'r':
 			end_time = time();
@@ -49,10 +49,10 @@ int main(int argc, char** argv){
 			tmp_s = tmp_ms / 1000;
 			tmp_ms %= 1000;
 			j++;
-			printf("\nRecord%d: %ld.%ld S \n ", j, tmp_s, tmp_ms);
+			printf(" is the input\tRecord %d: %ld.%ld S \n", j, tmp_s, tmp_ms);
 			break;
 		default:
-			printf("\nwrong instruction, gonna ignore...");
+			printf(" is the input, it is wrong instruction, gonna ignore...\n");
 	}
 	//sleep(atoi(argv[1]));
 	//printf("I've slept for %d milliseconds\n", atoi(argv[1]));
