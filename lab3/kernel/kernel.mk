@@ -2,9 +2,9 @@ KERNEL = $(KDIR)/kernel
 KSTART = $(KDIR)/start.o
 SDIR = syscall
 
+DRIVER = driver/timer.o
 SYSCALLS = $(SDIR)/read.o $(SDIR)/write.o $(SDIR)/exit.o $(SDIR)/time.o\
 	$(SDIR)/sleep.o
-DRIVER = driver/timer.o
 
 # All core kernel objects go here.  Add objects here if you need to.
 KOBJS := assert.o main.o raise.o userSetup.o S_Handler.o C_SWI_Handler.o\

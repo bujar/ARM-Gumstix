@@ -1,4 +1,4 @@
-@ syscall: exit
+@ syscall: exit system call
 @ exit.S
 @ Authors: Bujar Tagani <btagani@andrew.cmu.edu>
 @          Jonathan Lim <jlim2@andrew.cmu.edu>
