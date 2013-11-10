@@ -38,7 +38,8 @@
 #define MULTIPLY 2
 #define DIVISION 3
 
-#define MS_TO_S 1000;
+#define MS_TO_S 1000
+#define BONUS_TIME 5
 
 char mode;
 char result[5];
@@ -52,8 +53,12 @@ int point = 0;
 int correct_result = 0;
 int mode_point = 0; 	
 int total_point = 0;
+int bonus_point = 0;
+
 /* the four operations will used in the math game */
 int symbol_table[5] = {'+', '-', '*', '/'};
+
+unsigned long st, et;
 
 /* psuedo random number generator */
 int psuedo_rand_gen(int upbound)
@@ -85,8 +90,18 @@ int time_cal(unsigned long start_time, unsigned long end_time)
 
 /* set up mode for the game */
 void mode_setup(void){
+/* game instructions */
+printf("\n\n\n\n");
+printf("Welcome to math game, please choose the challenge mode:\n");
+printf("Please press h to enter hard mode \n");
+printf("Please press m to enter middle mode \n");
+printf("Please press e to enter easy mode \n");
+printf("Please press q to quit math game \n");
+printf("************************************************************");
+printf("Friendly reminder: you will get a bouns point if you answer correctly within %d seconds\n", BONUS_TIME);
+printf("\n\n\n\n");
+
 read(STDIN_FILENO, &mode, 1);
-//mode = getchar();
 
 switch(mode){
 	case HARD_MODE:
@@ -102,15 +117,20 @@ switch(mode){
 		mode_point = POINT_EASY_MODE;
 		break;		
 	case QUIT_MODE:
-		return;
+		exit(1);
 		break;
 	default :
-		printf("wrong mode, please enter h, m, e, or q\n");
+		printf(" is a wrong input, please enter h, m, e, or q\n");
 		mode_setup();	
 	}
 }
 
-void game(){
+void game(){	
+int temp_time;
+/*reset point calculater*/
+total_point = 0;
+bonus_point = 0;
+
 for(i = 0; i < 10; i++)		
 {	
 	sleep(SEED);	
@@ -126,6 +146,7 @@ for(i = 0; i < 10; i++)
 		sleep(psuedo_rand_gen(17));
 	 	b = psuedo_rand_gen(hash); 
 	} 
+	st = time();
  	switch(symbol){
 		case ADD:
 			print_input(a, symbol, b);
@@ -158,33 +179,36 @@ for(i = 0; i < 10; i++)
 			printf("wrong simbol error, gonna quit...\n");
 			return;
 	}
-
+	et = time();
 	if(atoi(result) == correct_result){
 		printf("\nCorrect!\n");
 		total_point += mode_point;
-		//printf("Total Score: %d\n", point);
+		temp_time = time_cal(st, et);
+		if(temp_time < BONUS_TIME){
+		printf("Well done, you got a bouns point!\n");
+		++bonus_point;
+	}
+	/*	if(temp_time < BONUS_TIME){
+			printf("Well done, you got a bouns point!\n");
+			++bonus_point;		
+		}
+*/
 	}
 	else{
 		printf("\nWrong answer, result is %d !\n", correct_result);
-		//printf("Total Score: %d\n", point);
 	}
 }
-	printf("\nFinal Score: %d points out of %d !\n", total_point, i * mode_point);
+	printf("\nFinal Score:\nRaw point: you got %d points out of %d\n", total_point, i * mode_point);
+	printf("Bonus point: you got %d bonus point out of %d\n", bonus_point, i);
+	printf("You get %d in total\n", total_point + bonus_point);
 }
 
 int main(int argc, char** argv){
 
-/* game instructions */
-printf("Welcome to math game, please choose the challenge mode:\n");
-printf("Please press h to enter hard mode \n");
-printf("Please press m to enter middle mode \n");
-printf("Please press e to enter easy mode \n");
-printf("Please press q to quit math game \n");
-printf("************************************************************");
-printf("\n\n\n\n");
-
-mode_setup();
-game();
+while(1){
+	mode_setup();
+	game();
+}
 
 return 1;
 }
