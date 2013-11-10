@@ -12,11 +12,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#define SEED 73
 int symbol_table[5] = {'+', '-', '*', '/'};
 
 int prg(int upbound)
 {
-	return (time()/10) % upbound;
+	return (time() * (time()/10)) % upbound;
 }
 
 void print_input(int a, int symbol, int b)
@@ -31,9 +32,9 @@ int a = 0, b = 0, i = 0, symbol = 0, point = 0, correct_result = 0;
 char result[5];
 for(i = 0; i < 10; i++)		
 {	
-	a = prg(100);
-	sleep(prg(17));
-	b = prg(100);
+	a = prg(91);
+	sleep(prg(SEED));
+	b = prg(91);
 	/* if divide operation, make sure b is not zero */
 	symbol = prg(4);
 	while((symbol == 3) && (b == 0))
