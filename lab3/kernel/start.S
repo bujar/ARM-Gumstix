@@ -16,7 +16,6 @@
 
 FUNC(_start)
 
-
 	@store the lr and other registers so we can restore state on exit
 	STMFD   sp!, {r0-r12, lr}  @ store registers on SVC stack
 	
