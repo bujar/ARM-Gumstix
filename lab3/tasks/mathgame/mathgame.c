@@ -14,7 +14,7 @@
 
 int symbol_table[5] = {'+', '-', '*', '/'};
 
-int psg(int upbound)
+int prg(int upbound)
 {
 	return (time()/10) % upbound;
 }
@@ -31,15 +31,15 @@ int a = 0, b = 0, i = 0, symbol = 0, point = 0, correct_result = 0;
 char result[5];
 for(i = 0; i < 10; i++)		
 {	
-	a = psg(100);
-	sleep(psg(17));
-	b = psg(100);
+	a = prg(100);
+	sleep(prg(17));
+	b = prg(100);
 	/* if divide operation, make sure b is not zero */
-	symbol = psg(4);
+	symbol = prg(4);
 	while((symbol == 3) && (b == 0))
 	{
-		sleep(psg(17));
-	 	b = psg(100); 
+		sleep(prg(17));
+	 	b = prg(100); 
 	} 
  	switch(symbol){
 		case 0:
@@ -65,13 +65,13 @@ for(i = 0; i < 10; i++)
 	}
 
 	if(atoi(result) == correct_result){
-		printf("well done, congrats!\n");
+		printf("\nwell done, congrats!\n");
 		point += 1;
 	}
 	else{
-		printf("wrong answer, result is %d", correct_result);
+		printf("\nwrong answer, result is %d !\n", correct_result);
 	}
 }
-	printf("you got %d point\n", point);
+	printf("you got %d point out of %d !\n", point, i);
 return 1;
 }
