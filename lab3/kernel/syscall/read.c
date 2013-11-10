@@ -53,11 +53,12 @@ ssize_t read (int fd, void *buf, size_t count)
 	
     	 case BACKSPACE:
 	     {
-	        if (b_read>0)	
-	   		b_read-=2;
-	  		putc('\b');
-	   		putc(' ');
-	   		putc('\b');
+	        if (b_read>0){	
+	   			b_read-=2;
+	  			putc('\b');
+	   			putc(' ');
+	   			putc('\b');
+			}
 	   		break;
 		 }	//prints '\b' char to stdout
 			
