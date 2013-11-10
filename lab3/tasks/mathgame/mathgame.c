@@ -28,6 +28,7 @@
 /*
  * HASH key for different mode, all are prime numbers 
 */
+#define HASH_FOR_SYMBOL 17
 #define HASH_HARD_MODE 91		
 #define HASH_MIDDLE_MODE 47		
 #define HASH_EASY_MODE 17		
@@ -40,6 +41,7 @@
 
 #define MS_TO_S 1000
 #define BONUS_TIME 5
+#define DIVIDER_LIMIT 13
 
 char mode;
 char result[5];
@@ -63,6 +65,9 @@ unsigned long st, et;
 /* psuedo random number generator */
 int psuedo_rand_gen(int upbound)
 {
+	/* time is always mutiply of 10 because a tick is 10 ms
+	 * so divide time by 10 to help to get a random number
+	 */
 	return ((time()/10) * (time()/10)) % upbound;
 }
 
@@ -97,7 +102,7 @@ printf("Please press h to enter hard mode \n");
 printf("Please press m to enter middle mode \n");
 printf("Please press e to enter easy mode \n");
 printf("Please press q to quit math game \n");
-printf("************************************************************");
+printf("************************************************************\n");
 printf("Friendly reminder: you will get a bouns point if you answer correctly within %d seconds\n", BONUS_TIME);
 printf("\n\n\n\n");
 
@@ -138,12 +143,12 @@ for(i = 0; i < 10; i++)
 	sleep(psuedo_rand_gen(SEED));
 	b = psuedo_rand_gen(hash);
 	sleep(psuedo_rand_gen(SEED));
-	symbol = psuedo_rand_gen(17)%4;
+	symbol = psuedo_rand_gen(HASH_FOR_SYMBOL)%4;
 
 	/* if divide operation, make sure b is not zero */
 	while((symbol == 3) && (b == 0))
 	{
-		sleep(psuedo_rand_gen(17));
+		sleep(psuedo_rand_gen(HASH_FOR_SYMBOL));
 	 	b = psuedo_rand_gen(hash); 
 	} 
 	st = time();
@@ -170,7 +175,7 @@ for(i = 0; i < 10; i++)
 			if (a < b){
 			swap(&a, &b);
 			}
-			b = b % 13;
+			b = b % DIVIDER_LIMIT;
 			print_input(a, symbol, b);
 			read(STDIN_FILENO, result, 4);
 			correct_result = a / b;
