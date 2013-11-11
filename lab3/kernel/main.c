@@ -17,26 +17,13 @@
 
 #include "globals.h"
 
-
-#define DEBUG 0
+//#define DEBUG 0
 
 #ifdef DEBUG
 #  define debug_printf(...) printf(__VA_ARGS__)
 #else
 #  define debug_printf(...)
 #endif
-
-/* globals */ //move to elsewhere later?
-uint32_t global_data;
-unsigned int SVC_r8 = 1;
-unsigned int UBOOT_SP = 1; //global addr
-unsigned int UBOOT_SWI_INST1;
-unsigned int UBOOT_SWI_INST2;
-unsigned int UBOOT_IRQ_INST1;
-unsigned int UBOOT_IRQ_INST2; 
-
-int *UBOOT_SWI_ADDR;
-int *UBOOT_IRQ_ADDR;
 
 /* functions */
 extern void S_Handler();
@@ -47,24 +34,27 @@ int install_handler(int vec_pos, int my_SWIaddr);
 
 int kmain(int argc, char** argv, uint32_t table)
 {
-	app_startup(); /* bss is valid after this point */
-	global_data = table;
+   app_startup(); /* bss is valid after this point */
+   global_data = table;
     
-    int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler);
+   int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler); {
 	if (status != 0) return status;
+   }
 
-    status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
-	if (status != 0) return status;
-    
+   status = install_handler(IRQ_VECTOR_ADDR, (int) &I_Handler);
+   if (status != 0) {
+	 return status;
+    }
+
     /* init the timer driver */
-    timer_init();
+   timer_init();
 
     /*Interrupt Controller - enables timer interrupts*/
-    reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
-    reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
+   reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
+   reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
     
-    status = userSetup(argc, argv);
-    return status; 
+   status = userSetup(argc, argv);
+   return status; 
 }
 
 /* This function will hijack U-Boot's SWI/IRQ handler by
