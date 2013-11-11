@@ -146,7 +146,7 @@ void game(){
 		symbol = psuedo_rand_gen(HASH_FOR_SYMBOL)%4;
 
 		/* if divide operation, make sure b is not zero */
-		while((symbol == 3) && (b == 0))
+		while((symbol == DIVISION) && (b == 0))
 		{
 			sleep(psuedo_rand_gen(HASH_FOR_SYMBOL));
 		 	b = psuedo_rand_gen(hash); 
@@ -172,7 +172,7 @@ void game(){
 				correct_result = a * b;
 				break;
 			case DIVISION:
-				if (a < b){
+				if ((a < b) && (a != 0)){
 				swap(&a, &b);
 				}
 				b = b % DIVIDER_LIMIT;
