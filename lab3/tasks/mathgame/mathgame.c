@@ -39,6 +39,10 @@
 #define MULTIPLY 2
 #define DIVISION 3
 
+/* score */
+#define FAIR	18
+#define GOOD	30
+
 char mode;
 char result[5];
 	
@@ -206,11 +210,11 @@ void game(){
 	printf("\nPoints: %d out of %d\n", total_point, i * mode_point);
 	printf("Bonus Points: %d out of %d\n", bonus_point, i);
 	printf("Total Score:  %d\n", total_point + bonus_point);
-	if((total_point + bonus_point) < 18)
+	if((total_point + bonus_point) < FAIR)
 	{
 		printf("Fair job, you can work harder!\n");
 	}
-	else if((total_point + bonus_point) < 30)
+	else if((total_point + bonus_point) < GOOD)
 	{
 		printf("Good job, keep going!\n");
 	}else{
