@@ -15,35 +15,32 @@
 #define BUFLEN 128
 #define MILLI_TO_SEC 1000
 int main (int argc, char **argv) {
+  unsigned long start_time_ms;
+  unsigned long end_time_ms;
+  unsigned long time_elapsed;
+  unsigned long time_elapsed_s;
+  unsigned long time_elapsed_ds;
+  char input_buf[BUFLEN];
+  int nread = 0;
 
-	while(1){
-		unsigned long start_time_ms;
-		unsigned long end_time_ms;
-   		unsigned long time_elapsed = 0; 
-		unsigned long time_elapsed_s;
-		unsigned long time_elapsed_ds;
-		char input_buf[BUFLEN];
-		int nleft = 0;
-		int nwrite = 0;
-		int nread = 0;
-   		start_time_ms = time();
+  while(1){
+   	putchar('>'); //print prompt
+	putchar(' ');
    
-   		putchar('>'); //print prompt
-   		nread = read(STDIN_FILENO, input_buf, BUFLEN);
+	/* begin time and read input */	
+	start_time_ms = time();
+	nread = read(STDIN_FILENO, input_buf, BUFLEN);
+	end_time_ms = time();
+	/* end time */
+
+	/* begin write */	
+	write(STDOUT_FILENO, input_buf, nread);
 	
-   		nleft = nread;
-   		while (nleft>0){
-      		if ((nwrite = write(STDOUT_FILENO, input_buf, nleft)) < 0)
-         		exit(1);
-         	nleft -= nwrite;
-   		}
+	time_elapsed = end_time_ms - start_time_ms;
+	time_elapsed_s  = time_elapsed / MILLI_TO_SEC;
+	time_elapsed_ds = (time_elapsed % MILLI_TO_SEC) / 100;
 
-   		end_time_ms = time();
-   		time_elapsed = end_time_ms - start_time_ms;
-   		time_elapsed_s  = time_elapsed / MILLI_TO_SEC;
-   		time_elapsed_ds = (time_elapsed % MILLI_TO_SEC) / 100;
-
-   		printf("%lu.%lus", time_elapsed_s, time_elapsed_ds);
+	printf("\n%lu.%lus\n", time_elapsed_s, time_elapsed_ds);
    }
-   return 0;
+
 }
