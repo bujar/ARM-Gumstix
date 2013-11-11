@@ -206,6 +206,17 @@ void game(){
 	printf("\nPoints: %d out of %d\n", total_point, i * mode_point);
 	printf("Bonus Points: %d out of %d\n", bonus_point, i);
 	printf("Total Score:  %d\n", total_point + bonus_point);
+	if((total_point + bonus_point) < 18)
+	{
+		printf("Fair job, you can work harder!\n");
+	}
+	else if((total_point + bonus_point) < 30)
+	{
+		printf("Good job, keep going!\n");
+	}else{
+		printf("Excellent job, you are smart!\n");
+	}
+	
 }
 
 int main(int argc, char** argv){
