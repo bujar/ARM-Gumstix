@@ -74,7 +74,7 @@ void stopwatch()
      read(0, (void *)(&a), 1);
      if((started == 0) && (a == 'r'))
      {
-	printf("You must start first\n");
+	printf(" You must start first\n");
 	continue;	
      }
 	
@@ -110,7 +110,7 @@ void stopwatch()
 	   break;
 
   	default:
-	   printf("Unsupported Commandi\n\n");
+	   printf("\t Unsupported Command\n\n");
 	   menu();
 	}
    }	
