@@ -212,6 +212,7 @@ int main(int argc, char** argv){
 	while(1){
 		mode_setup();
 		game();
+		sleep(REST_TIME);
 	}
 
 	return 1;
