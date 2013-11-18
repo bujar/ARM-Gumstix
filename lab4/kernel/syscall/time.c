@@ -2,8 +2,10 @@
  *
  * @brief Kernel timer based syscall implementations
  *
- * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
- * @date   2008-11-16
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *		   Norman Wu <luow@andrew.cmu.edu>
+ * @date   Mon Nov 18 11:53:20 EST 2013
  */
 
 #include <types.h>
@@ -12,15 +14,18 @@
 #include <arm/timer.h>
 #include <syscall.h>
 
+#define MS_PER_TICK 10
+
+extern volatile unsigned long num_timer_tick;
 
 unsigned long time_syscall(void)
 {
- return 1; /* remove this line after adding your code here */	
+	unsigned long msec = num_timer_tick * MS_PER_TICK;
+	return msec;
 }
 
 
-
-/** @brief Waits in a tight loop for atleast the given number of milliseconds.
+/** @brief Waits in a tight loop for at least the given number of milliseconds.
  *
  * @param millis  The number of milliseconds to sleep.
  *
@@ -28,5 +33,10 @@ unsigned long time_syscall(void)
  */
 void sleep_syscall(unsigned long millis  __attribute__((unused)))
 {
-	
+	unsigned long target_time;
+	unsigned long start_time;
+
+	start_time = num_timer_tick;
+	target_time = start_time + (ms/MS_PER_TICK); 
+	while(num_timer_tick < target_time);
 }
