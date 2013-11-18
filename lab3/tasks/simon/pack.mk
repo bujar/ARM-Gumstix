@@ -1,6 +1,0 @@
-PROGS_SIMON_OBJS := simon.o
-PROGS_SIMON_OBJS := $(PROGS_SIMON_OBJS:%=$(TDIR)/simon/%)
-ALL_OBJS += $(PROGS_SIMON_OBJS)
-
-$(TDIR)/bin/simon : $(TSTART) $(PROGS_SIMON_OBJS) $(TLIBC)
-
