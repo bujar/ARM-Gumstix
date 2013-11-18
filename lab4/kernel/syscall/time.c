@@ -37,6 +37,6 @@ void sleep_syscall(unsigned long millis  __attribute__((unused)))
 	unsigned long start_time;
 
 	start_time = num_timer_tick;
-	target_time = start_time + (ms/MS_PER_TICK); 
+	target_time = start_time + (millis/MS_PER_TICK); 
 	while(num_timer_tick < target_time);
 }
