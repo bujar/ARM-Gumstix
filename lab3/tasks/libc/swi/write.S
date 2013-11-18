@@ -31,7 +31,7 @@ FUNC(write)
     eor r0, r0, r1
     ldr r1, =errno
     ldr r0, [r1]
-    str r0, [r1]
+    str r0, [r1] @ here is a bug found during grading
     mov r0, #-1 
     mov pc, lr
 
