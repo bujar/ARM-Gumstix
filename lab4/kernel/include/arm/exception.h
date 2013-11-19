@@ -19,9 +19,11 @@
 #define EX_IRQ          6
 #define EX_FIQ          7
 #define NUM_EXCEPTIONS  8
+#define GET_EXP_VEC_ADDR(exp) ((exp) * 4)   //macro from TA
 
 #ifndef ASSEMBLER
 
+#include <arm/psr.h>
 #include <inline.h>
 
 /* Register context. */

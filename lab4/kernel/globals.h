@@ -8,8 +8,8 @@
  */
 
 
-#include <arm/exception.h>
-#include <arm/psr.h>
+//#include <arm/exception.h>
+//#include <arm/psr.h>
 
 /* Vector Table Globals */
 #define SWI_VECTOR_ADDR  GET_EXP_VEC_ADDR(EX_SWI)	//macro exception.h
