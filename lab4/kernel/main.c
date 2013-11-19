@@ -41,14 +41,11 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	app_startup(); // bss is valid after this point
 	global_data = table;
 
-	int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler); {
-		if (status != 0) return status;
-   	}
+	int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler);
+	if (status != 0) return status;
 
 	status = install_handler(IRQ_VECTOR_ADDR, (int) &irq_wrapper);
-	if (status != 0) {
-		return status;
-    }
+	if (status != 0) return status;
 
 	/* init the timer driver */
 	timer_init();
