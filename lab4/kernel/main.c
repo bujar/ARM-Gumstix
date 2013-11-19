@@ -14,6 +14,7 @@
 #include <device.h>
 #include <assert.h>
 #include <arm/interrupt.h>
+#include <arm/reg.h>
 
 #include "globals.h"
 
@@ -52,7 +53,8 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	/* init the timer driver */
 	timer_init();
 
-    // NEED TO ENABLE INTERRUPTS HERE
+	reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
+	reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
 
 
 	status = userSetup(argc, argv);
