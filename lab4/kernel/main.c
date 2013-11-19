@@ -13,6 +13,7 @@
 #include <sched.h>
 #include <device.h>
 #include <assert.h>
+#include <arm/interrupt.h>
 
 #include "globals.h"
 
