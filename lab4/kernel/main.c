@@ -39,7 +39,6 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 
 	app_startup(); // bss is valid after this point
 	global_data = table;
-	/* add your code up to assert statement */
 
 	int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler); {
 		if (status != 0) return status;
