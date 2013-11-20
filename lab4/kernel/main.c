@@ -50,16 +50,15 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	/* init the timer driver */
 	timer_init();
 
+	/* enable interrupts */
 	reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
 	reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
-
 
 	status = userSetup(argc, argv);
 	return status;
 
 	assert(0);        /* should never get here */
 }
-
 
 
 /* This function will hijack U-Boot's SWI/IRQ handler by
