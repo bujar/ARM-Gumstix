@@ -26,7 +26,10 @@
 #define DEL_CHAR 0x7f
 #define SDRAM_END 0xa3ffffff
 #define SDRAM_START 0xa0000000
-#define MAX_WRITE_SIZE  0x4000000 //64MB; size of SDRAM
+#define SFROM_START 0x00000000
+#define SFROM_END   0x00ffffff	
+#define MAX_WRITE_SIZE_SD  0x4000000 //64MB; size of SDRAM
+#define MAX_WRITE_SIZE_SF  0x1000000 //16MB; size of StrataFlash ROM
 
 /* Read count bytes (or less) from fd into the buffer buf. */
 ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((unused)), size_t count __attribute__((unused)))
@@ -100,18 +103,14 @@ ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attrib
 		puts("file descriptor error!"); 
 		return -EBADF;
 	} // 1. check the file descriptor
+	
+	// 2. check the size of buf and the address of buf to make sure only read from SDRAM or SFROM
+	buf_begin = (int) buf;        	//low bound of buf
+	buf_end = ((int) buf) + count;  //high bound of buf
 
-	if(count > MAX_WRITE_SIZE){
-		puts("count size err!");
-		return -EFAULT; 
-	} // 2. check the size of buf and the address of buf
-
-	buf_begin = (int) buf;        //low bound of buf
-	buf_end = ((int) buf) + count;    //high bound of buf
-	if((buf_begin < SDRAM_START) || (buf_end > SDRAM_END)){
-		puts("buf address range error!");
-		return -EFAULT; 
-	} //check if the buffer exceeds the SDRAM
+	if((buf_begin < SFROM_START) || (buf_end > SDRAM_START) || ((buf_begin > SFROM_END) && (buf_end < SDRAM_START))){
+		return -EBADF;
+	}
 
 	for(i = 0; i < count; i++){
 		putc(((char *)buf)[i]);    
