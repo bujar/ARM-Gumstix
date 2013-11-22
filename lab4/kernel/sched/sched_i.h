@@ -11,7 +11,6 @@
 
 #include <sched.h>
 
-
 void dispatch_init(tcb_t* idle);
 void runqueue_init(void);
 

@@ -108,6 +108,7 @@ ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attrib
 	buf_begin = (int) buf;        	//low bound of buf
 	buf_end = ((int) buf) + count;  //high bound of buf
 
+    // MUST RECHECK THIS....something iffy about this
 	if((buf_begin < SFROM_START) || (buf_end > SDRAM_START) || ((buf_begin > SFROM_END) && (buf_end < SDRAM_START))){
 		return -EBADF;
 	}
