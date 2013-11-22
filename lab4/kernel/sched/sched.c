@@ -50,6 +50,6 @@ static void __attribute__((unused)) idle(void)
  */
 void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-	
+	//set up system tcb for each task in 'tasks' - loop through each task	
 }
 
