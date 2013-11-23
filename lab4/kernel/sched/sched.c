@@ -20,13 +20,6 @@
 
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
-void sched_init(task_t* main_task  __attribute__((unused)))
-{
-	// since global, system_tcb is all zeroed out.
-	
-	// however, we may need to use this for other purposes  
-}
-
 /**
  * @brief This is the idle task that the system runs when no other task is runnable
  */
@@ -36,6 +29,50 @@ static void __attribute__((unused)) idle(void)
 	 enable_interrupts();
 	 while(1);
 }
+
+/**
+ * @brief This function is to init tcb
+ * @use task to init tcb's context part
+ */
+ 
+void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
+{
+	sched_context_t *ctx = &(tcb->context);
+
+	tcb->native_prio = prio;
+	tcb->cur_prio = prio;
+
+	/* init context part, ????  */
+	ctx->r4 = (uint32_t)task->lambda;
+	ctx->r5 = (uint32_t)task->data; 
+	ctx->r6 = (uint32_t)task->stack_pos;
+	ctx->r7 = (uint32_t)task->C;
+	ctx->r8 = (uint32_t)task->T;
+	
+	ctx->lr =  launch_task;
+	ctx->sp = tcb->kstack_high[0];
+
+	tcb->holds_lock = 0;
+	tcb->sleep_queue = 0;
+	//tcb->
+}
+
+void sched_init(task_t* main_task  __attribute__((unused)))
+{
+	// since global, system_tcb is all zeroed out.
+	// however, we may need to use this for other purposes  
+	// define of task_t is in include/task.h
+	main_task->lambda = (task_fun_t) idle;		
+//how to init the context?	
+	main_task->data = 0;
+//where to put the idle stack;
+	main_task->stack_pos = 0;
+	main_task->C = 0;
+	main_task->T = 0; 
+	tcb_init(main_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
+	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
+}
+
 
 /**
  * @brief Allocate user-stacks and initializes the kernel contexts of the
@@ -57,6 +94,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	// changed i >= 0 to i > 0; since uint8_t is unsigned char, is always >= 0; could also change the uint8_t i to int8_t;
 	for(i = num_tasks ; i > 0; i--){
 		system_tcb[i - 1].native_prio = i - 1;
+		system_tcb[i - 1].cur_prio = i - 1;
 		//do we need to check the arguments to store for sched_context?	
 	}	
 }
