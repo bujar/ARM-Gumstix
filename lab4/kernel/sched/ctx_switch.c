@@ -18,7 +18,7 @@
 #include <exports.h>
 #endif
 
-static __attribute__((unused)) tcb_t* cur_tcb; /* use this if needed */
+static tcb_t* cur_tcb; /* use this if needed */
 
 /**
  * @brief Initialize the current TCB and priority.
@@ -42,7 +42,16 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
  */
 void dispatch_save(void)
 {
-	
+  tcb_t* target_tcb;
+  tcb_t* temp_cur_tcb;
+  uint8_t next_task_prio;
+
+  next_task_prio = highest_prio();	//grab next one to run
+  runqueue_add(cur_tcb, cur_tcb->cur_prio);	//task is done add back to runq	
+  target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
+  temp_cur_tcb = cur_tcb;
+  cur_tcb = target_tcb;	//current tcb(global) after context switch
+  ctx_switch_full(&(target_tcb->context), &(temp_cur_tcb->context));
 }
 
 /**
@@ -53,11 +62,13 @@ void dispatch_save(void)
  */
 void dispatch_nosave(void)
 {
-  tcb_t* next_tcb;
-  uint8_t next_task;
-  next_task = highest_prio();	//grab next one to run
-  next_tcb = runqueue_remove(next_task);		//grab tcb of next task and remove from run queue
-  ctx_switch_half(&(next_tcb->context));	//pass context of tcb to cts_switch
+  tcb_t* target_tcb;
+  uint8_t next_task_prio;
+
+  next_task_prio = highest_prio();	//grab next one to run
+  target_tcb = runqueue_remove(next_task_prio);		//grab tcb of next task and remove from runq
+  cur_tcb = target_tcb;	//current tcb(global) after context switch
+  ctx_switch_half(&(target_tcb->context));	//pass context of tcb to cts_switch
 }
 
 
@@ -75,15 +86,15 @@ void dispatch_sleep(void)
 /**
  * @brief Returns the priority value of the current task.
  */
-uint8_t get_cur_prio(void)
+uint8_t get_cur_prio(void)	//don't really need this...only one line
 {
-	return 1; //fix this; dummy return to prevent compiler warning
+	return cur_tcb->cur_prio; //fix this; dummy return to prevent compiler warning
 }
 
 /**
  * @brief Returns the TCB of the current task.
  */
-tcb_t* get_cur_tcb(void)
+tcb_t* get_cur_tcb(void)	//don't really need this...
 {
-	return (tcb_t *) 0; //fix this; dummy return to prevent compiler warning
+	return cur_tcb; //fix this; dummy return to prevent compiler warning
 }
