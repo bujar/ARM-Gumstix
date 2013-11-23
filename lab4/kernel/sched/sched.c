@@ -57,6 +57,6 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	for(i = num_tasks-1 ; i >= 0; i--){
 		system_tcb[i].native_prio = i;
 		//do we need to check the arguments to store for sched_context?	
-	
+	}	
 }
 

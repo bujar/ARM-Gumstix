@@ -33,11 +33,20 @@ int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attrib
   unsigned int i;
 
   for(i = 0; i < num_tasks; i++) {
-  // i is the index for tasks, perform validation test for each task[i]
-  return 1;	//return 1 if error encountered
+	if (tasks[i].C > tasks[i].T) {
+	   return ESCHED;
+	}
+	if (tasks[i].C == 0) {
+	   return EINVAL;
+	}
+	if (tasks[i].T == 0) {
+	   return EINVAL;
+	}
   }
- 
-  return 0;	//reach here if there were no errors
+  if (num_tasks > OS_MAX_TASKS) {
+	return EINVAL;
+  }
+  return 0;
 }
 
 /* implements the rate monotonic scheduling (RMS) algorithm
@@ -72,8 +81,11 @@ void insertion_sort(task_t** ptasks  __attribute__((unused)), size_t num_tasks  
 
 int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-  //must do some other verifications just in case user isn't sane and tries to crash us.
-  //ex. C and T, numtask incorrect...
+  int error;
+  error = schedulable(tasks, num_tasks);
+  if (error != 0) {
+  	return error;
+  }
   sort_tasks(tasks, num_tasks);
   allocate_tasks(system_ptasks, num_tasks);
   dispatch_nosave(); //do we need this here?
