@@ -88,7 +88,7 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
 
 	/* set group_run_bits */
 	group_run_bits |= 1 << OSTCBY;
-	/*set run_bits*/
+	/* set run_bits */
 	run_bits[OSTCBY] |= 1 << OSTCBX;
 }
 
@@ -101,8 +101,22 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
  * This function needs to be externally synchronized.
  */
 tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
-{
-	return (tcb_t *)1; // fix this; dummy return to prevent warning messages	
+{	
+	int OSTCBX, OSTCBY;
+
+	/* remove the tcb from run_list */
+	run_list[prio] = 0;		//no NULL, should we deine one?
+		
+	OSTCBX = prio & 0x7;	//probally need to change to define, not find in header yet;
+	OSTCBY = prio >> 3;
+
+	/* reset run_bits */
+	run_bits[OSTCBY] &= ~(1 << OSTCBX);
+	
+	/* reset group_run_bits if run_bits[OSTCBY] is 0 */	
+	if(0 == run_bits[OSTCBY])
+		group_run_bits &= ~(1 << OSTCBY);
+	return run_list[prio];
 }
 
 /**
@@ -113,7 +127,7 @@ uint8_t highest_prio(void)
 {
 	uint8_t x, y, prio;
 	/* when no process is runable, return idle process's priority */
-	if(group_run_bits == 0)	
+	if(0 == group_run_bits)	
 		return IDLE_PRIO;		//IDLE_PRIO = 63; defined in include/config.h
 	
 	y = prio_unmap_table[group_run_bits];
