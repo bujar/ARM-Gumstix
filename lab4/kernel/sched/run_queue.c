@@ -82,7 +82,14 @@ void runqueue_init(void)
  */
 void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute__((unused)))
 {
-	
+	uint8_t OSTCBX, OSTCBY;
+	OSTCBX = prio & 0x7;	//probally need to change to define, not find in header yet;
+	OSTCBY = prio >> 3;
+
+	/* set group_run_bits */
+	group_run_bits |= 1 << OSTCBY;
+	/*set run_bits*/
+	run_bits[OSTCBY] |= 1 << OSTCBX;
 }
 
 
@@ -104,9 +111,10 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
  */
 uint8_t highest_prio(void)
 {
-	int x, y, prio;
-	if(group_run_bits == 0)
-		return IDLE_PRIO;		//63; defined in include/config.h
+	uint8_t x, y, prio;
+	/* when no process is runable, return idle process's priority */
+	if(group_run_bits == 0)	
+		return IDLE_PRIO;		//IDLE_PRIO = 63; defined in include/config.h
 	
 	y = prio_unmap_table[group_run_bits];
 	x = prio_unmap_table[run_bits[y]];
