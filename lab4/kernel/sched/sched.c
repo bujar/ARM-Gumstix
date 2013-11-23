@@ -54,8 +54,9 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 {
 	//set up system tcb for each task in 'tasks' - loop through each task
 	uint8_t i;
-	for(i = num_tasks-1 ; i >= 0; i--){
-		system_tcb[i].native_prio = i;
+	// changed i >= 0 to i > 0; since uint8_t is char, is always >= 0;
+	for(i = num_tasks ; i > 0; i--){
+		system_tcb[i - 1].native_prio = i - 1;
 		//do we need to check the arguments to store for sched_context?	
 	}	
 }
