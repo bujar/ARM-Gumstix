@@ -18,7 +18,7 @@
 #include <exports.h>
 #endif
 
-static tcb_t* cur_tcb; /* use this if needed */
+static tcb_t* cur_tcb; /* global */
 
 /**
  * @brief Initialize the current TCB and priority.
@@ -47,6 +47,9 @@ void dispatch_save(void)
   uint8_t next_task_prio;
 
   next_task_prio = highest_prio();	//grab next one to run
+  if (cur_tcb->cur_prio == next_task_prio) {
+	return;
+  }
   runqueue_add(cur_tcb, cur_tcb->cur_prio);	//task is done add back to runq	
   target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
   temp_cur_tcb = cur_tcb;
@@ -64,8 +67,10 @@ void dispatch_nosave(void)
 {
   tcb_t* target_tcb;
   uint8_t next_task_prio;
-
   next_task_prio = highest_prio();	//grab next one to run
+  if (cur_tcb->cur_prio == next_task_prio) {
+	return;
+  } 
   target_tcb = runqueue_remove(next_task_prio);		//grab tcb of next task and remove from runq
   cur_tcb = target_tcb;	//current tcb(global) after context switch
   ctx_switch_half(&(target_tcb->context));	//pass context of tcb to cts_switch

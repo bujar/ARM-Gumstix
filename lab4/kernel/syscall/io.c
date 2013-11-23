@@ -110,12 +110,12 @@ ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attrib
 
     // MUST RECHECK THIS....something iffy about this; yeah, a question: is const void * always > 0?
 	/*since use unsigned long(size_t), (buf_begin < SFROM_START) is not necessary*/
-	if( (buf_end > SDRAM_START) || ((buf_begin > SFROM_END) && (buf_end < SDRAM_START)) ){
+	if(((ssize_t)buf < SFROM_START) || (buf_end > SDRAM_START) || ((buf_begin > SFROM_END) && (buf_end < SDRAM_START)) ){
 		return -EBADF;
 	}
 
 	for(i = 0; i < count; i++){
-		putc(((char *)buf)[i]);    
+		putc(((int8_t *)buf)[i]);   //int8_t = char 
 	}  // 3. write characters from buffer to stdout until buffer is empty
 
 	// 4. return with the number of characters to stdout
