@@ -60,11 +60,14 @@ void runqueue_init(void)
 {
 	int count;
 	group_run_bits = 0;
+	for(count = 0; count < OS_MAX_TASKS/8; ++count)
+		run_bits[count] = 0;
 	for(count = 0; count < OS_MAX_TASKS; ++count)
 	{
 		run_list[count] = 0;
-		if((count % 8) == 0)
+	/*	if((count % 8) == 0)
 			run_bits[count/8] = 0;
+	*/
 	}
 		
 }
@@ -102,8 +105,11 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
 uint8_t highest_prio(void)
 {
 	int x, y, prio;
+	if(group_run_bits == 0)
+		return IDLE_PRIO;		//63; defined in include/config.h
+	
 	y = prio_unmap_table[group_run_bits];
 	x = prio_unmap_table[run_bits[y]];
-	prio = (y>>3) + x;
-	return prio; // fix this; dummy return to prevent warning messages	
+	prio = (y << 3) + x;
+	return prio; 
 }
