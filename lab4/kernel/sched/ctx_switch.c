@@ -53,7 +53,11 @@ void dispatch_save(void)
  */
 void dispatch_nosave(void)
 {
-
+  tcb_t* next_tcb;
+  uint8_t next_task;
+  next_task = highest_prio();	//grab next one to run
+  next_tcb = runqueue_remove(next_task);		//grab tcb of next task and remove from run queue
+  ctx_switch_half(&(next_tcb->context));	//pass context of tcb to cts_switch
 }
 
 
