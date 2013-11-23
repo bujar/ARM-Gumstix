@@ -72,7 +72,8 @@ void insertion_sort(task_t** ptasks  __attribute__((unused)), size_t num_tasks  
 
 int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-  
+  //must do some other verifications just in case user isn't sane and tries to crash us.
+  //ex. C and T, numtask incorrect...
   sort_tasks(tasks, num_tasks);
   allocate_tasks(system_ptasks, num_tasks);
   dispatch_nosave(); //do we need this here?
