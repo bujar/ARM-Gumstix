@@ -22,7 +22,9 @@ tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
 void sched_init(task_t* main_task  __attribute__((unused)))
 {
+	// since global, system_tcb is all zeroed out.
 	
+	// however, we may need to use this for other purposes  
 }
 
 /**
@@ -50,6 +52,11 @@ static void __attribute__((unused)) idle(void)
  */
 void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-	//set up system tcb for each task in 'tasks' - loop through each task	
+	//set up system tcb for each task in 'tasks' - loop through each task
+	uint8_t i;
+	for(i = num_tasks-1 ; i >= 0; i--){
+		system_tcb[i].native_prio = i;
+		//do we need to check the arguments to store for sched_context?	
+	
 }
 
