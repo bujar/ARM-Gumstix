@@ -12,6 +12,8 @@
 #include <arm/timer.h>
 #include <arm/reg.h>
 
+#include <device.h>
+
 #define S_TO_MS 1000
 #define MS_PER_TICK 10
 
@@ -55,5 +57,7 @@ void timer_inc(void)
     
     //reset the OSCR to 0
     reg_write(OSTMR_OSCR_ADDR, 0);
+
+	dev_update(num_timer_tick);
 }
 
