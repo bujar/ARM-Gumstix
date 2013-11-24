@@ -37,8 +37,16 @@ void mutex_init()
 
 int mutex_create(void)
 {
-	
-	return 1; // fix this to return the correct value
+	uint32_t i = 0;
+	for(i = 0; i < OS_NUM_MUTEX; i++)
+	{
+		if(gtMutex[i].bAvailable = TRUE)
+		{	
+			gtMutex[i].bAvailable  = FALSE;
+			return i;
+		}
+	}	
+	return ENOMEN; 
 }
 
 int mutex_lock(int mutex  __attribute__((unused)))
