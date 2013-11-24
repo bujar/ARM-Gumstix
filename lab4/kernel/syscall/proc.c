@@ -24,12 +24,12 @@
 
 task_t *system_ptasks[OS_MAX_TASKS]; /* pointer to ptrs of tasks to be sorted */
 
-// our functions, to be moved into header later
-int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attribute__((unused)));
-void sort_tasks( task_t* tasks, size_t num_tasks);
-void insertion_sort(task_t** tasks, size_t num_tasks);
+// our functions
+static int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attribute__((unused)));
+static void sort_tasks( task_t* tasks, size_t num_tasks);
+static void insertion_sort(task_t** tasks, size_t num_tasks);
  
-int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attribute__((unused))) {
+static int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attribute__((unused))) {
   unsigned int i;
 
   for(i = 0; i < num_tasks; i++) {
@@ -53,7 +53,7 @@ int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attrib
  *     sort them by period with shortest being the highest prio
  */
 
-void sort_tasks(task_t* tasks, size_t num_tasks) {
+static void sort_tasks(task_t* tasks, size_t num_tasks) {
 	// create pointers to tasks to sort instead
 	int i;
 	for( i = 0; i < (int) num_tasks; i++){
@@ -63,7 +63,7 @@ void sort_tasks(task_t* tasks, size_t num_tasks) {
 	insertion_sort(system_ptasks, num_tasks);	
 }
 
-void insertion_sort(task_t** ptasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused))){
+static void insertion_sort(task_t** ptasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused))){
 	int i, j;
 	unsigned long Tperiod;
 	task_t **curr;
@@ -94,9 +94,14 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
   return 1; /* remove this line after adding your code */
 }
 
+
 int event_wait(unsigned int dev  __attribute__((unused)))
 {
-  return 1; /* remove this line after adding your code */	
+	if(dev > NUM_DEVICES - 1){
+		return EINVAL;
+	}
+	dev_wait(dev);
+	return 0;
 }
 
 /* An invalid syscall causes the kernel to exit. */
