@@ -66,7 +66,7 @@ void sched_init(task_t* main_task  __attribute__((unused)))
 //how to init the context?	
 	main_task->data = 0;
 //where to put the idle stack;
-	main_task->stack_pos = 0;
+	main_task->stack_pos = 0xa3000000;
 	main_task->C = 0;
 	main_task->T = 0; 
 	tcb_init(main_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
@@ -91,11 +91,16 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 {
 	//set up system tcb for each task in 'tasks' - loop through each task
 	uint8_t i;
+	for(i = 0; i < num_tasks; i++)
+	{
+		tcb_init(tasks[i], &system_tcb[i], i);
+	}
 	// changed i >= 0 to i > 0; since uint8_t is unsigned char, is always >= 0; could also change the uint8_t i to int8_t;
-	for(i = num_tasks ; i > 0; i--){
+	/*for(i = num_tasks ; i > 0; i--){
 		system_tcb[i - 1].native_prio = i - 1;
 		system_tcb[i - 1].cur_prio = i - 1;
 		//do we need to check the arguments to store for sched_context?	
 	}	
+	*/	
 }
 
