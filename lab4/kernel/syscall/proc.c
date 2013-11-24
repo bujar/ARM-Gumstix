@@ -90,8 +90,7 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
   allocate_tasks(system_ptasks, num_tasks);
   dispatch_nosave(); //do we need this here?
 
-
-  return 1; /* remove this line after adding your code */
+  return 1;
 }
 
 
