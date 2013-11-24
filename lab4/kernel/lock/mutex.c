@@ -52,16 +52,39 @@ int mutex_create(void)
 	return -ENOMEM; 
 }
 
+void mutex_queue_add(int mutex, tcb_t *tcb)
+{
+	
+}
+
 int mutex_lock(int mutex  __attribute__((unused)))
 {	
+	tcb_t *cur_tcb;
+	 
 	/* check if the mutex number within the mutex area, and check if the mutex was created */
 	if((mutex > OS_NUM_MUTEX) || (mutex < 0) || gtMutex[mutex].bAvailable)
 	{	
 		return -EINVAL;	
 	}
 	
+	cur_tcb = get_cur_tcb();
+	/* Check if the current task is already holding the lock */
+	if(cur_tcb == gtMutex[mutex].pHolding_Tcb)
+	{
+		return -EDEADLOCK;
+	}
+
 	/*   */
+	if(gtMutex[mutex].bLock == FALSE)
+	{	
+		gtMutex[mutex].bLock = TRUE;
+		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
+		return 0;	
+	}else{
+		mutex_queue_add(mutex, cur_tcb);
+	}
 	
+
 	return 1; // fix this to return the correct value
 }
 
