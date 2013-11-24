@@ -16,7 +16,12 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 	void *buf;
 	size_t size;
 	unsigned int millis;
-	
+
+	task_t *tasks;
+	size_t num_tasks;
+
+	unsigned int dev;
+
 	switch (swi_num) {
 	    case READ_SWI:
 			fd = regs[0];
@@ -37,6 +42,21 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 
 		case TIME_SWI:
 			return time_syscall();
+
+		case CREATE_SWI: /* task_create */
+			tasks = (task_t *)regs[0];
+			num_tasks = regs[1];
+			return task_create(tasks, num_tasks);
+
+		case MUTEX_CREATE:
+			break;			
+		case MUTEX_LOCK:
+			break;			
+		case MUTEX_UNLOCK:
+			break;			
+		case EVENT_WAIT:
+			dev = regs[0];
+			return event_wait(dev);
 
 		default:
 			printf("Invalid SWI called");
