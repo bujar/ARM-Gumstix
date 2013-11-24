@@ -25,17 +25,33 @@ mutex_t gtMutex[OS_NUM_MUTEX];
 
 void mutex_init()
 {
-	
+	uint32_t i = 0;
+	for(i = 0; i < OS_NUM_MUTEX; i++)
+	{
+		gtMutex[i].bAvailable = TRUE;
+		gtMutex[i].pHolding_Tcb = NULL;
+		gtMutex[i].bLock = FALSE;
+		gtMutex[i].pSleep_queue = NULL;
+	}	
 }
 
 int mutex_create(void)
 {
-	
-	return 1; // fix this to return the correct value
+	uint32_t i = 0;
+	for(i = 0; i < OS_NUM_MUTEX; i++)
+	{
+		if(gtMutex[i].bAvailable = TRUE)
+		{	
+			gtMutex[i].bAvailable  = FALSE;
+			return i;
+		}
+	}	
+	return ENOMEN; 
 }
 
 int mutex_lock(int mutex  __attribute__((unused)))
 {
+
 	return 1; // fix this to return the correct value
 }
 
