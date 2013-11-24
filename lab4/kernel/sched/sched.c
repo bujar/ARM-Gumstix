@@ -49,8 +49,8 @@ void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 	ctx->r7 = (uint32_t)task->C;
 	ctx->r8 = (uint32_t)task->T;
 	
-	ctx->lr =  launch_task;
-	ctx->sp = tcb->kstack_high[0];
+	ctx->lr = (void*)launch_task;
+	ctx->sp = (void*)tcb->kstack_high[0];
 
 	tcb->holds_lock = 0;
 	tcb->sleep_queue = 0;
@@ -66,7 +66,7 @@ void sched_init(task_t* main_task  __attribute__((unused)))
 //how to init the context?	
 	main_task->data = 0;
 //where to put the idle stack;
-	main_task->stack_pos = 0xa3000000;
+	main_task->stack_pos = (void *)0xa3000000;
 	main_task->C = 0;
 	main_task->T = 0; 
 	tcb_init(main_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
