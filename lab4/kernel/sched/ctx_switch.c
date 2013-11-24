@@ -46,11 +46,13 @@ void dispatch_save(void)
   tcb_t* temp_cur_tcb;
   uint8_t next_task_prio;
 
+  runqueue_add(cur_tcb, cur_tcb->cur_prio);	//task is done add back to runq	
+  
   next_task_prio = highest_prio();	//grab next one to run
   if (cur_tcb->cur_prio == next_task_prio) {
 	return;
   }
-  runqueue_add(cur_tcb, cur_tcb->cur_prio);	//task is done add back to runq	
+
   target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
   temp_cur_tcb = cur_tcb;
   cur_tcb = target_tcb;	//current tcb(global) after context switch
@@ -90,9 +92,10 @@ void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
   uint8_t next_task_prio;
 
   next_task_prio = highest_prio();	//grab next one to run
-  if (cur_tcb->cur_prio == next_task_prio) {
+/*  if (cur_tcb->cur_prio == next_task_prio) {
 	return;
   }
+*/
   target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
   temp_cur_tcb = cur_tcb;
   cur_tcb = target_tcb;	//current tcb(global) after context switch
