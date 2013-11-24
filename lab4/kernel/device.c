@@ -78,7 +78,9 @@ void dev_wait(unsigned int dev __attribute__((unused)))
 	/* dispatch runnable task (not this one because it is sleeping) 
 	 * with highest priority 
      */
+	disable_interrupts();
 	dispatch_sleep(); 
+	enable_interrupts();
 }
 
 
@@ -98,7 +100,9 @@ void dev_update(unsigned long millis __attribute__((unused)))
 			sleepqueue_wake(i);
 		}
 	}
+	disable_interrupts();
 	dispatch_save();
+	enable_interrupts();
 }
 
 static void sleepqueue_wake(unsigned int dev){
