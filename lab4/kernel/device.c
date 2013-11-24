@@ -16,6 +16,8 @@
 #include <arm/psr.h>
 #include <arm/exception.h>
 
+#define NULL 0
+
 /**
  * @brief Fake device maintainence structure.
  * Since our tasks are periodic, we can represent 
@@ -40,13 +42,18 @@ typedef struct dev dev_t;
 const unsigned long dev_freq[NUM_DEVICES] = {100, 200, 500, 50};
 static dev_t devices[NUM_DEVICES];
 
+static void sleepqueue_wake(unsigned int dev);
+
 /**
  * @brief Initialize the sleep queues and match values for all devices.
  */
 void dev_init(void)
 {
-   /* the following line is to get rid of the warning and should not be needed */	
-   devices[0]=devices[0];
+	int i;
+	for(i = NUM_DEVICES - 1; i >= 0; i--){
+		devices[i].next_match = dev_freq[i];
+		devices[i].sleep_queue = NULL; //may not be needed
+	}
 }
 
 
@@ -58,7 +65,15 @@ void dev_init(void)
  */
 void dev_wait(unsigned int dev __attribute__((unused)))
 {
-	
+	/* save new sleep task at front of queue */
+	tcb_t *front = devices[dev].sleep_queue;
+	if(front == NULL){
+		front = get_cur_tcb();
+	}
+	else{
+		get_cur_tcb()->sleep_queue = front;
+		front = get_cur_tcb();
+	}
 }
 
 
@@ -71,6 +86,32 @@ void dev_wait(unsigned int dev __attribute__((unused)))
  */
 void dev_update(unsigned long millis __attribute__((unused)))
 {
-	
+	int i;
+	for(i = NUM_DEVICES - 1; i >= 0; i--){
+		dev_t *dev = &devices[i];
+		if(!dev->sleep_queue && (millis % dev->next_match == 0)){
+			sleepqueue_wake(i);
+		}
+	}
 }
+
+static void sleepqueue_wake(unsigned int dev){
+	tcb_t *next = devices[i].sleep_queue;
+	tcb_t *curr = tmp;
+	while(next != NULL){
+		next = next->sleep_queue;
+		curr->sleep_queue = NULL;
+		//make curr runnable
+  		// NEED TO DO THIS
+		//
+		curr = curr->sleep_queue;
+	}
+}
+		
+		
+
+
+
+
+
 
