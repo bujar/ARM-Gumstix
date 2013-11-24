@@ -101,10 +101,8 @@ static void sleepqueue_wake(unsigned int dev){
 	while(next != NULL){
 		next = next->sleep_queue;
 		curr->sleep_queue = NULL;
-		//make curr runnable
-  		// NEED TO DO THIS
-		//
-		curr = curr->sleep_queue;
+		runqueue_add(curr, curr->cur_prio); //make curr runnable
+		curr = next;
 	}
 }
 		
