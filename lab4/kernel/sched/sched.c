@@ -35,7 +35,7 @@ static void __attribute__((unused)) idle(void)
  * @use task to init tcb's context part
  */
  
-void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
+static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 {
 	sched_context_t *ctx = &(tcb->context);
 
