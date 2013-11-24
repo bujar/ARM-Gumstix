@@ -96,8 +96,8 @@ void dev_update(unsigned long millis __attribute__((unused)))
 }
 
 static void sleepqueue_wake(unsigned int dev){
-	tcb_t *next = devices[i].sleep_queue;
-	tcb_t *curr = tmp;
+	tcb_t *next = devices[dev].sleep_queue;
+	tcb_t *curr = next;
 	while(next != NULL){
 		next = next->sleep_queue;
 		curr->sleep_queue = NULL;
