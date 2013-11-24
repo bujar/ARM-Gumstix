@@ -71,6 +71,7 @@ void sched_init(task_t* main_task  __attribute__((unused)))
 	main_task->T = 0; 
 	tcb_init(main_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
+	dispatch_init(&system_tcb[IDLE_PRIO]);
 }
 
 
