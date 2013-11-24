@@ -26,9 +26,9 @@ static tcb_t* cur_tcb; /* global */
  * Set the initialization thread's priority to IDLE so that anything
  * will preempt it when dispatching the first task.
  */
-void dispatch_init(tcb_t* idle __attribute__((unused)))
+void dispatch_init(tcb_t* idle)
 {
-	
+	cur_tcb = idle;
 }
 
 
@@ -42,6 +42,7 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
  */
 void dispatch_save(void)
 {
+  disable_interrupts();
   tcb_t* target_tcb;
   tcb_t* temp_cur_tcb;
   uint8_t next_task_prio;
@@ -65,6 +66,7 @@ void dispatch_save(void)
  */
 void dispatch_nosave(void)
 {
+  disable_interrupts();		//where do we enable again?
   tcb_t* target_tcb;
   uint8_t next_task_prio;
   next_task_prio = highest_prio();	//grab next one to run
@@ -83,9 +85,21 @@ void dispatch_nosave(void)
  *
  * There is always an idle task to switch to.
  */
-void dispatch_sleep(void)
+void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
 {
-	
+  disable_interrupts();
+  tcb_t* target_tcb;
+  tcb_t* temp_cur_tcb;
+  uint8_t next_task_prio;
+
+  next_task_prio = highest_prio();	//grab next one to run
+  if (cur_tcb->cur_prio == next_task_prio) {
+	return;
+  }
+  target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
+  temp_cur_tcb = cur_tcb;
+  cur_tcb = target_tcb;	//current tcb(global) after context switch
+  ctx_switch_full(&(target_tcb->context), &(temp_cur_tcb->context));
 }
 
 /**
