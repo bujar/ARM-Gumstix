@@ -42,7 +42,6 @@ void dispatch_init(tcb_t* idle)
  */
 void dispatch_save(void)
 {
-  disable_interrupts();
   tcb_t* target_tcb;
   tcb_t* temp_cur_tcb;
   uint8_t next_task_prio;
@@ -66,7 +65,6 @@ void dispatch_save(void)
  */
 void dispatch_nosave(void)
 {
-  disable_interrupts();		//where do we enable again?
   tcb_t* target_tcb;
   uint8_t next_task_prio;
   next_task_prio = highest_prio();	//grab next one to run
@@ -87,7 +85,6 @@ void dispatch_nosave(void)
  */
 void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
 {
-  disable_interrupts();
   tcb_t* target_tcb;
   tcb_t* temp_cur_tcb;
   uint8_t next_task_prio;
