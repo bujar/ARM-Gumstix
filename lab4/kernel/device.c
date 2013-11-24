@@ -74,6 +74,11 @@ void dev_wait(unsigned int dev __attribute__((unused)))
 		get_cur_tcb()->sleep_queue = front;
 		front = get_cur_tcb();
 	}
+
+	/* dispatch runnable task (not this one because it is sleeping) 
+	 * with highest priority 
+     */
+	dispatch_sleep(); 
 }
 
 
@@ -93,6 +98,7 @@ void dev_update(unsigned long millis __attribute__((unused)))
 			sleepqueue_wake(i);
 		}
 	}
+	dispatch_save();
 }
 
 static void sleepqueue_wake(unsigned int dev){
