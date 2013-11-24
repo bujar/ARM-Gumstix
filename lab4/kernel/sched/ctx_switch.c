@@ -105,15 +105,15 @@ void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
 /**
  * @brief Returns the priority value of the current task.
  */
-uint8_t get_cur_prio(void)	//don't really need this...only one line
+uint8_t get_cur_prio(void)
 {
-	return cur_tcb->cur_prio; //fix this; dummy return to prevent compiler warning
+	return cur_tcb->cur_prio;
 }
 
 /**
  * @brief Returns the TCB of the current task.
  */
-tcb_t* get_cur_tcb(void)	//don't really need this...
+tcb_t* get_cur_tcb(void)	
 {
-	return cur_tcb; //fix this; dummy return to prevent compiler warning
+	return cur_tcb; 
 }
