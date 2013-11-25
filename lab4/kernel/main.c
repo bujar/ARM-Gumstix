@@ -15,9 +15,11 @@
 #include <assert.h>
 #include <arm/interrupt.h>
 #include <arm/reg.h>
+#include <sched.h>
+#include <lock.h>
 
 #include "globals.h"
-
+#include "sched/sched_i.h"
 //#define DEBUG
 
 #ifdef DEBUG
@@ -55,6 +57,12 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
 
 	status = userSetup(argc, argv);
+	
+	runqueue_init();
+	mutex_init();
+	task_t main_task;
+	sched_init(&main_task);
+	dispatch_nosave();
 	return status;
 
 	assert(0);        /* should never get here */

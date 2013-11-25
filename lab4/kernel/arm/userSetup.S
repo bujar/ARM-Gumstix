@@ -16,13 +16,13 @@
 #define IRQ_STACK_ADDR	0xa3ffffff
 
 userSetup:
-	
+@commenting this out - this is done in IRQ wrapper	
 	/* set up IRQ stack */
-	MRS	r12, cpsr
+/*	MRS	r12, cpsr
 	SUB r12, r12, #1		 @ SVC-> IRQ mode 
 	MSR	cpsr, r12
 	LDR sp, =IRQ_STACK_ADDR
-	
+*/	
 	MRS	r12, cpsr
 	BIC	r12, r12, #0xFF			@clear all mode bits
 	ORR 	r12, r12, #PSR_MODE_USR         @ change to user mode
@@ -44,8 +44,8 @@ loop:
 	BGE	loop 		    @ loop until you push all arguments
 	PUSH {r0}           @ push argc on top
 
-	LDR	pc, =USER_PROG_ADDR  @ jump to user program
-
+@	LDR	pc, =USER_PROG_ADDR  @ jump to user program
+	mov	pc, lr
 	/* ideally program should never come back here */
 
 
