@@ -44,6 +44,11 @@ loop:
 	BGE	loop 		    @ loop until you push all arguments
 	PUSH {r0}           @ push argc on top
 
+	MRS	r12, cpsr
+	BIC	r12, r12, #0xFF			@ clear all mode bits
+	ORR r12, r12, #PSR_MODE_SVC @ change back to SVC mode
+	MSR	cpsr, r12
+
 @	LDR	pc, =USER_PROG_ADDR  @ jump to user program
 	mov	pc, lr
 	/* ideally program should never come back here */
