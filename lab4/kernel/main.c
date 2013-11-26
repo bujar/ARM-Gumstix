@@ -58,7 +58,7 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 
 	// may restore later.. how to go USR->SVC?
 	//status = userSetup(argc, argv);
-	
+	enable_interrupts();	
 	runqueue_init();
 	mutex_init();
 	task_t main_task;
