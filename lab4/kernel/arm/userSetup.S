@@ -24,9 +24,9 @@ userSetup:
 	LDR sp, =IRQ_STACK_ADDR
 */	
 	MRS	r12, cpsr
-	BIC	r12, r12, #0xFF			@clear all mode bits
-	ORR 	r12, r12, #PSR_MODE_USR         @ change to user mode
-	ORR 	r12, r12, #PSR_FIQ	 	@ disable FIQ; enable IRQ bits
+	BIC	r12, r12, #0xFF			@ clear all mode bits
+	ORR r12, r12, #PSR_MODE_USR @ change to user mode
+	ORR r12, r12, #PSR_FIQ	 	@ disable FIQ; enable IRQ bits
 	MSR	cpsr, r12
 
 	LDR	sp, =USER_STACK_ADDR @ user stack set up
