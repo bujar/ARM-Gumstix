@@ -42,8 +42,9 @@ FUNC(launch_task)
 /* add your code to perform a full context switch */
 FUNC(ctx_switch_full)
 	stmfd	r1, {r4-r11, sp, lr}	@store regs into r1, curent conext
-	ldmfd	r0, {r4-r11, sp, lr}	@load regs from r0, target context 
+	b	ctx_switch_half
 
 /*add your code to perform a half context switch */	
 FUNC(ctx_switch_half)
 	ldmfd	r0, {r4-r11, sp, lr}	@load regs from r0, no save of current context
+	mov	pc, lr
