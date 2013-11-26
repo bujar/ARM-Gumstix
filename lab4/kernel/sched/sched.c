@@ -38,7 +38,7 @@ static void __attribute__((unused)) idle(void)
 static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 {
 	sched_context_t *ctx = &(tcb->context);
-
+	
 	tcb->native_prio = prio;
 	tcb->cur_prio = prio;
 
@@ -50,8 +50,8 @@ static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 	ctx->r8 = (uint32_t)task->T;
 	
 	ctx->lr = (void*)launch_task;
-	ctx->sp = (void*)tcb->kstack_high[0];
-
+	ctx->sp = tcb->kstack_high;
+	
 	tcb->holds_lock = 0;
 	tcb->sleep_queue = 0;
 	//tcb->
