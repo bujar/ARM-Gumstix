@@ -91,12 +91,13 @@ void dev_wait(unsigned int dev __attribute__((unused)))
  * interrupt corresponded to the interrupt frequency of a device, this 
  * function should ensure that the task is made ready to run 
  */
-void dev_update(unsigned long millis __attribute__((unused)))
+void dev_update(unsigned long millis)
 {
 	int i;
 	for(i = NUM_DEVICES - 1; i >= 0; i--){
 		dev_t *dev = &devices[i];
-		if(!dev->sleep_queue && (millis % dev->next_match == 0)){
+		if(dev->sleep_queue && (dev->next_match != 0) && 
+							(millis % dev->next_match == 0)){
 			sleepqueue_wake(i);
 		}
 	}
