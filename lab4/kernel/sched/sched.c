@@ -62,7 +62,7 @@ void sched_init(task_t* main_task  __attribute__((unused)))
 	// since global, system_tcb is all zeroed out.
 	// however, we may need to use this for other purposes  
 	// define of task_t is in include/task.h
-	main_task->lambda = (task_fun_t) 0xa0000000;
+	main_task->lambda = (task_fun_t) idle;
 //how to init the context?	
 	main_task->data = 0;
 //where to put the idle stack;
