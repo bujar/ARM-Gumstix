@@ -13,7 +13,7 @@
 #include <sched.h>
 #include "sched_i.h"
 
-
+#define NULL 0
 
 static tcb_t* run_list[OS_MAX_TASKS]  __attribute__((unused));
 
@@ -64,7 +64,7 @@ void runqueue_init(void)
 		run_bits[count] = 0;
 	for(count = 0; count < OS_MAX_TASKS; ++count)
 	{
-		run_list[count] = 0;
+		run_list[count] = NULL;
 	/*	if((count % 8) == 0)
 			run_bits[count/8] = 0;
 	*/
@@ -80,16 +80,20 @@ void runqueue_init(void)
  * only requirement is that the run queue for that priority is empty.  This
  * function needs to be externally synchronized.
  */
-void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute__((unused)))
+void runqueue_add(tcb_t* tcb, uint8_t prio)
 {
 	uint8_t OSTCBX, OSTCBY;
-	OSTCBX = prio & 0x7;	//probally need to change to define, not find in header yet;
-	OSTCBY = prio >> 3;
+	OSTCBX = prio & 0x7; // compute task pos.
+	OSTCBY = prio >> 3;  // compute prio group
 
 	/* set group_run_bits */
 	group_run_bits |= 1 << OSTCBY;
+
 	/* set run_bits */
 	run_bits[OSTCBY] |= 1 << OSTCBX;
+
+	/* add tcb to be runnable */
+	run_list[prio] = tcb;
 }
 
 
@@ -100,15 +104,15 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
  *
  * This function needs to be externally synchronized.
  */
-tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
+tcb_t* runqueue_remove(uint8_t prio)
 {	
 	int OSTCBX, OSTCBY;
-
+	tcb_t *cur_tcb = run_list[prio];
 	/* remove the tcb from run_list */
-	run_list[prio] = 0;		//no NULL, should we deine one?
+	run_list[prio] = NULL;
 		
-	OSTCBX = prio & 0x7;	//probally need to change to define, not find in header yet;
-	OSTCBY = prio >> 3;
+	OSTCBX = prio & 0x7;	// compute priority group 
+	OSTCBY = prio >> 3;     // compute task position in group
 
 	/* reset run_bits */
 	run_bits[OSTCBY] &= ~(1 << OSTCBX);
@@ -116,7 +120,7 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
 	/* reset group_run_bits if run_bits[OSTCBY] is 0 */	
 	if(0 == run_bits[OSTCBY])
 		group_run_bits &= ~(1 << OSTCBY);
-	return run_list[prio];
+	return cur_tcb;
 }
 
 /**
