@@ -14,12 +14,12 @@
 
 #include <device.h>
 
-#define S_TO_MS 1000
 #define MS_PER_TICK 10
 #define CLOCK_PER_TICK 32500
+#define CLOCK_UPBOUND  195000000
 
-volatile unsigned int num_timer_tick;
-volatile unsigned int num_timer_clock;
+volatile unsigned int num_timer_tick = 0;
+volatile unsigned int num_timer_clock = 0;
 
 /*function prototypes */
 void timer_init(void);
@@ -55,10 +55,6 @@ void timer_inc(void)
     
     //set OSMR0 
     reg_write(OSTMR_OSMR_ADDR(0), num_timer_clock);
-
-    //increment the number of the timer ticks
-    ++num_timer_tick;
-    	    
     	    
     //reset the OSSR[M0]bit
     reg_set(OSTMR_OSSR_ADDR, OSTMR_OSSR_M0);
@@ -66,6 +62,23 @@ void timer_inc(void)
     //reset the OSCR to 0
     //reg_write(OSTMR_OSCR_ADDR, 0);
 
+    //increment the number of the timer ticks
+    ++num_timer_tick;
+
 	dev_update(num_timer_tick);
+	
+	/* Clcok cycle overflow handler, to avoid num_timer_clock 
+	 *	exceed int range, reset timer after 6000 tick(1 mins)
+	*/
+	if(num_timer_clock >= CLOCK_UPBOUND)
+	{
+		timer_init();
+		printf("clock reset\n");
+	}
+	/* Tick number overflow handler, when num_timer_tick 
+	 * exceed int range, notify user, in about 50 days.
+	*/
+	if(num_timer_tick == 0)
+		printf("system time reseted!\n");
 }
 
