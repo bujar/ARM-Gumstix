@@ -12,6 +12,7 @@
 #include <task.h>
 #include <types.h>
 
+//void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio);
 void sched_init(task_t* main_task);
 
 /* Scheduler invocations */
