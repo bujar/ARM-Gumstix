@@ -108,6 +108,7 @@ tcb_t* runqueue_remove(uint8_t prio)
 {	
 	int OSTCBX, OSTCBY;
 	tcb_t *cur_tcb = run_list[prio];
+	
 	/* remove the tcb from run_list */
 	run_list[prio] = NULL;
 		
