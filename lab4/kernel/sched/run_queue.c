@@ -65,9 +65,6 @@ void runqueue_init(void)
 	for(count = 0; count < OS_MAX_TASKS; ++count)
 	{
 		run_list[count] = NULL;
-	/*	if((count % 8) == 0)
-			run_bits[count/8] = 0;
-	*/
 	}
 		
 }

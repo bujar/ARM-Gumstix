@@ -12,6 +12,7 @@
 #include <kernel.h>
 #include <config.h>
 #include "sched_i.h"
+#include <device.h>
 
 #include <arm/reg.h>
 #include <arm/psr.h>
@@ -88,7 +89,8 @@ void allocate_tasks(task_t** tasks, size_t num_tasks)
 {
 	//set up system tcb for each task in 'tasks' - loop through each task
 	uint8_t i;
-	
+	runqueue_init();
+	dev_init();
 	for(i = 0; i < num_tasks; i++)
 	{
 		tcb_init(tasks[i], &system_tcb[i], i);
@@ -101,6 +103,6 @@ void allocate_tasks(task_t** tasks, size_t num_tasks)
 	idle_task.C = 0;
 	idle_task.T = 0; 
 	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
-	runqueue_add(&system_tcb[i], i);
+	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
 }
 
