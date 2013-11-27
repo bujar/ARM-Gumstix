@@ -1,3 +1,10 @@
+/* 
+ * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ * Date: Sat Nov  22 18:54:08 EDT 2013
+ */
+
 /** @file sched.c
  * 
  * @brief Top level implementation of the scheduler.
