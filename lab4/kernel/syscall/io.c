@@ -1,6 +1,4 @@
-/** @file io.c
- *
- * @brief Kernel I/O syscall implementations
+/* syscall implementations
  *
  * @author Mike Kasick <mkasick@andrew.cmu.edu>
  * @date   Sun, 14 Oct 2007 00:07:38 -0400
@@ -26,10 +24,7 @@
 #define DEL_CHAR 0x7f
 #define SDRAM_END 0xa3ffffff
 #define SDRAM_START 0xa0000000
-#define SFROM_START 0x00000000
-#define SFROM_END   0x00ffffff	
-#define MAX_WRITE_SIZE_SD  0x4000000 //64MB; size of SDRAM
-#define MAX_WRITE_SIZE_SF  0x1000000 //16MB; size of StrataFlash ROM
+#define MAX_WRITE_SIZE  0x4000000 //64MB; size of SDRAM
 
 /* Read count bytes (or less) from fd into the buffer buf. */
 ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((unused)), size_t count __attribute__((unused)))
@@ -95,30 +90,33 @@ ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((un
 /* Write count bytes to fd from the buffer buf. */
 ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attribute__((unused)), size_t count  __attribute__((unused)))
 {
-	size_t i;
-	size_t buf_begin;
-	size_t buf_end;
+	unsigned int i;
+	unsigned int buf_begin;
+	unsigned int buf_end;
 
 	if(fd != STDOUT_FILENO){
 		puts("file descriptor error!"); 
 		return -EBADF;
 	} // 1. check the file descriptor
-	
-	// 2. check the size of buf and the address of buf to make sure only read from SDRAM or SFROM
-	buf_begin = (size_t) buf;        	//low bound of buf
-	buf_end = ((size_t) buf) + count;  //high bound of buf
 
-    // MUST RECHECK THIS....something iffy about this; yeah, a question: is const void * always > 0?
-	/*since use unsigned long(size_t), (buf_begin < SFROM_START) is not necessary*/
-	if(((ssize_t)buf < SFROM_START) || (buf_end > SDRAM_START) || ((buf_begin > SFROM_END) && (buf_end < SDRAM_START)) ){
-		return -EBADF;
-	}
+	if(count > MAX_WRITE_SIZE){
+		puts("count size err!");
+		return -EFAULT; 
+	} // 2. check the size of buf and the address of buf
+
+	buf_begin = (int) buf;        //low bound of buf
+	buf_end = ((int) buf) + count;    //high bound of buf
+	if((buf_begin < SDRAM_START) || (buf_end > SDRAM_END)){
+		puts("buf address range error!");
+		return -EFAULT; 
+	} //check if the buffer exceeds the SDRAM
 
 	for(i = 0; i < count; i++){
-		putc(((int8_t *)buf)[i]);   //int8_t = char 
+		putc(((char *)buf)[i]);    
 	}  // 3. write characters from buffer to stdout until buffer is empty
 
 	// 4. return with the number of characters to stdout
 	return count;
 }
+
 
