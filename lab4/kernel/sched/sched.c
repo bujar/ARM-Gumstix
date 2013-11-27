@@ -95,6 +95,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	for(i = 0; i < num_tasks; i++)
 	{
 		tcb_init(tasks[i], &system_tcb[i], i);
+		runqueue_add(&system_tcb[i], i);
 	}
 	// changed i >= 0 to i > 0; since uint8_t is unsigned char, is always >= 0; could also change the uint8_t i to int8_t;
 	/*for(i = num_tasks ; i > 0; i--){
