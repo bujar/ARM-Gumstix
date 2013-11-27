@@ -11,13 +11,13 @@
 #include <types.h>
 #include <arm/timer.h>
 #include <arm/reg.h>
-
 #include <device.h>
-
 #define S_TO_MS 1000
 #define MS_PER_TICK 10
+#define CLOCKS_PER_TICK 32500
 
 volatile unsigned int num_timer_tick;
+volatile unsigned int osmr_count;
 
 /*function prototypes */
 void timer_init(void);
@@ -26,18 +26,19 @@ void timer_inc(void);
 /* in this function, we configure the OS timer register */
 void timer_init(void)
 {
-    size_t num_clock;
+    //size_t num_clock;
     
     //calculate the clocks for a time unit: 10ms for now
     //Will change to the following line if set to 10ms
     //num_clock = OSTMR_FREQ/OS_TICKS_PER_SEC;
-    num_clock = OSTMR_FREQ/(S_TO_MS/MS_PER_TICK);
-
+    //num_clock = OSTMR_FREQ/(S_TO_MS/MS_PER_TICK);
+	
+	osmr_count = CLOCKS_PER_TICK;
     //init OSCR to 0
     reg_write(OSTMR_OSCR_ADDR, 0);
     
     //init OSMR0 to num_clock
-    reg_write(OSTMR_OSMR_ADDR(0), num_clock);
+    reg_write(OSTMR_OSMR_ADDR(0), osmr_count);
 
     /* 
      * set OIER last bit 1 to enbale match between OSCR 
@@ -55,10 +56,10 @@ void timer_inc(void)
     //reset the OSSR[M0]bit
     reg_set(OSTMR_OSSR_ADDR, OSTMR_OSSR_M0);
     
-    //reset the OSCR to 0
-    reg_write(OSTMR_OSCR_ADDR, 0);
-
+	osmr_count += CLOCKS_PER_TICK;
+    //add clocks to OSMR
+    reg_write(OSTMR_OSMR_ADDR(0), osmr_count);
+	
 	dev_update(num_timer_tick);
 }
-
 
