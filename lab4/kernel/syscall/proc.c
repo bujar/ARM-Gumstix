@@ -25,11 +25,11 @@
 task_t *system_ptasks[OS_MAX_TASKS]; /* pointer to ptrs of tasks to be sorted */
 
 // our functions
-static int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attribute__((unused)));
+static int schedulable(task_t* tasks, size_t num_tasks);
 static void sort_tasks( task_t* tasks, size_t num_tasks);
 static void insertion_sort(task_t** tasks, size_t num_tasks);
  
-static int schedulable(task_t* tasks __attribute__((unused)), size_t num_tasks __attribute__((unused))) {
+static int schedulable(task_t* tasks, size_t num_tasks) {
   unsigned int i;
 
   for(i = 0; i < num_tasks; i++) {
@@ -63,7 +63,7 @@ static void sort_tasks(task_t* tasks, size_t num_tasks) {
 	insertion_sort(system_ptasks, num_tasks);	
 }
 
-static void insertion_sort(task_t** ptasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused))){
+static void insertion_sort(task_t** ptasks, size_t num_tasks){
 	int i, j;
 	unsigned long Tperiod;
 	task_t **curr;
@@ -79,7 +79,7 @@ static void insertion_sort(task_t** ptasks  __attribute__((unused)), size_t num_
 	}
 }
 
-int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
+int task_create(task_t* tasks, size_t num_tasks)
 {
   int error;
   error = schedulable(tasks, num_tasks);
@@ -94,7 +94,7 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
 }
 
 
-int event_wait(unsigned int dev  __attribute__((unused)))
+int event_wait(unsigned int dev)
 {
 	if(dev > NUM_DEVICES - 1){
 		return EINVAL;
@@ -104,7 +104,7 @@ int event_wait(unsigned int dev  __attribute__((unused)))
 }
 
 /* An invalid syscall causes the kernel to exit. */
-void invalid_syscall(unsigned int call_num  __attribute__((unused)))
+void invalid_syscall(unsigned int call_num)
 {
 	printf("Kernel panic: invalid syscall -- 0x%08x\n", call_num);
 

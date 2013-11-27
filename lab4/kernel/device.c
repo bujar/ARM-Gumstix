@@ -63,7 +63,7 @@ void dev_init(void)
  *
  * @param dev  Device number.
  */
-void dev_wait(unsigned int dev __attribute__((unused)))
+void dev_wait(unsigned int dev)
 {
 	/* save new sleep task at front of queue */
 	tcb_t *front = devices[dev].sleep_queue;

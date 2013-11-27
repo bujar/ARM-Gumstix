@@ -27,7 +27,7 @@
 #define MAX_WRITE_SIZE  0x4000000 //64MB; size of SDRAM
 
 /* Read count bytes (or less) from fd into the buffer buf. */
-ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((unused)), size_t count __attribute__((unused)))
+ssize_t read_syscall(int fd, void *buf, size_t count)
 {
 	char c;
 	ssize_t b_read = 0;
@@ -88,7 +88,7 @@ ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((un
 }
 
 /* Write count bytes to fd from the buffer buf. */
-ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attribute__((unused)), size_t count  __attribute__((unused)))
+ssize_t write_syscall(int fd, const void *buf, size_t count)
 {
 	unsigned int i;
 	unsigned int buf_begin;

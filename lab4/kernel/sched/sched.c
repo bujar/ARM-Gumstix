@@ -24,7 +24,7 @@ tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
  * @brief This is the idle task that the system runs when no other task is runnable
  */
  
-static void __attribute__((unused)) idle(void)
+static void idle(void)
 {
 	 enable_interrupts();
 	 while(1);
@@ -57,7 +57,7 @@ static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 	//tcb->
 }
 
-void sched_init(task_t* main_task  __attribute__((unused)))
+void sched_init(task_t* main_task)
 {
 	// since global, system_tcb is all zeroed out.
 	// however, we may need to use this for other purposes  
@@ -88,7 +88,7 @@ void sched_init(task_t* main_task  __attribute__((unused)))
  * @param tasks  A list of scheduled task descriptors.
  * @param size   The number of tasks is the list.
  */
-void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
+void allocate_tasks(task_t** tasks, size_t num_tasks)
 {
 	//set up system tcb for each task in 'tasks' - loop through each task
 	uint8_t i;
