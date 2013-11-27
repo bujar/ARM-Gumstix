@@ -9,16 +9,18 @@
 #include <asm.h>
 #include <bits/swi.h>
 	.file "mutex_create.S"
+	
 
 FUNC(mutex_create)
 	@ Add code here.  Put your name at the top.
-		
+	@ Success returns positive value.
+    @ If error, return errno=abs(r0)
+    @    and return -1
+	
 	STMFD sp!, {r0-r12, lr}
- 
     swi MUTEX_CREATE
     ADD sp, sp, #4
     LDMFD sp!, {r1-r12, lr}
-
 
     CMP r0, #0
     MOVLT pc, lr
