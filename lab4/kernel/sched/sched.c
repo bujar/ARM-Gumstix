@@ -54,21 +54,17 @@ static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 	
 	tcb->holds_lock = 0;
 	tcb->sleep_queue = 0;
-	//tcb->
 }
 
 void sched_init(task_t* main_task)
 {
 	// since global, system_tcb is all zeroed out.
 	// however, we may need to use this for other purposes  
-	// define of task_t is in include/task.h
 	main_task->lambda = (void*)0xa0000000;
-//how to init the context?	
 	main_task->data = 0;
-//where to put the idle stack;
 	main_task->stack_pos = (void *)0xa3000000;
-	main_task->C = 0;
-	main_task->T = 0; 
+	main_task->C = 1;
+	main_task->T = 1; 
 	tcb_init(main_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
 	dispatch_init(&system_tcb[IDLE_PRIO]);
@@ -92,17 +88,19 @@ void allocate_tasks(task_t** tasks, size_t num_tasks)
 {
 	//set up system tcb for each task in 'tasks' - loop through each task
 	uint8_t i;
+	
 	for(i = 0; i < num_tasks; i++)
 	{
 		tcb_init(tasks[i], &system_tcb[i], i);
 		runqueue_add(&system_tcb[i], i);
 	}
-	// changed i >= 0 to i > 0; since uint8_t is unsigned char, is always >= 0; could also change the uint8_t i to int8_t;
-	/*for(i = num_tasks ; i > 0; i--){
-		system_tcb[i - 1].native_prio = i - 1;
-		system_tcb[i - 1].cur_prio = i - 1;
-		//do we need to check the arguments to store for sched_context?	
-	}	
-	*/	
+	task_t idle_task;
+	idle_task.lambda = (void *)idle;
+	idle_task.data = 0;
+	idle_task.stack_pos = 0; //should I need this?
+	idle_task.C = 0;
+	idle_task.T = 0; 
+	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
+	runqueue_add(&system_tcb[i], i);
 }
 
