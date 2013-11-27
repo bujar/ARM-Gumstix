@@ -60,6 +60,8 @@ static uint8_t prio_unmap_table[] =
 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0
 };
 
+void printit();
+
 /**
  * @brief Clears the run-queues and sets them all to empty.
  */
@@ -110,8 +112,10 @@ void runqueue_add(tcb_t* tcb, uint8_t prio)
  */
 tcb_t* runqueue_remove(uint8_t prio)
 {	
+	//printf("BEFORE you runqueue_remove\n");
+	//printit();
 	int OSTCBX, OSTCBY;
-	tcb_t *cur_tcb = run_list[prio];
+	tcb_t *tmp_tcb = run_list[prio];
 	
 	/* remove the tcb from run_list */
 	run_list[prio] = NULL;
@@ -125,7 +129,9 @@ tcb_t* runqueue_remove(uint8_t prio)
 	/* reset group_run_bits if run_bits[OSTCBY] is 0 */	
 	if(0 == run_bits[OSTCBY])
 		group_run_bits &= ~(1 << OSTCBY);
-	return cur_tcb;
+	//printf("AFTER you runqueue_remove\n");
+	//printit();
+	return tmp_tcb;
 }
 
 /**
@@ -143,4 +149,12 @@ uint8_t highest_prio(void)
 	x = prio_unmap_table[run_bits[y]];
 	prio = (y << 3) + x;
 	return prio; 
+}
+
+void printit(){
+	int i;
+	printf("grouprunbits=%u\n", group_run_bits);
+	for(i = 0; i < 8; i++ )
+		printf("run_bits[%d]=%u\t", i, run_bits[i]);
+	printf("\n\n");
 }

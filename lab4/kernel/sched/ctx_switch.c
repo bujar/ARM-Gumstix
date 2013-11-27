@@ -25,7 +25,8 @@
 #include <exports.h>
 #endif
 
-static tcb_t* cur_tcb; /* global */
+//static 
+tcb_t* cur_tcb; /* global */
 
 /**
  * @brief Initialize the current TCB and priority.
@@ -119,5 +120,6 @@ uint8_t get_cur_prio(void)
  */
 tcb_t* get_cur_tcb(void)	
 {
+	printf("cur_tcb prio is %u\n", cur_tcb->cur_prio);
 	return cur_tcb; 
 }
