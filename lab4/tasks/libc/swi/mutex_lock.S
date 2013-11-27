@@ -1,4 +1,4 @@
-/* write.c: Linux system call for "write"
+/*
  * Author: Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu>
