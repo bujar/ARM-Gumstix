@@ -40,6 +40,7 @@ void fun2(void* str)
 
 int main(int argc, char** argv)
 {
+	printf("Now in user program");
 	task_t tasks[2];
 	tasks[0].lambda = fun1;
 	tasks[0].data = (void*)'@';
@@ -51,7 +52,7 @@ int main(int argc, char** argv)
 	tasks[1].stack_pos = (void*)0xa1000000;
 	tasks[1].C = 1;
 	tasks[1].T = PERIOD_DEV1;
-
+	printf("entering task create");
 	task_create(tasks, 2);
 	argc=argc; /* remove compiler warning */
 	argv[0]=argv[0]; /* remove compiler warning */
