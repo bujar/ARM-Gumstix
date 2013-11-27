@@ -42,7 +42,7 @@ typedef struct dev dev_t;
 const unsigned long dev_freq[NUM_DEVICES] = {100, 200, 500, 50};
 static dev_t devices[NUM_DEVICES];
 
-static void sleepqueue_wake(unsigned int dev);
+void sleepqueue_wake(unsigned int dev);
 
 /**
  * @brief Initialize the sleep queues and match values for all devices.
@@ -107,7 +107,7 @@ void dev_update(unsigned long millis)
 	enable_interrupts();
 }
 
-static void sleepqueue_wake(unsigned int dev){
+void sleepqueue_wake(unsigned int dev){
 	tcb_t *next = devices[dev].sleep_queue;
 	tcb_t *curr = next;
 	while(next != NULL){
