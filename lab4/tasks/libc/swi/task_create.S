@@ -7,8 +7,15 @@
  */
 
 #include <asm.h>
+#include <bits/swi.h>
 
 	.file "task_create.S"
 
 FUNC(task_create)
-	@ Add code here.  Put your name at the top.
+    swi CREATE_SWI
+    
+    ldr r1, =errno
+    str r0, [r1] 
+    mov r0, #-1 
+    mov pc, lr
+
