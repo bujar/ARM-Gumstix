@@ -69,10 +69,11 @@ void dev_wait(unsigned int dev __attribute__((unused)))
 	tcb_t *front = devices[dev].sleep_queue;
 	if(front == NULL){
 		front = get_cur_tcb();
+		devices[dev].sleep_queue = front;
 	}
 	else{
 		get_cur_tcb()->sleep_queue = front;
-		front = get_cur_tcb();
+		devices[dev].sleep_queue = front;
 	}
 
 	/* dispatch runnable task (not this one because it is sleeping) 
