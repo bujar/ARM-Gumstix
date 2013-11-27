@@ -12,14 +12,8 @@
 	.file "task_create.S"
 
 FUNC(task_create)
-    STMFD sp!, {r0-r12, lr}
     swi CREATE_SWI
-    add sp, sp, #4
-    LDMFD sp!, {r1-r12, lr}
     
-	# THIS MUST BE CHANGED TO SET ERRNO
-    cmp r0, #0
-    moveq   pc, lr
     ldr r1, =errno
     str r0, [r1] 
     mov r0, #-1 
