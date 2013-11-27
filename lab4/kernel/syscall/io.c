@@ -25,6 +25,8 @@
 #define SDRAM_END 0xa3ffffff
 #define SDRAM_START 0xa0000000
 #define MAX_WRITE_SIZE  0x4000000 //64MB; size of SDRAM
+#define SFROM_START 0x00000000
+#define SFROM_END 0x00ffffff
 
 /* Read count bytes (or less) from fd into the buffer buf. */
 ssize_t read_syscall(int fd, void *buf, size_t count)
@@ -87,36 +89,35 @@ ssize_t read_syscall(int fd, void *buf, size_t count)
 	return b_read; //reached when c = EOT	
 }
 
-/* Write count bytes to fd from the buffer buf. */
 ssize_t write_syscall(int fd, const void *buf, size_t count)
 {
-	unsigned int i;
-	unsigned int buf_begin;
-	unsigned int buf_end;
+        size_t i;
+        size_t buf_begin;
+        size_t buf_end;
 
-	if(fd != STDOUT_FILENO){
-		puts("file descriptor error!"); 
-		return -EBADF;
-	} // 1. check the file descriptor
+        if(fd != STDOUT_FILENO){
+                puts("file descriptor error!");
+                return -EBADF;
+        } // 1. check the file descriptor
 
-	if(count > MAX_WRITE_SIZE){
-		puts("count size err!");
-		return -EFAULT; 
-	} // 2. check the size of buf and the address of buf
+        // 2. check the size of buf and the address of buf to make sure only read from SDRAM or SFROM
+        buf_begin = (size_t) buf;         //low bound of buf
+        buf_end = ((size_t) buf) + count; //high bound of buf
 
-	buf_begin = (int) buf;        //low bound of buf
-	buf_end = ((int) buf) + count;    //high bound of buf
-	if((buf_begin < SDRAM_START) || (buf_end > SDRAM_END)){
-		puts("buf address range error!");
-		return -EFAULT; 
-	} //check if the buffer exceeds the SDRAM
+        /*since use unsigned long(size_t), (buf_begin < SFROM_START) is not necessary*/
+        if( (buf_end > SDRAM_END) || ((buf_begin > SFROM_END) && (buf_end < SDRAM_START)) ){
+                return -EBADF;
+        }
 
-	for(i = 0; i < count; i++){
-		putc(((char *)buf)[i]);    
-	}  // 3. write characters from buffer to stdout until buffer is empty
+        for(i = 0; i < count; i++){
+                putc(((char *)buf)[i]); //int8_t = char
+        } // 3. write characters from buffer to stdout until buffer is empty
 
-	// 4. return with the number of characters to stdout
-	return count;
+        // 4. return with the number of characters to stdout
+        return count;
+
 }
+
+
 
 
