@@ -46,7 +46,7 @@ int mutex_create(void)
 		if(gtMutex[i].bAvailable == TRUE)
 		{	
 			gtMutex[i].bAvailable  = FALSE;
-			return i;
+			return i + 1;
 		}
 	}	
 	return -ENOMEM; 
