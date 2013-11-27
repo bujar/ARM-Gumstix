@@ -26,6 +26,8 @@
 #include <arm/exception.h>
 #include <arm/physmem.h>
 
+#define FIRST_MAIN_PRIO 15 /*unique number < IDLE_PRIO*/
+
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
 /**
@@ -68,14 +70,14 @@ void sched_init(task_t* main_task)
 {
 	// since global, system_tcb is all zeroed out.
 	// however, we may need to use this for other purposes  
-	main_task->lambda = (void*)0xa0000000;
+	main_task->lambda =    (void *)0xa0000000;
 	main_task->data = 0;
 	main_task->stack_pos = (void *)0xa3000000;
 	main_task->C = 1;
 	main_task->T = 1; 
-	tcb_init(main_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
-	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
-	dispatch_init(&system_tcb[IDLE_PRIO]);
+	tcb_init(main_task, &system_tcb[FIRST_MAIN_PRIO], FIRST_MAIN_PRIO);
+	runqueue_add(&system_tcb[FIRST_MAIN_PRIO], FIRST_MAIN_PRIO);
+	dispatch_init(&system_tcb[FIRST_MAIN_PRIO]);
 }
 
 

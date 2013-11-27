@@ -72,27 +72,32 @@ void dev_init(void)
  */
 void dev_wait(unsigned int dev)
 {
+	disable_interrupts();
 	/* save new sleep task at front of queue */
 	tcb_t *front = devices[dev].sleep_queue;
-	if(front == NULL){
-		front = get_cur_tcb();
-		devices[dev].sleep_queue = front;
-		printf("dev_wait is adding prio %u\n", front->cur_prio); 
-		printf("         is adding prio %u\n", devices[dev].sleep_queue->cur_prio); 
-
+	if(front == NULL){ 
+		/* assign a head of the queue */
+		devices[dev].sleep_queue = get_cur_tcb();
 	}
 	else{
+		/* add to front of queue, changing head */
 		get_cur_tcb()->sleep_queue = front;
+		printf("front points to %p\n", front);
 		devices[dev].sleep_queue = get_cur_tcb();
-		printf("dev_wait is adding another prio %u\n", front->cur_prio); 
-		printf("         is adding another prio %u\n", devices[dev].sleep_queue->cur_prio); 
+		printf("dev_wait is adding another prio [firstprio=%u, second=%u]\n", devices[dev].sleep_queue->cur_prio,
+			devices[dev].sleep_queue->sleep_queue->cur_prio);
 	}
 
 	/* dispatch runnable task (not this one because it is sleeping) 
 	 * with highest priority 
      */
-	disable_interrupts();
 	dispatch_sleep(); 
+	printf("dev_wait after dispatch_sleep is:\n");
+	tcb_t * poo = devices[0].sleep_queue;
+	while(poo != NULL){
+		printf("currprio is %u\n", poo->cur_prio);
+		poo = poo->sleep_queue;
+	}
 	enable_interrupts();
 }
 

@@ -35,7 +35,15 @@ task_t *system_ptasks[OS_MAX_TASKS]; /* pointer to ptrs of tasks to be sorted */
 static int schedulable(task_t* tasks, size_t num_tasks);
 static void sort_tasks( task_t* tasks, size_t num_tasks);
 static void insertion_sort(task_t** tasks, size_t num_tasks);
+static void clear_tasks(); // clears the ptasks array
  
+static void clear_tasks(){
+	int i;
+	for(i = 0; i < OS_MAX_TASKS; i++){
+		system_ptasks[i] = 0; //NULL it all
+	}
+}
+
 static int schedulable(task_t* tasks, size_t num_tasks) {
   unsigned int i;
 
@@ -93,6 +101,8 @@ int task_create(task_t* tasks, size_t num_tasks)
   if (error != 0) {
   	return error;
   }
+
+  clear_tasks(); // clears the ptasks array
   sort_tasks(tasks, num_tasks);
   allocate_tasks(system_ptasks, num_tasks);
   dispatch_nosave(); //do we need this here?
