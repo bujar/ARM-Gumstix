@@ -82,19 +82,19 @@ void dev_wait(unsigned int dev)
 	else{
 		/* add to front of queue, changing head */
 		get_cur_tcb()->sleep_queue = front;
-		printf("front points to %p\n", front);
+		//printf("front points to %p\n", front);
 		devices[dev].sleep_queue = get_cur_tcb();
-		printf("dev_wait is adding another prio [firstprio=%u, second=%u]\n", devices[dev].sleep_queue->cur_prio,
-			devices[dev].sleep_queue->sleep_queue->cur_prio);
+		//printf("dev_wait is adding another prio [firstprio=%u, second=%u]\n", devices[dev].sleep_queue->cur_prio,
+			//devices[dev].sleep_queue->sleep_queue->cur_prio);
 	}
 
 	/* dispatch runnable task (not this one because it is sleeping) 
 	 * with highest priority 
      */
 	dispatch_sleep(); 
-	printf("dev_wait after dispatch_sleep is:\n");
 	tcb_t * poo = devices[0].sleep_queue;
 	while(poo != NULL){
+		printf("dev_wait after dispatch_sleep is:\n");
 		printf("currprio is %u\n", poo->cur_prio);
 		poo = poo->sleep_queue;
 	}

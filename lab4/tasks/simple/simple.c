@@ -28,6 +28,26 @@ void fun1(void* str)
 	}
 }
 
+void fun2(void* str)
+{
+	while(1)
+	{
+		putchar((int)str);
+		if (event_wait(0) < 0)
+			panic("Dev 0 failed");
+	}
+}
+
+void fun3(void* str)
+{
+	while(1)
+	{
+		putchar((int)str);
+		if (event_wait(0) < 0)
+			panic("Dev 0 failed");
+	}
+}
+
 int main(int argc, char** argv)
 {
 	task_t tasks[3];
@@ -36,15 +56,15 @@ int main(int argc, char** argv)
 	tasks[0].stack_pos = (void*)0xa2000000;
 	tasks[0].C = 1;
 	tasks[0].T = PERIOD_DEV0;
-	tasks[1].lambda = fun1;
+	tasks[1].lambda = fun2;
 	tasks[1].data = (void*)'>';
 	tasks[1].stack_pos = (void*)0xa1000000;
 	tasks[1].C = 1;
 	tasks[1].T = PERIOD_DEV0;
-	tasks[2].lambda = fun1;
-	tasks[2].data = (void*)'@';
-	tasks[2].stack_pos = (void*)0xa3000000;
-	tasks[2].C = 1;
+	tasks[2].lambda = fun3;
+	tasks[2].data = (void*)'<';
+	tasks[2].stack_pos = (void*)0xa1500000;
+	tasks[2].C = 2;
 	tasks[2].T = PERIOD_DEV0;
 	task_create(tasks, 3);
 	argc=argc; /* remove compiler warning */

@@ -52,9 +52,11 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 	   return ESCHED;
 	}
 	if (tasks[i].C == 0) {
+	   printf("a task cost is 0\n");
 	   return EINVAL;
 	}
 	if (tasks[i].T == 0) {
+	   printf("a task period is 0\n");
 	   return EINVAL;
 	}
   }

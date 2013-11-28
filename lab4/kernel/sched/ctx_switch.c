@@ -116,6 +116,5 @@ uint8_t get_cur_prio(void)
  */
 tcb_t* get_cur_tcb(void)	
 {
-	printf("cur_tcb prio is %u\n", cur_tcb->cur_prio);
 	return cur_tcb; 
 }
