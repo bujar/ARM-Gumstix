@@ -60,6 +60,7 @@ static uint8_t prio_unmap_table[] =
 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0
 };
 
+// prints the runqueue numerically
 void printit();
 
 /**
@@ -112,8 +113,6 @@ void runqueue_add(tcb_t* tcb, uint8_t prio)
  */
 tcb_t* runqueue_remove(uint8_t prio)
 {	
-	//printf("BEFORE you runqueue_remove\n");
-	//printit();
 	int OSTCBX, OSTCBY;
 	tcb_t *tmp_tcb = run_list[prio];
 	
@@ -129,8 +128,6 @@ tcb_t* runqueue_remove(uint8_t prio)
 	/* reset group_run_bits if run_bits[OSTCBY] is 0 */	
 	if(0 == run_bits[OSTCBY])
 		group_run_bits &= ~(1 << OSTCBY);
-	//printf("AFTER you runqueue_remove\n");
-	//printit();
 	return tmp_tcb;
 }
 
@@ -141,9 +138,6 @@ tcb_t* runqueue_remove(uint8_t prio)
 uint8_t highest_prio(void)
 {
 	uint8_t x, y, prio;
-	/* when no process is runable, return idle process's priority */
-	if(0 == group_run_bits)	
-		return IDLE_PRIO;		//IDLE_PRIO = 63; defined in include/config.h
 	
 	y = prio_unmap_table[group_run_bits];
 	x = prio_unmap_table[run_bits[y]];

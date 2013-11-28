@@ -26,9 +26,14 @@
 #include <arm/exception.h>
 #include <arm/physmem.h>
 
-#define FIRST_MAIN_PRIO 15 /*unique number < IDLE_PRIO*/
+#define FIRST_MAIN_PRIO 0 /*unique number < IDLE_PRIO*/
 
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
+
+/* static functions for sched.c */
+static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio);
+static void idle_init(void);
+
 
 /**
  * @brief This is the idle task that the system runs when no other task is runnable
@@ -38,6 +43,17 @@ static void idle(void)
 {
 	 enable_interrupts();
 	 while(1);
+}
+
+static void idle_init(void){
+	task_t idle_task;
+	idle_task.lambda = (void *) idle;
+	idle_task.data = 0;
+	idle_task.C = 0;
+	idle_task.T = 0; 
+	idle_task.stack_pos = system_tcb[IDLE_PRIO].kstack_high; //?
+	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
+	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
 }
 
 /**
@@ -66,10 +82,16 @@ static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 	tcb->sleep_queue = 0;
 }
 
+/**
+ * @brief Creates the main user program as a main task
+ * and sets it to run.
+ *
+ * This function is only called when the user program is
+ * first run.
+ *
+ */
 void sched_init(task_t* main_task)
 {
-	// since global, system_tcb is all zeroed out.
-	// however, we may need to use this for other purposes  
 	main_task->lambda =    (void *)0xa0000000;
 	main_task->data = 0;
 	main_task->stack_pos = (void *)0xa3000000;
@@ -105,13 +127,8 @@ void allocate_tasks(task_t** tasks, size_t num_tasks)
 		tcb_init(tasks[i], &system_tcb[i], i);
 		runqueue_add(&system_tcb[i], i);
 	}
-	task_t idle_task;
-	idle_task.lambda = (void *)idle;
-	idle_task.data = 0;
-	idle_task.stack_pos = 0; //should I need this?
-	idle_task.C = 0;
-	idle_task.T = 0; 
-	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
-	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
+
+	/* add the idle task */
+	idle_init();
 }
 
