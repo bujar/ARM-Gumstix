@@ -1,19 +1,13 @@
-/*
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
- *         Jonathan Lim <jlim2@andrew.cmu.edu>
- *         Norman Wu <luow@andrew.cmu.edu>
- * Date: Sat Nov  22 18:54:08 EDT 2013
- */
-
 /**
  * @file mutex.c
  *
  * @brief Implements mutices.
  *
- * @author Harry Q Bovik < PUT YOUR NAMES HERE
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
  *
- * 
- * @date  
+ * @date:  Sat Nov  22 18:54:08 EDT 2013
  */
 
 //#define DEBUG_MUTEX

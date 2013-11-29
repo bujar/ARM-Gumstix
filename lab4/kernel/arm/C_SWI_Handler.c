@@ -4,23 +4,33 @@
  * Author: Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu> 
- * Date:   Thu Nov  7 00:01:35 EST 2013
+ * Date:   Thu Nov 28 20:57:27 EST 2013
  */
 
 #include <bits/swi.h>
 #include <exports.h>
 #include <syscall.h>
+#include <lock.h>
 
 int C_SWI_Handler(unsigned swi_num, unsigned *regs){
-	int fd;
+    
+	/* for read/write */
+	int fd;   
 	void *buf;
 	size_t size;
-	unsigned int millis;
 
-	task_t *tasks;
-	size_t num_tasks;
+	/* for sleep */	
+	unsigned int millis; 
 
-	unsigned int dev;
+	/* for task_create */
+	task_t *tasks;  
+	size_t num_tasks; 
+
+	/* for event functions */
+	unsigned int dev;    
+   
+	/* for lock functions */
+	int mutex;        
 
 	switch (swi_num) {
 	    case READ_SWI:
@@ -49,11 +59,16 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 			return task_create(tasks, num_tasks);
 
 		case MUTEX_CREATE:
-			break;			
+			return mutex_create();
+		
 		case MUTEX_LOCK:
-			break;			
+			mutex = regs[0];
+			return mutex_lock(mutex);
+		
 		case MUTEX_UNLOCK:
-			break;			
+			mutex = regs[0];
+			return mutex_unlock(mutex);
+			
 		case EVENT_WAIT:
 			dev = regs[0];
 			return event_wait(dev);
