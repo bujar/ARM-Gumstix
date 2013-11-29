@@ -21,6 +21,7 @@
 FUNC(task_create)
     swi CREATE_SWI
     
+	#if SWI returns, it will return errno and ...
     ldr r1, =errno
     str r0, [r1] 
     mov r0, #-1 
