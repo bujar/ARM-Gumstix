@@ -85,16 +85,10 @@ void dev_wait(unsigned int dev)
 		devices[dev].sleep_queue = get_cur_tcb();
 	}
 
-	/* dispatch runnable task (not this one because it is sleeping) 
-	 * with highest priority 
+	/* dispatch runnable task with highest priority
+     * (not this one because it is sleeping) 
      */
 	dispatch_sleep(); 
-	tcb_t * poo = devices[0].sleep_queue;
-	while(poo != NULL){
-		printf("dev_wait after dispatch_sleep is:\n");
-		printf("currprio is %u\n", poo->cur_prio);
-		poo = poo->sleep_queue;
-	}
 	enable_interrupts();
 }
 
@@ -112,6 +106,8 @@ void dev_update(unsigned long millis)
 	int i;
 	for(i = NUM_DEVICES - 1; i >= 0; i--){
 		dev_t *dev = &devices[i];
+		
+		/* wake up all TCBs waiting on devices that fire off */
 		if(dev->sleep_queue && (dev->next_match != 0) && 
 							(millis % dev->next_match == 0)){
 			sleepqueue_wake(i);
@@ -121,15 +117,25 @@ void dev_update(unsigned long millis)
 	enable_interrupts();
 }
 
+/** 
+ * @brief Removes all TCBs waiting on dev's sleep queue and adds
+ * them to the runqueue, ensuring that the tasks are made runnable
+ */
 void sleepqueue_wake(unsigned int dev){
-	tcb_t *next = devices[dev].sleep_queue;
-	tcb_t *curr = next;
-	while(next != NULL){
+	tcb_t *curr = devices[dev].sleep_queue;
+	tcb_t *next = curr;
+
+	/* set device's sleep_queue as empty */
+	devices[dev].sleep_queue = NULL;
+
+	/* remove and set each TCB as runnable */ 
+	while(curr != NULL){
 		next = next->sleep_queue;
-		runqueue_add(curr, curr->cur_prio); //make curr runnable
+		runqueue_add(curr, curr->cur_prio); 
 		curr->sleep_queue = NULL;
 		curr = next;
 	}
+
 }
 		
 		
