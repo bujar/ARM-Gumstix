@@ -30,7 +30,7 @@ FUNC(mutex_create)
     LDMFD sp!, {r1-r12, lr}
 
     CMP r0, #0
-    MOVLT pc, lr
+    MOVGE pc, lr
     RSB r1, r0, #0
     LDR r2, =errno
     STR r1, [r2]     

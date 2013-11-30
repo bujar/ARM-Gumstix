@@ -30,7 +30,7 @@ FUNC(mutex_unlock)
     LDMFD sp!, {r1-r12, lr}
 
     CMP r0, #0
-    MOVLT pc, lr
+    MOVEQ pc, lr
     RSB r1, r0, #0
     LDR r2, =errno
     STR r1, [r2]
