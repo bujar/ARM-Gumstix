@@ -30,13 +30,18 @@
 
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
+/* stack for idle, should we align by 8? */
+uint32_t idle_kstack[OS_KSTACK_SIZE/sizeof(uint32_t)];
+uint32_t idle_kstack_high[0];
+
 /* static functions for sched.c */
 static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio);
 static void idle_init(void);
 
 
 /**
- * @brief This is the idle task that the system runs when no other task is runnable
+ * @brief This is the idle task that the system runs when no other 
+ * task is runnable
  */
  
 static void idle(void)
@@ -46,15 +51,17 @@ static void idle(void)
 }
 
 
+/**
+ * @brief This function initializes the idle TCB and makes it runnable
+ */
 static void idle_init(void){
 	task_t idle_task;
 	idle_task.lambda = (void *) idle;
 	idle_task.data = 0;
 	idle_task.C = 0;
 	idle_task.T = 0; 
-	idle_task.stack_pos = (void *)0xa1600000;
+	idle_task.stack_pos = (void *) idle_kstack_high;
 	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
-//	printf("idle_init\n");
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
 }
 
