@@ -52,7 +52,7 @@ static void idle_init(void){
 	idle_task.data = 0;
 	idle_task.C = 0;
 	idle_task.T = 0; 
-	idle_task.stack_pos = 0xa1600000;
+	idle_task.stack_pos = (void *)0xa1600000;
 	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
 //	printf("idle_init\n");
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
