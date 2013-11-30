@@ -54,7 +54,7 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 	if (tasks[i].C > tasks[i].T) {
 	   return ESCHED;
 	}
-	if (tasks[i].C == 0) {
+	/*if (tasks[i].C == 0) {
 	   printf("a task cost is 0\n");
 	   return EINVAL;
 	}
@@ -62,6 +62,8 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 	   printf("a task period is 0\n");
 	   return EINVAL;
 	}
+	*/
+
   }
   if (num_tasks > OS_MAX_TASKS) {
 	return EINVAL;
