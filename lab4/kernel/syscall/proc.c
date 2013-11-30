@@ -98,8 +98,17 @@ static void insertion_sort(task_t** ptasks, size_t num_tasks){
 
 int task_create(task_t* tasks, size_t num_tasks)
 {
-  //printf("\t\task_create\n");
+  //printf("\t\task_create\n");	
   int error;
+	/*
+	*Upon success, this function does not return. It instead begins scheduling tasks. On failure, an error code may be returned.
+EINVAL num tasks is greater than the maximum number of tasks the OS supports (64). EFAULT tasks points to region whose bounds lie outside valid address space.
+ESCHED The given task set is not schedulable – some tasks may not meet their deadlines.
+	*/
+	if(num_tasks > 64)
+		return -EINVAL;
+	if((tasks > 0xa3000000)||(tasks < 0xa0000000))
+		return -EFAULT;		
   error = schedulable(tasks, num_tasks);
   if (error != 0) {
   	return error;
