@@ -37,8 +37,14 @@ S_Handler:
 	MRS	ip,cpsr			         @enable IRQ
 	BIC	ip, ip, #PSR_IRQ	
 	MSR	cpsr, ip
+  STMFD sp, {sp,lr}^
+  sub sp, sp, #8
+
 
 	BL	C_SWI_Handler            @ goto handler
+  LDMFD sp,{sp,lr}^
+  ADD sp, sp, #8
+
 	LDR	r2, [sp, #14*4]          @ restore SPSR
 	MSR	spsr, r2                 @ restore SPSR from r2
 	ADD	sp, sp, #4               @ remove r0 from the top of stack
