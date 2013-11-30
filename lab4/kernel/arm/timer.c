@@ -50,19 +50,16 @@ void timer_init(void)
 // This function is called on all IRQ interrupts
 void timer_inc(void)
 {
+  	uint32_t ossr;
+	
 	// increment the number of the timer ticks
 	++num_timer_tick;
 
-	// reset the OSSR[M0]bit
-	/*
-	   reg_set(OSTMR_OSSR_ADDR, OSTMR_OSSR_M0);
-     */
-
-	     osmr_count += CLOCKS_PER_TICK;
-	   //add clocks to OSMR
-	   reg_write(OSTMR_OSMR_ADDR(0), osmr_count);
-  uint32_t ossr;
-//	reg_write(OSTMR_OSCR_ADDR, (size_t)0x0);
+	//add clocks to OSMR
+	osmr_count += CLOCKS_PER_TICK;
+	reg_write(OSTMR_OSMR_ADDR(0), osmr_count);
+	
+	// acknowledge interupt and set OSSR 
 	ossr = reg_read(OSTMR_OSSR_ADDR);
 	ossr |= OSTMR_OSSR_M0;
 	reg_write(OSTMR_OSSR_ADDR, ossr);
