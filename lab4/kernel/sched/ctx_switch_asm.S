@@ -48,10 +48,10 @@ FUNC(launch_task)
 /* r0 points to the target context, r1 to the current context. */
 /* add your code to perform a full context switch */
 FUNC(ctx_switch_full)
-	stmia	r1!, {r4-r11, sp, lr}	@store regs into r1, curent conext
+	stmia	r1, {r4-r11, sp, lr}	@store regs into r1, curent conext
 	bl	ctx_switch_half
 
 /*add your code to perform a half context switch */	
 FUNC(ctx_switch_half)
-	ldmia	r0!, {r4-r11, sp, lr}	@load regs from r0, no save of current context
+	ldmia	r0, {r4-r11, sp, lr}	@load regs from r0, no save of current context
 	mov	pc, lr

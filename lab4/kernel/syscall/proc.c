@@ -98,6 +98,7 @@ static void insertion_sort(task_t** ptasks, size_t num_tasks){
 
 int task_create(task_t* tasks, size_t num_tasks)
 {
+  printf("\t\task_create\n");
   int error;
   error = schedulable(tasks, num_tasks);
   if (error != 0) {

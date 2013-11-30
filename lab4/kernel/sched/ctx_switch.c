@@ -26,6 +26,7 @@
 #endif
  
 static tcb_t* cur_tcb; /* global */
+extern void tcb_debug(tcb_t*);
 
 /**
  * @brief Initialize the current TCB and priority.
@@ -52,6 +53,7 @@ void dispatch_save(void)
   tcb_t* target_tcb;
   tcb_t* temp_cur_tcb;
   uint8_t next_task_prio;
+//  printf("dispatch_save\n");
 
   runqueue_add(cur_tcb, cur_tcb->cur_prio);	//task is done add back to runq	
   
@@ -64,6 +66,15 @@ void dispatch_save(void)
   target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
   temp_cur_tcb = cur_tcb;
   cur_tcb = target_tcb;	//current tcb(global) after context switch
+
+
+  /*
+  printf("dispatch_save\n");
+  printf("============== Current TCB\n");
+  tcb_debug(temp_cur_tcb);
+  printf("============== Next TCB\n");
+  tcb_debug(target_tcb);
+  */
   ctx_switch_full(&(target_tcb->context), &(temp_cur_tcb->context));
 }
 
@@ -100,11 +111,18 @@ void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
   target_tcb = runqueue_remove(next_task_prio);  //grab tcb of next task and remove from runq
   temp_cur_tcb = get_cur_tcb();
   cur_tcb = target_tcb;	//current tcb(global) after context switch
+
+  /*
+  printf("dispatch_sleep\n");
+  printf("============== Current TCB\n");
+  tcb_debug(temp_cur_tcb);
+  printf("============== Next TCB\n");
+  tcb_debug(target_tcb);
+  */
   ctx_switch_full(&(target_tcb->context), &(temp_cur_tcb->context));
 }
 
-/**
- * @brief Returns the priority value of the current task.
+/** * @brief Returns the priority value of the current task.
  */
 uint8_t get_cur_prio(void)
 {

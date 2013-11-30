@@ -101,6 +101,7 @@ void runqueue_add(tcb_t* tcb, uint8_t prio)
 
 	/* add tcb to be runnable */
 	run_list[prio] = tcb;
+//	printit();
 }
 
 

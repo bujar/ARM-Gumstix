@@ -45,14 +45,16 @@ static void idle(void)
 	 while(1);
 }
 
+
 static void idle_init(void){
 	task_t idle_task;
 	idle_task.lambda = (void *) idle;
 	idle_task.data = 0;
 	idle_task.C = 0;
 	idle_task.T = 0; 
-	idle_task.stack_pos = system_tcb[IDLE_PRIO].kstack_high; //?
+	idle_task.stack_pos = 0xa1600000;
 	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
+//	printf("idle_init\n");
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
 }
 
@@ -98,6 +100,7 @@ void sched_init(task_t* main_task)
 	main_task->C = 1;
 	main_task->T = 1; 
 	tcb_init(main_task, &system_tcb[FIRST_MAIN_PRIO], FIRST_MAIN_PRIO);
+//	printf("sched_init\n");
 	runqueue_add(&system_tcb[FIRST_MAIN_PRIO], FIRST_MAIN_PRIO);
 	dispatch_init(&system_tcb[FIRST_MAIN_PRIO]);
 }
@@ -125,10 +128,27 @@ void allocate_tasks(task_t** tasks, size_t num_tasks)
 	for(i = 0; i < num_tasks; i++)
 	{
 		tcb_init(tasks[i], &system_tcb[i], i);
+//		printf("allocate_tasks:%d\n",i);
 		runqueue_add(&system_tcb[i], i);
 	}
 
 	/* add the idle task */
 	idle_init();
+}
+
+void tcb_debug( tcb_t *target_tcb){
+	printf("=================TCB DEBUG\n");
+	printf("Native Prio:%d\n",target_tcb->native_prio);
+	printf("Current Prio:%d\n",target_tcb->cur_prio);
+	printf("r4:%x(%d)\n",target_tcb->context.r4, target_tcb->context.r4);
+	printf("r5:%x(%d)\n",target_tcb->context.r5, target_tcb->context.r5);
+	printf("r6:%x(%d)\n",target_tcb->context.r6, target_tcb->context.r6);
+	printf("r7:%x(%d)\n",target_tcb->context.r7, target_tcb->context.r7);
+	printf("r8:%x(%d)\n",target_tcb->context.r8, target_tcb->context.r8);
+	printf("r9:%x(%d)\n",target_tcb->context.r9, target_tcb->context.r9);
+	printf("r10:%x(%d)\n",target_tcb->context.r10, target_tcb->context.r10);
+	printf("r11:%x(%d)\n",target_tcb->context.r11, target_tcb->context.r11);
+	printf("sp:%p\n",target_tcb->context.sp);
+	printf("lr:%p\n",target_tcb->context.lr);
 }
 
