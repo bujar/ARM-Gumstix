@@ -28,6 +28,9 @@
 #include <arm/exception.h>
 #include <arm/physmem.h>
 #include <device.h>
+#define TASK_ADDR_BEGIN 0xa0000000
+#define TASK_ADDR_END	0xa3000000
+#define NUM_TASKS 64
 
 task_t *system_ptasks[OS_MAX_TASKS]; /* pointer to ptrs of tasks to be sorted */
 
@@ -105,9 +108,10 @@ int task_create(task_t* tasks, size_t num_tasks)
 EINVAL num tasks is greater than the maximum number of tasks the OS supports (64). EFAULT tasks points to region whose bounds lie outside valid address space.
 ESCHED The given task set is not schedulable – some tasks may not meet their deadlines.
 	*/
-	if(num_tasks > 64)
+	if(num_tasks > NUM_TASKS )
 		return -EINVAL;
-	if((tasks > 0xa3000000)||(tasks < 0xa0000000))
+	if(((unsigned int)tasks > TASK_ADDR_END)||
+	((unsigned int)tasks < TASK_ADDR_BEGIN))
 		return -EFAULT;		
   error = schedulable(tasks, num_tasks);
   if (error != 0) {
