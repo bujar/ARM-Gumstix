@@ -1,10 +1,3 @@
-/*
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
- *         Jonathan Lim <jlim2@andrew.cmu.edu>
- *         Norman Wu <luow@andrew.cmu.edu>
- * Date: Sat Nov  22 18:54:08 EDT 2013
- */
-
 /** @file proc.c
  * 
  * @brief Implementation of `process' syscalls
@@ -14,6 +7,11 @@
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-12
+ * 
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ * @date Sat Nov 30 21:27:29 EST 2013
  */
 
 #include <exports.h>
@@ -48,35 +46,40 @@ static void clear_tasks(){
 }
 
 static int schedulable(task_t* tasks, size_t num_tasks) {
-  unsigned int i;
 
-  for(i = 0; i < num_tasks; i++) {
-	if (tasks[i].C > tasks[i].T) {
-	   return ESCHED;
-	}
-	/*if (tasks[i].C == 0) {
-	   printf("a task cost is 0\n");
-	   return EINVAL;
-	}*/
-	if (tasks[i].T == 0) {
-	   printf("a task period is 0\n");
-	   return EINVAL;
-	}
-	
+	unsigned int i;
 
-  }
-  if (num_tasks > OS_MAX_TASKS) {
-	return EINVAL;
-  }
-  return 0;
+	// checks if tasks array is in proper memory addr?
+	// NEED TO FIX BOUNDARIES.
+	if(((unsigned int)tasks > TASK_ADDR_END) ||
+	   ((unsigned int)tasks < TASK_ADDR_BEGIN))
+		return -EFAULT;		
+
+	for(i = 0; i < num_tasks; i++) {
+		if (tasks[i].C > tasks[i].T) {
+			return ESCHED;
+		}
+		if (tasks[i].C == 0) {
+			return EINVAL;
+		}
+		if (tasks[i].T == 0) {
+			return EINVAL;
+		}
+	}
+	if (num_tasks > OS_MAX_TASKS) {
+		return EINVAL;
+  	}
+	return 0;
 }
 
 /* implements the rate monotonic scheduling (RMS) algorithm
- *     sort them by period with shortest being the highest prio
+ * and sort tasks by period with the first task in the array
+ * with the highest prio
  */
 
 static void sort_tasks(task_t* tasks, size_t num_tasks) {
-	// create pointers to tasks to sort instead
+	
+	// create pointers to tasks array for sorting
 	int i;
 	for( i = 0; i < (int) num_tasks; i++){
 		system_ptasks[i] = &tasks[i];
@@ -101,31 +104,24 @@ static void insertion_sort(task_t** ptasks, size_t num_tasks){
 	}
 }
 
-int task_create(task_t* tasks, size_t num_tasks)
-{
-  //printf("\t\task_create\n");	
-  int error;
-	/*
-	*Upon success, this function does not return. It instead begins scheduling tasks. On failure, an error code may be returned.
-EINVAL num tasks is greater than the maximum number of tasks the OS supports (64). EFAULT tasks points to region whose bounds lie outside valid address space.
-ESCHED The given task set is not schedulable – some tasks may not meet their deadlines.
-	*/
-	if(num_tasks > NUM_TASKS )
-		return -EINVAL;
-	if(((unsigned int)tasks > TASK_ADDR_END)||
-	((unsigned int)tasks < TASK_ADDR_BEGIN))
-		return -EFAULT;		
-  error = schedulable(tasks, num_tasks);
-  if (error != 0) {
-  	return error;
-  }
+/*
+ * System call that manages the scheduling policy.
+ */
 
-  clear_tasks(); // clears the ptasks array
-  sort_tasks(tasks, num_tasks);
-  allocate_tasks(system_ptasks, num_tasks);
-  dispatch_nosave(); //do we need this here?
+int task_create(task_t* tasks, size_t num_tasks){
 
-  return 1;
+	int error;
+
+	error = schedulable(tasks, num_tasks);
+	if (error != 0) return error;
+
+	clear_tasks(); // clears the ptasks array
+	sort_tasks(tasks, num_tasks);
+	allocate_tasks(system_ptasks, num_tasks);
+	dispatch_nosave();
+
+	/* should never reach here */
+	return 1;
 }
 
 

@@ -5,9 +5,9 @@
  * Date: Sat Nov  22 18:54:08 EDT 2013
  */
 
-/** @file time.S
+/** @file mutex_lock.S
  *
- * @brief time sycall wrapper
+ * @brief mutex lock sycall wrapper
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-10-31
@@ -19,8 +19,6 @@
 	.file "mutex_lock.S"
 
 FUNC(mutex_lock)
-	@ Add code here.  Put your name at the top.
-
     @ Success returns positive value.
     @ If error, return errno=abs(r0)
     @    and return -1

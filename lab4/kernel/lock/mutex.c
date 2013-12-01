@@ -1,7 +1,7 @@
 /**
  * @file mutex.c
  *
- * @brief Implements mutices.
+ * @brief Implements mutexes.
  *
  * @author Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
@@ -55,7 +55,7 @@ int mutex_create(void)
 		if(gtMutex[i].bAvailable == TRUE)
 		{	
 			gtMutex[i].bAvailable  = FALSE;
-			return i;//should be i + 1 or i?
+			return i;
 		}
 	}	
 	return -ENOMEM; 
@@ -66,6 +66,7 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 {
 	mutex_t *mtx = &gtMutex[mutex];
 	tcb_t *p1;
+
 	if(mtx->pSleep_queue==NULL)
 	{
 		mtx->pSleep_queue = tcb;
@@ -81,6 +82,7 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 		p1->sleep_queue = tcb;
 		tcb->sleep_queue = NULL;
 	}
+
 	/* remove the tcb from runqueue */
 	runqueue_remove(tcb->cur_prio);	
 }
@@ -97,14 +99,15 @@ void mutex_queue_remove(int mutex)
 	{
 		if(p1->sleep_queue == NULL)
 		{	
-			/* make the task runable */
+			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
 			mtx->pSleep_queue = NULL;
 		}else{
 			p2 = p1;
 			p1 = p1->sleep_queue;
 			mtx->pSleep_queue = p1;
-			/* make the task runable */
+
+			/* make the task runnable */
 			runqueue_add(p2, p2->cur_prio);	
 		}
 	}

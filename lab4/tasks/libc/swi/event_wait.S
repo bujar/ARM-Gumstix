@@ -1,6 +1,6 @@
 /** @file event_wait.S
  *
- * @brief time sycall wrapper
+ * @brief event_wait sycall wrapper
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-10-31
