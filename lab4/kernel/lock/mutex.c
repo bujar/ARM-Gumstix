@@ -110,6 +110,7 @@ void mutex_queue_remove(int mutex)
 		}else{
 			p2 = p1;
 			p1 = p1->sleep_queue;
+			p2->sleep_queue = NULL;
 			mtx->pSleep_queue = p1;
 
 			/* make the task runnable */
@@ -152,7 +153,7 @@ int mutex_lock(int mutex)
 	return 0;
 }
 
-int mutex_unlock(int mutex  __attribute__((unused)))
+int mutex_unlock(int mutex)
 {
 	tcb_t *cur_tcb;
 	 
