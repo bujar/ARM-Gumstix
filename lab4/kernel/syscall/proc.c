@@ -55,7 +55,7 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 	   ((unsigned int)tasks < TASK_ADDR_BEGIN))
 		return EFAULT;		
 	
-	if (num_tasks > OS_MAX_TASKS) {
+	if (num_tasks > (OS_MAX_TASKS - 2)) {
 		return EINVAL;
   	}
 
