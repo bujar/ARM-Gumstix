@@ -85,6 +85,13 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 		tcb->sleep_queue = NULL;
 	}
 	
+/*	p1 = mtx->pSleep_queue;
+	printf("----------mutex sleep queue@add---------\n");
+	while(p1!=NULL){
+		printf("task:%d\t\n",p1->cur_prio);
+		p1 = p1->sleep_queue;
+	}
+	printf("\n\n"); */
 	/* remove the tcb from runqueue */
 	// runqueue_remove(tcb->cur_prio);	
 }
@@ -104,6 +111,7 @@ void mutex_queue_remove(int mutex)
 		{	
 			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
+			//printf("runqueue add: %d \n", p1->cur_prio);
 			mtx->pSleep_queue = NULL;
 
 		/* more than one TCB in mutex sleeping queue */
@@ -115,8 +123,16 @@ void mutex_queue_remove(int mutex)
 
 			/* make the task runnable */
 			runqueue_add(p2, p2->cur_prio);	
+			//printf("runqueue add: %d \n", p1->cur_prio);
 		}
 	}
+/*	p1 = mtx->pSleep_queue;
+	printf("----------mutex sleep queue@remove---------\n");
+	while(p1!=NULL){
+		printf("task:%d\t\n",p1->cur_prio);
+		p1 = p1->sleep_queue;
+	}
+	printf("\n\n");*/
 }
 
 int mutex_lock(int mutex)
@@ -139,14 +155,15 @@ int mutex_lock(int mutex)
 	}
 
 	/* try to get the mutex */
-	if(gtMutex[mutex].bLock == FALSE)
-	{	
-		gtMutex[mutex].bLock = TRUE;
-		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
-	}else{
+	if(gtMutex[mutex].bLock == TRUE)
+	{
 		mutex_queue_add(mutex, cur_tcb);
 		dispatch_sleep();
 	}
+
+	gtMutex[mutex].bLock = TRUE;
+	gtMutex[mutex].pHolding_Tcb =  cur_tcb;
+
 
 	enable_interrupts(); 
 	return 0;
