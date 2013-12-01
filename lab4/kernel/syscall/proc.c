@@ -53,7 +53,11 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 	// NEED TO FIX BOUNDARIES.
 	if(((unsigned int)tasks > TASK_ADDR_END) ||
 	   ((unsigned int)tasks < TASK_ADDR_BEGIN))
-		return -EFAULT;		
+		return EFAULT;		
+	
+	if (num_tasks > OS_MAX_TASKS) {
+		return EINVAL;
+  	}
 
 	for(i = 0; i < num_tasks; i++) {
 		if (tasks[i].C > tasks[i].T) {
@@ -64,9 +68,6 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 			return EINVAL;
 		}
 	}
-	if (num_tasks > OS_MAX_TASKS) {
-		return EINVAL;
-  	}
 	return 0;
 }
 
