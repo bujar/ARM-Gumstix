@@ -24,5 +24,5 @@ $(TDIR)/%/package.bin : $(TDIR)/bin/%.bin
 
 $(PACKAGE_TARGETS):
 	@echo LD $(notdir $@)
-	@$(LD) -static $(LDFLAGS) -o $@ $^
+	@$(LD) -static $(LDFLAGS) -o $@ $^ $(LIBC_GROUP)
 

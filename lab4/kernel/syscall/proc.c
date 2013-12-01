@@ -59,9 +59,7 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 		if (tasks[i].C > tasks[i].T) {
 			return ESCHED;
 		}
-		if (tasks[i].C == 0) {
-			return EINVAL;
-		}
+		
 		if (tasks[i].T == 0) {
 			return EINVAL;
 		}
