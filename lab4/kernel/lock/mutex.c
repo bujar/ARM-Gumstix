@@ -143,7 +143,6 @@ int mutex_lock(int mutex)
 	{	
 		gtMutex[mutex].bLock = TRUE;
 		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
-		return 0;	
 	}else{
 		mutex_queue_add(mutex, cur_tcb);
 		dispatch_sleep();

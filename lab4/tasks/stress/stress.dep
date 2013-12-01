@@ -1,0 +1,23 @@
+/git/18342/ARM-Gumstix/lab4/tasks/stress/stress.o:  \
+ /git/18342/ARM-Gumstix/lab4/tasks/stress/stress.c \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/stdio.h \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/stdarg.h \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/sys/types.h \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/bits/types.h \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/task.h \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/unistd.h \
+  /git/18342/ARM-Gumstix/lab4/tasks/libc/include/bits/fileno.h
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/stdio.h:
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/stdarg.h:
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/sys/types.h:
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/bits/types.h:
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/task.h:
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/unistd.h:
+
+/git/18342/ARM-Gumstix/lab4/tasks/libc/include/bits/fileno.h:
