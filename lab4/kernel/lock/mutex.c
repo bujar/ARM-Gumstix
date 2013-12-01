@@ -75,6 +75,8 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 	else
 	{
 		p1 = mtx->pSleep_queue;
+
+		/* find the last TCB in the sleep queue */
 		while(p1->sleep_queue!=NULL)
 		{
 			p1 = p1->sleep_queue;
@@ -82,9 +84,9 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 		p1->sleep_queue = tcb;
 		tcb->sleep_queue = NULL;
 	}
-
+	
 	/* remove the tcb from runqueue */
-	runqueue_remove(tcb->cur_prio);	
+	// runqueue_remove(tcb->cur_prio);	
 }
 
 /* remove the first task in mutex sleeping queue when a mutex is released */
@@ -97,11 +99,14 @@ void mutex_queue_remove(int mutex)
 		return;
 	else
 	{
+		/* if mutex sleep queue only has one TCB*/
 		if(p1->sleep_queue == NULL)
 		{	
 			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
 			mtx->pSleep_queue = NULL;
+
+		/* more than one TCB in mutex sleeping queue */
 		}else{
 			p2 = p1;
 			p1 = p1->sleep_queue;
@@ -113,10 +118,11 @@ void mutex_queue_remove(int mutex)
 	}
 }
 
-int mutex_lock(int mutex  __attribute__((unused)))
+int mutex_lock(int mutex)
 {	
 	tcb_t *cur_tcb;
-	 
+	
+	disable_interrupts(); 
 	/* check if the mutex number within the mutex area, and check if the mutex 
 	was created */
 	if((mutex >= OS_NUM_MUTEX) || (mutex < 0) || gtMutex[mutex].bAvailable)
@@ -142,6 +148,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
 		dispatch_sleep();
 	}
 
+	enable_interrupts(); 
 	return 0;
 }
 
@@ -149,6 +156,8 @@ int mutex_unlock(int mutex  __attribute__((unused)))
 {
 	tcb_t *cur_tcb;
 	 
+	disable_interrupts(); 
+	
 	/* check if the mutex number within the mutex area, and check if the mutex 
 	was created */
 	if((mutex >= OS_NUM_MUTEX) || (mutex < 0) || gtMutex[mutex].bAvailable)
@@ -170,6 +179,8 @@ int mutex_unlock(int mutex  __attribute__((unused)))
 	
 	/* put the first task in mutex queue runnable */
 	mutex_queue_remove(mutex);
+	
+	enable_interrupts(); 
 		
 	return 0;
 }
