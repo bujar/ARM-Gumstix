@@ -64,8 +64,6 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	reg_write(INT_ICMR_ADDR, (1 << INT_OSTMR_0));
 	reg_write(INT_ICLR_ADDR, (0 << INT_OSTMR_0));
 
-	// may restore later.. how to go USR->SVC?
-	//status = userSetup(argc, argv);
 	runqueue_init();
 	mutex_init();
 	task_t main_task;

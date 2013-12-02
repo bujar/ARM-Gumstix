@@ -37,8 +37,29 @@
 int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
 
+	
 	return 1; // fix this; dummy return to prevent compiler warnings	
+}
+
+/* This function assumes that the tasks are already sorted
+ * so that it satisfies rate-monotonicity. 
+ *
+ * The UB test is performed to see if the tasks are schedulable
+ *
+ */
+/*int ubtest(task_t **tasks, size_t num_tasks){
+
+	int i;
+	int bound;
+	int k;
+	
+	k = num_tasks - 1;
+	bound = k *
+	for(i = 0; i < num_tasks; i++){
+	
+		
+	return 1;
 }
 	
 
-
+*/
