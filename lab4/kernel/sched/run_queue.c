@@ -61,7 +61,7 @@ static uint8_t prio_unmap_table[] =
 };
 
 // prints the runqueue numerically
-void printit();
+static void print_runbits();
 
 /**
  * @brief Clears the run-queues and sets them all to empty.
@@ -101,7 +101,6 @@ void runqueue_add(tcb_t* tcb, uint8_t prio)
 
 	/* add tcb to be runnable */
 	run_list[prio] = tcb;
-//	printit();
 }
 
 
@@ -146,7 +145,7 @@ uint8_t highest_prio(void)
 	return prio; 
 }
 
-void printit(){
+static void print_runbits(){
 	int i;
 	printf("grouprunbits=%u\n", group_run_bits);
 	for(i = 0; i < 8; i++ )

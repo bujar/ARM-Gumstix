@@ -1,17 +1,17 @@
-/* 
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
- *         Jonathan Lim <jlim2@andrew.cmu.edu>
- *         Norman Wu <luow@andrew.cmu.edu>
- * Date: Sat Nov  22 18:54:08 EDT 2013
- */
-
 /** @file sched.c
  * 
  * @brief Top level implementation of the scheduler.
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-20
+ * 
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ * @date Sat Nov  22 18:54:08 EDT 2013
  */
+
+
 
 #include <types.h>
 #include <assert.h>
@@ -31,8 +31,8 @@
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
 /* stack for idle, should we align by 8? */
-uint32_t idle_kstack[OS_KSTACK_SIZE/sizeof(uint32_t)];
-uint32_t idle_kstack_high[0];
+uint32_t idle_stack[OS_KSTACK_SIZE/sizeof(uint32_t)];
+uint32_t idle_stack_high[0];
 
 /* static functions for sched.c */
 static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio);
@@ -60,7 +60,7 @@ static void idle_init(void){
 	idle_task.data = 0;
 	idle_task.C = 0;
 	idle_task.T = 0; 
-	idle_task.stack_pos = (void *) idle_kstack_high;
+	idle_task.stack_pos = (void *) idle_stack_high;
 	tcb_init(&idle_task, &system_tcb[IDLE_PRIO], IDLE_PRIO);
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
 }
@@ -107,7 +107,6 @@ void sched_init(task_t* main_task)
 	main_task->C = 1;
 	main_task->T = 1; 
 	tcb_init(main_task, &system_tcb[FIRST_MAIN_PRIO], FIRST_MAIN_PRIO);
-//	printf("sched_init\n");
 	runqueue_add(&system_tcb[FIRST_MAIN_PRIO], FIRST_MAIN_PRIO);
 	dispatch_init(&system_tcb[FIRST_MAIN_PRIO]);
 }
@@ -135,7 +134,6 @@ void allocate_tasks(task_t** tasks, size_t num_tasks)
 	for(i = 0; i < num_tasks; i++)
 	{
 		tcb_init(tasks[i], &system_tcb[i], i);
-//		printf("allocate_tasks:%d\n",i);
 		runqueue_add(&system_tcb[i], i);
 	}
 

@@ -1,10 +1,3 @@
-/*
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
- *         Jonathan Lim <jlim2@andrew.cmu.edu>
- *         Norman Wu <luow@andrew.cmu.edu>
- * Date: Sat Nov  22 18:54:08 EDT 2013
- */
-
 /** @file ctx_switch_asm.S
  *
  * @brief Contains the core context switch routine.
@@ -15,6 +8,11 @@
  *
  * @author Kartik Subramanian
  * @date   2008-11-21
+ *
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ * @date: Sat Nov  22 18:54:08 EDT 2013
  */
 
 	.file "ctx_switch_asm.S"
@@ -46,12 +44,10 @@ FUNC(launch_task)
 	mov     pc, r4
 
 /* r0 points to the target context, r1 to the current context. */
-/* add your code to perform a full context switch */
 FUNC(ctx_switch_full)
 	stmia	r1, {r4-r11, sp, lr}	@store regs into r1, curent conext
 	bl	ctx_switch_half
 
-/*add your code to perform a half context switch */	
 FUNC(ctx_switch_half)
 	ldmia	r0, {r4-r11, sp, lr}	@load regs from r0, no save of current context
 	mov	pc, lr
