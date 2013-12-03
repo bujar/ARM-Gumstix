@@ -1,6 +1,6 @@
-PROGS_DAGGER_OBJS := simple_mutex.o
-PROGS_DAGGER_OBJS := $(PROGS_DAGGER_OBJS:%=$(TDIR)/simple_mutex/%)
-ALL_OBJS += $(PROGS_DAGGER_OBJS)
+PROGS_SIMPLE_MUTEX_OBJS := simple_mutex.o
+PROGS_SIMPLE_MUTEX_OBJS := $(PROGS_SIMPLE_MUTEX_OBJS:%=$(TDIR)/simple_mutex/%)
+ALL_OBJS += $(PROGS_SIMPLE_MUTEX_OBJS)
 
-$(TDIR)/bin/simple_mutex : $(TSTART) $(PROGS_DAGGER_OBJS) $(TLIBC)
+$(TDIR)/bin/simple_mutex : $(TSTART) $(PROGS_SIMPLE_MUTEX_OBJS) $(TLIBC)
 

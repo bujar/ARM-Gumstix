@@ -31,7 +31,7 @@ unsigned long time_syscall(void)
  *
  * 
  */
-void sleep_syscall(unsigned long millis  __attribute__((unused)))
+void sleep_syscall(unsigned long millis )
 {
 	unsigned long target_time;
 	unsigned long start_time;

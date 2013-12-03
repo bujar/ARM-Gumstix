@@ -25,7 +25,7 @@ struct task
 	void*         stack_pos;   /**< The starting position of the task's sp */
 	unsigned long C;           /**< The worst-case computation time */
 	unsigned long T;           /**< The task's period */
-	//unsigned long B;           /**< The worst-case blocking time */
+	unsigned long B;           /**< The worst-case blocking time */
 };
 typedef struct task task_t;
 
@@ -59,8 +59,7 @@ struct tcb
 	int              holds_lock;         /**< 1 if the task is currently owning a lock */
 	volatile struct tcb* sleep_queue;    /**< If this task is asleep, this is its sleep queue link */
 	/** Embed the kernel stack here -- AAPCS wants 8 byte alignment */
-	uint32_t         kstack[OS_KSTACK_SIZE/sizeof(uint32_t)] 
-	                     __attribute__((aligned(8)));
+	uint32_t         kstack[OS_KSTACK_SIZE/sizeof(uint32_t)];//(aligned(8));
 	uint32_t         kstack_high[0];
 };
 typedef volatile struct tcb tcb_t;
