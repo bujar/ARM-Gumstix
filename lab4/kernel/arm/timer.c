@@ -1,10 +1,11 @@
 /*
- * timer.c      Sets up timer driver
+ * @file timer.c      
+ * @brief sets up timer driver
  *
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu>
- * Date:   Thu Nov  7 00:01:35 EST 2013
+ * @date   Thu Nov  7 00:01:35 EST 2013
  */
 
 #include <exports.h>
@@ -26,14 +27,8 @@ void timer_inc(void);
 /* in this function, we configure the OS timer register */
 void timer_init(void)
 {
-	// size_t num_clock;
-
-	// calculate the clocks for a time unit: 10ms for now
-	// Will change to the following line if set to 10ms
-	// num_clock = OSTMR_FREQ/OS_TICKS_PER_SEC;
-	// num_clock = OSTMR_FREQ/(S_TO_MS/MS_PER_TICK);
-
 	osmr_count = CLOCKS_PER_TICK;
+	
 	// init OSCR to 0
 	reg_write(OSTMR_OSCR_ADDR, 0);
 
@@ -52,19 +47,19 @@ void timer_inc(void)
 {
   	uint32_t ossr;
 	
-	// increment the number of the timer ticks
+	/* increment the number of the timer ticks */
 	++num_timer_tick;
 
-	//add clocks to OSMR
+	/* add clocks to OSMR */
 	osmr_count += CLOCKS_PER_TICK;
 	reg_write(OSTMR_OSMR_ADDR(0), osmr_count);
 	
-	// acknowledge interupt and set OSSR 
+	/* acknowledge interupt and set OSSR */
 	ossr = reg_read(OSTMR_OSSR_ADDR);
 	ossr |= OSTMR_OSSR_M0;
 	reg_write(OSTMR_OSSR_ADDR, ossr);
 
-
-	dev_update(num_timer_tick*10);
+	/* wake up any tasks waiting on devices */
+	dev_update(num_timer_tick * MS_PER_TICK);
 }
 

@@ -4,17 +4,14 @@
 @ Authors: Bujar Tagani <btagani@andrew.cmu.edu>
 @          Jonathan Lim <jlim2@andrew.cmu.edu>
 @          Luo Wu <luow@andrew.cmu.edu>
-@ Date: Sun Nov 10 16:24:58 EST 2013
-/* assembly function which we will branch to
-*  this function will store user reg and lr
-*  also extract swi number and pass it to 
-*  C_SWI_Handler
-*/
+@ Date: Tue Dec  3 13:52:00 EST 2013
 
-/* UPDATE: Going into SVC mode disabled IRQ
- * so we updated S_Handler to enable before entering
- * SWI system calls.
- */
+/** 
+ * assembly function which we will branch to
+ * this function will store user reg and lr
+ * also extract swi number and pass it to 
+ * C_SWI_Handler
+*/
 
 #include <arm/psr.h>
 
@@ -34,17 +31,16 @@ S_Handler:
 	LDR	r0, [lr, #-4]            @ extract SWI number
 	BIC	r0, r0, #0xff000000      
 
-  	STMFD sp, {sp,lr}^
+  	STMFD sp, {sp,lr}^           @ store user mode sp and lr
   	sub sp, sp, #8
-	MRS	ip,cpsr			         @enable IRQ
+
+	MRS	ip,cpsr			         @ enable IRQ
 	BIC	ip, ip, #PSR_IRQ	
 	MSR	cpsr, ip
 
-
 	BL	C_SWI_Handler            @ goto handler
-	
-	/* disable interrupts */
-	MRS ip,cpsr
+
+	MRS ip,cpsr                  @ disable IRQ
 	ORR ip,ip, #PSR_IRQ
 	MSR cpsr,ip
 	  

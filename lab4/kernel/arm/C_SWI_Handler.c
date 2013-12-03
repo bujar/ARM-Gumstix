@@ -1,10 +1,11 @@
 /*
- * C_SWI_Handler.c	Handles SWI Calls based on SWI Num
+ * @file  C_SWI_Handler.c	
+ * @brief Handles SWI Calls based on SWI Num
  *
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu> 
- * Date:   Thu Nov 28 20:57:27 EST 2013
+ * @date   Thu Nov 28 20:57:27 EST 2013
  */
 
 #include <bits/swi.h>

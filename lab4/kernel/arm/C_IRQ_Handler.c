@@ -1,9 +1,9 @@
-/* C_IRQ_Handler.c: Handles timer IRQ
+/* @file C_IRQ_Handler.c: Handles timer IRQ
  * 
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu> 
- * Date: Thu Nov  7 00:02:30 EST 2013
+ * @date Thu Nov  7 00:02:30 EST 2013
  */
 
 #include <bits/swi.h>
