@@ -1,21 +1,12 @@
-/*
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
- *         Jonathan Lim <jlim2@andrew.cmu.edu>
- *         Norman Wu <luow@andrew.cmu.edu>
- * Date: Sat Nov  22 18:54:08 EDT 2013
- */
-
-
 /** @file main.c
  *
  * @brief kernel main
- *
- * @author 
- *	   
- *	   
- * @date   
+ * @author Bujar Tagani <btagani@andrew.cmu.edu>
+ *         Jonathan Lim <jlim2@andrew.cmu.edu>
+ *         Norman Wu <luow@andrew.cmu.edu>
+ * @date Tue Dec  3 13:47:47 EST 2013
  */
- 
+
 #include <kernel.h>
 #include <task.h>
 #include <sched.h>
@@ -28,20 +19,14 @@
 
 #include "globals.h"
 #include "sched/sched_i.h"
-//#define DEBUG
+#include "main_i.h"
 
+//#define DEBUG
 #ifdef DEBUG
 #  define debug_printf(...) printf(__VA_ARGS__)
 #else
 #  define debug_printf(...)
 #endif
-
-/* functions */
-extern void S_Handler();
-extern void irq_wrapper();
-extern int userSetup(int argc, char **argv);
-extern void timer_init(void);
-int install_handler(int vec_pos, int my_SWIaddr);
 
 uint32_t global_data;
 
@@ -52,10 +37,14 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	global_data = table;
 
 	int status = install_handler(SWI_VECTOR_ADDR, (int) &S_Handler);
-	if (status != 0) return status;
+	if (status != 0){
+		panic("Installing SWI handler failed");
+	}
 
 	status = install_handler(IRQ_VECTOR_ADDR, (int) &irq_wrapper);
-	if (status != 0) return status;
+	if (status != 0){
+		panic("Installing IRQ handler failed");
+	}
 
 	/* init the timer driver */
 	timer_init();
@@ -70,9 +59,9 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	sched_init(&main_task);
 	disable_interrupts();
 	dispatch_nosave();
-	return status;
 
 	assert(0);        /* should never get here */
+	return status;
 }
 
 

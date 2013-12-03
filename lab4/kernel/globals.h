@@ -1,10 +1,10 @@
 /*
  * globals.h: globals header file 
  *
- * Author: Bujar Tagani <btagani@andrew.cmu.edu>
+ * @author: Bujar Tagani <btagani@andrew.cmu.edu>
  *         Jonathan Lim <jlim2@andrew.cmu.edu>
  *         Norman Wu <luow@andrew.cmu.edu>
- *  Date:  Oct 31. 2013
+ * @date:  Oct 31. 2013
  */
 
 
