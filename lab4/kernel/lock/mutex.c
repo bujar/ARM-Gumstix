@@ -81,6 +81,8 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 		{
 			p1 = p1->sleep_queue;
 		}
+
+		/* add this tcb to the end of sleep queue */
 		p1->sleep_queue = tcb;
 		tcb->sleep_queue = NULL;
 	}
@@ -205,7 +207,7 @@ int mutex_unlock(int mutex)
 	/* put the first task in mutex queue runnable */
 	/*    and give this first task the lock */
 	mutex_queue_remove(mutex);
-	
+	dispatch_save();
 	enable_interrupts(); 
 		
 	return 0;
