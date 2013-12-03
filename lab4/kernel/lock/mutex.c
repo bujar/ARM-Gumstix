@@ -109,14 +109,22 @@ void mutex_queue_remove(int mutex)
 		/* if mutex sleep queue only has one TCB*/
 		if(p1->sleep_queue == NULL)
 		{	
+			/* give the first TCB on the queue the lock */
+			gtMutex[mutex].bLock = TRUE;
+			gtMutex[mutex].pHolding_Tcb = p1;
+			
 			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
-			//printf("runqueue add: %d \n", p1->cur_prio);
 			mtx->pSleep_queue = NULL;
 
 		/* more than one TCB in mutex sleeping queue */
 		}else{
+			
 			p2 = p1;
+			/* give the first TCB on the queue the lock */
+			gtMutex[mutex].bLock = TRUE;
+			gtMutex[mutex].pHolding_Tcb = p2;
+			
 			p1 = p1->sleep_queue;
 			p2->sleep_queue = NULL;
 			mtx->pSleep_queue = p1;
@@ -154,16 +162,16 @@ int mutex_lock(int mutex)
 		return -EDEADLOCK;
 	}
 
-	/* try to get the mutex */
+	/* try to get the mutex but blocked */
 	if(gtMutex[mutex].bLock == TRUE)
 	{
 		mutex_queue_add(mutex, cur_tcb);
 		dispatch_sleep();
 	}
-
-	gtMutex[mutex].bLock = TRUE;
-	gtMutex[mutex].pHolding_Tcb =  cur_tcb;
-
+	else{ /* got the mutex already, I'm not blocked */
+		gtMutex[mutex].bLock = TRUE;
+		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
+	}
 
 	enable_interrupts(); 
 	return 0;
@@ -195,6 +203,7 @@ int mutex_unlock(int mutex)
 	gtMutex[mutex].pHolding_Tcb = NULL;
 	
 	/* put the first task in mutex queue runnable */
+	/*    and give this first task the lock */
 	mutex_queue_remove(mutex);
 	
 	enable_interrupts(); 
