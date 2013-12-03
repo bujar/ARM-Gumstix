@@ -91,16 +91,18 @@ static void sort_tasks(task_t* tasks, size_t num_tasks) {
 static void insertion_sort(task_t** ptasks, size_t num_tasks){
 	int i, j;
 	unsigned long Tperiod;
-	task_t **curr;
+	task_t *curr;
 	for(i = 1; i < (int)num_tasks; i++){
-		curr = &ptasks[i];
-		Tperiod = ptasks[i]->T;
-		j = i - 1;
-		while( j >= 0 && ptasks[j]->T > Tperiod){
-			ptasks[i+1] = ptasks[j];
+		curr = ptasks[i];
+		Tperiod = curr->T;
+		
+		j = i;
+		/* move the value left until it's in proper place */ 
+		while( j > 0 && ptasks[j - 1]->T > Tperiod){
+			ptasks[j] = ptasks[j - 1];
 			j = j - 1;
 		}
-		ptasks[j+1] = *curr;
+		ptasks[j] = curr;
 	}
 }
 
@@ -117,9 +119,9 @@ int task_create(task_t* tasks, size_t num_tasks){
 
 	clear_tasks(); // clears the ptasks array
 	sort_tasks(tasks, num_tasks);
-	if (assign_schedule(system_ptasks, num_tasks) != 1) {
-		return -ESCHED;
-	}
+	//if (assign_schedule(system_ptasks, num_tasks) != 1) {
+	//	return -ESCHED;
+	//}
 	allocate_tasks(system_ptasks, num_tasks);
 	dispatch_nosave();
 

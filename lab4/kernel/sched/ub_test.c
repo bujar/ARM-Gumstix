@@ -70,7 +70,7 @@ int assign_schedule(task_t** tasks, size_t num_tasks)
 		return 1;
 	}
 	else {
-i//		printf("This is not schedulable");
+//		printf("This is not schedulable");
 		return 0;
 	}
 }

@@ -96,21 +96,21 @@ void fun3(void* str)
 int main(int argc, char** argv)
 {
 	task_t tasks[3];
-	tasks[0].lambda = fun1;
-	tasks[0].data = (void*)'s';
-	tasks[0].stack_pos = (void*)0xa2000000;
-	tasks[0].C = 1;
-	tasks[0].T = PERIOD_DEV0;
+	tasks[2].lambda = fun1;
+	tasks[2].data = (void*)'s';
+	tasks[2].stack_pos = (void*)0xa2000000;
+	tasks[2].C = 1;
+	tasks[2].T = PERIOD_DEV0;
 	tasks[1].lambda = fun2;
 	tasks[1].data = (void*)'u';
 	tasks[1].stack_pos = (void*)0xa1000000;
 	tasks[1].C = 1;
 	tasks[1].T = PERIOD_DEV1;
-	tasks[2].lambda = fun3;
-	tasks[2].data = (void*)'c';
-	tasks[2].stack_pos = (void*)0xa1200000;
-	tasks[2].C = 1;
-	tasks[2].T = PERIOD_DEV2;
+	tasks[0].lambda = fun3;
+	tasks[0].data = (void*)'c';
+	tasks[0].stack_pos = (void*)0xa1200000;
+	tasks[0].C = 1;
+	tasks[0].T = PERIOD_DEV2;
 	task_create(tasks, 3);
 	// just to get rid of compiler...
 	argc = argc;
