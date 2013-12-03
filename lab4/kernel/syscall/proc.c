@@ -85,6 +85,7 @@ static void sort_tasks(task_t* tasks, size_t num_tasks) {
 	}
 
 	insertion_sort(system_ptasks, num_tasks);	
+	
 }
 
 static void insertion_sort(task_t** ptasks, size_t num_tasks){
@@ -116,6 +117,9 @@ int task_create(task_t* tasks, size_t num_tasks){
 
 	clear_tasks(); // clears the ptasks array
 	sort_tasks(tasks, num_tasks);
+	if (assign_schedule(system_ptasks, num_tasks) != 1) {
+		return -ESCHED;
+	}
 	allocate_tasks(system_ptasks, num_tasks);
 	dispatch_nosave();
 
