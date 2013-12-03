@@ -86,25 +86,19 @@ void mutex_queue_add(int mutex, tcb_t *tcb)
 		p1->sleep_queue = tcb;
 		tcb->sleep_queue = NULL;
 	}
-	
-/*	p1 = mtx->pSleep_queue;
-	printf("----------mutex sleep queue@add---------\n");
-	while(p1!=NULL){
-		printf("task:%d\t\n",p1->cur_prio);
-		p1 = p1->sleep_queue;
-	}
-	printf("\n\n"); */
-	/* remove the tcb from runqueue */
-	// runqueue_remove(tcb->cur_prio);	
 }
 
-/* remove the first task in mutex sleeping queue when a mutex is released */
+/* remove the first task in mutex sleeping queue
+ * when a mutex is released, giving the lock to this 
+ * task. 
+ */
 void mutex_queue_remove(int mutex)
 {
 	mutex_t *mtx = &gtMutex[mutex];
 	tcb_t *p1,*p2;
 	p1 = mtx->pSleep_queue;
-	if(mtx->pSleep_queue==NULL)
+
+	if(mtx->pSleep_queue == NULL)
 		return;
 	else
 	{
@@ -133,16 +127,8 @@ void mutex_queue_remove(int mutex)
 
 			/* make the task runnable */
 			runqueue_add(p2, p2->cur_prio);	
-			//printf("runqueue add: %d \n", p1->cur_prio);
 		}
 	}
-/*	p1 = mtx->pSleep_queue;
-	printf("----------mutex sleep queue@remove---------\n");
-	while(p1!=NULL){
-		printf("task:%d\t\n",p1->cur_prio);
-		p1 = p1->sleep_queue;
-	}
-	printf("\n\n");*/
 }
 
 int mutex_lock(int mutex)
@@ -150,27 +136,29 @@ int mutex_lock(int mutex)
 	tcb_t *cur_tcb;
 	
 	disable_interrupts(); 
-	/* check if the mutex number within the mutex area, and check if the mutex 
-	was created */
+	/* check if the mutex number within the mutex area
+     * and check if the mutex was created */
+
 	if((mutex >= OS_NUM_MUTEX) || (mutex < 0) || gtMutex[mutex].bAvailable)
 	{	
 		return -EINVAL;	
 	}
 	
 	cur_tcb = get_cur_tcb();
+
 	/* Check if the current task is already holding the lock */
 	if(cur_tcb == gtMutex[mutex].pHolding_Tcb)
 	{
 		return -EDEADLOCK;
 	}
 
-	/* try to get the mutex but blocked */
+	/* trying to obtain an unavailable lock */
 	if(gtMutex[mutex].bLock == TRUE)
 	{
 		mutex_queue_add(mutex, cur_tcb);
 		dispatch_sleep();
 	}
-	else{ /* got the mutex already, I'm not blocked */
+	else{ /* mutex is available to grab */
 		gtMutex[mutex].bLock = TRUE;
 		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
 	}
@@ -185,8 +173,8 @@ int mutex_unlock(int mutex)
 	 
 	disable_interrupts(); 
 	
-	/* check if the mutex number within the mutex area, and check if the mutex 
-	was created */
+	/* check if the mutex number within the mutex area
+     * and check if the mutex was created */
 	if((mutex >= OS_NUM_MUTEX) || (mutex < 0) || gtMutex[mutex].bAvailable)
 	{	
 		return -EINVAL;	
