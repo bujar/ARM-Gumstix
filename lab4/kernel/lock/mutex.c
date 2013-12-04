@@ -24,6 +24,7 @@
 #endif
 
 #define NULL 0
+#define CPC 0
 
 mutex_t gtMutex[OS_NUM_MUTEX];
 
@@ -109,7 +110,7 @@ void mutex_queue_remove(int mutex)
 			/* give the first TCB on the queue the lock */
 			gtMutex[mutex].bLock = TRUE;
 			gtMutex[mutex].pHolding_Tcb = p1;
-			p1->cur_prio = 0;
+			p1->cur_prio = CPC;
 			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
 			mtx->pSleep_queue = NULL;
@@ -121,7 +122,7 @@ void mutex_queue_remove(int mutex)
 			/* give the first TCB on the queue the lock */
 			gtMutex[mutex].bLock = TRUE;
 			gtMutex[mutex].pHolding_Tcb = p2;
-			p2->cur_prio = 0;
+			p2->cur_prio = CPC;
 			p1 = p1->sleep_queue;
 			p2->sleep_queue = NULL;
 			mtx->pSleep_queue = p1;
@@ -162,7 +163,7 @@ int mutex_lock(int mutex)
 	else{ /* mutex is available to grab */
 		gtMutex[mutex].bLock = TRUE;
 		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
-		cur_tcb->cur_prio = 0;
+		cur_tcb->cur_prio = CPC;
 	}
 
 	enable_interrupts(); 
