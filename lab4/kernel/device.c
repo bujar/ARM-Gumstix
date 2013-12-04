@@ -44,7 +44,8 @@ struct dev
 typedef struct dev dev_t;
 
 /* devices will be periodically signaled at the following frequencies */
-const unsigned long dev_freq[NUM_DEVICES] = {100, 200, 500, 50};
+const unsigned long dev_freq[NUM_DEVICES] = { 100, 200, 500, 50};
+
 static dev_t devices[NUM_DEVICES];
 
 void sleepqueue_wake(unsigned int dev);
