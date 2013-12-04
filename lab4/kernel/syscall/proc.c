@@ -150,6 +150,9 @@ int task_create(task_t* tasks, size_t num_tasks){
 		return error;
 	}
 
+	if (assign_schedule(system_ptasks, num_tasks) != 1) {
+		return ESCHED;
+	}
 	insertion_sort_per(&system_ptasks[1], num_tasks);
 	allocate_tasks(system_ptasks, num_tasks);
 	dispatch_nosave();

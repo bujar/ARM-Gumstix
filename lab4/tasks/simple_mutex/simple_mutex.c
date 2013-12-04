@@ -109,7 +109,7 @@ int main(int argc, char** argv)
 	tasks[0].lambda = fun3;
 	tasks[0].data = (void*)'c';
 	tasks[0].stack_pos = (void*)0xa1200000;
-	tasks[0].C = 1;
+	tasks[0].C = 100000;
 	tasks[0].T = PERIOD_DEV2;
 	task_create(tasks, 3);
 	// just to get rid of compiler...
