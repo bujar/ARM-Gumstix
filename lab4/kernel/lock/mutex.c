@@ -36,7 +36,7 @@ void mutex_init()
 		gtMutex[i].pHolding_Tcb = NULL;
 		gtMutex[i].bLock = FALSE;
 		gtMutex[i].pSleep_queue = NULL;
-		gtMutex[i].mprio = IDLE_PRIO;
+		//gtMutex[i].mprio = IDLE_PRIO;
 	}	
 }
 
