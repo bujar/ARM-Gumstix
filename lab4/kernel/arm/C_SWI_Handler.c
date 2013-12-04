@@ -75,7 +75,7 @@ int C_SWI_Handler(unsigned swi_num, unsigned *regs){
 			return event_wait(dev);
 
 		default:
-			printf("Invalid SWI called");
+			invalid_syscall(swi_num);
 			return(0x0badc0de);
 	}
 
