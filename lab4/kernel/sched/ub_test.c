@@ -13,9 +13,10 @@
  * @date 2008-11-20
  */
 
-#define DEBUG 0
-#define FACTOR 10000
 #include <sched.h>
+
+#define FACTOR 10000
+#define DEBUG 0
 #ifdef DEBUG
 #include <exports.h>
 #endif
@@ -58,24 +59,29 @@ static long unsigned UKtable[] = {
 int assign_schedule(task_t** tasks, size_t num_tasks)
 {
 	int i;
-	unsigned long Esum;	//will store result of E-summation(C+B/T)
+	unsigned long Esum = 0;	//will store result of E-summation(C+B/T)
 	unsigned long curr_T = 0;
 	unsigned long curr_C = 0;
 	unsigned long curr_B = 0;
 	for (i = 0; i < (int) num_tasks; i++) {
-		curr_C += (tasks[i]->C * FACTOR);
-		curr_B += (tasks[i]->B * FACTOR);
-		curr_T += tasks[i]->T;
+		curr_C = (tasks[i]->C * FACTOR);
+		curr_B = (tasks[i]->B * FACTOR);
+		curr_T = tasks[i]->T;
 		Esum += ((curr_C + curr_B) / curr_T);
-//		printf("C  = %lu\n", tasks[i]->C);
-//		printf("T  = %lu\n\n", tasks[i]->T);
+//		printf("C  = %lu\n", curr_C);
+//		printf("B  = %lu\n", curr_B);
+//		printf("T  = %lu\n", curr_T);
+//		printf(" C/T = %lu\n", (curr_C + curr_B) / curr_T);
+//		printf("Esum = %lu\n\n", Esum);
 	}
 	
 	if (Esum <= UKtable[i]) {
+//		printf("%lu is < %lu", Esum, UKtable[i]);
 //		printf("This is schedulable");
 		return 1;
 	}
 	else {
+//		printf("%lu is < %lu", Esum, UKtable[i]);
 //		printf("This is not schedulable");
 		return 0;
 	}
