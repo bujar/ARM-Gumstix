@@ -47,24 +47,32 @@ void dispatch_init(tcb_t* idle)
  * This function needs to be externally synchronized.
  * We could be switching from the idle task.  The priority searcher has 
  * been tuned to return IDLE_PRIO for a completely empty run_queue case.
+ *
+ * When a task is done running, it is added back to the runqueue and considered
+ * "ready to run" again. The next highest priority task is pulled off of the 
+ * runqueue. Reasoning here is that only tasks waiting to be run belong in the 
+ * runqueue.
  */
+
+
 void dispatch_save(void)
 {
 	tcb_t* target_tcb;
 	tcb_t* temp_cur_tcb;
 	uint8_t next_task_prio;
 
-	runqueue_add(cur_tcb, cur_tcb->cur_prio); //task is done add back to runq	
-	next_task_prio = highest_prio(); //grab next one to run
+	runqueue_add(cur_tcb, cur_tcb->cur_prio); 	//task is done add back to runq	
+	next_task_prio = highest_prio();	 //grab next one to run
 	if(cur_tcb->cur_prio == next_task_prio) {
 		runqueue_remove(next_task_prio);
 		return;
 	}
 
-	// grab tcb of next task and remove from runq
+	/* grab tcb of next task and remove from runqueue */
 	target_tcb = runqueue_remove(next_task_prio);  
+
 	temp_cur_tcb = cur_tcb;
-	cur_tcb = target_tcb;	//current tcb(global) after context switch
+	cur_tcb = target_tcb;	//update cur_tcb
 	
 	ctx_switch_full(&(target_tcb->context), &(temp_cur_tcb->context));
 }
@@ -79,11 +87,13 @@ void dispatch_nosave(void)
 {
 	tcb_t* target_tcb;
 	uint8_t next_task_prio;
+
 	next_task_prio = highest_prio(); //grab next one to run
 
-	//grab tcb of next task and remove from runqueue
+	/*grab tcb of next task and remove from runqueue*/
 	target_tcb = runqueue_remove(next_task_prio);	
-	cur_tcb = target_tcb;	//current tcb(global) after context switch
+	
+	cur_tcb = target_tcb;	//update cur_tcb
 
 	ctx_switch_half(&(target_tcb->context));	
 }
@@ -95,7 +105,9 @@ void dispatch_nosave(void)
  *
  * There is always an idle task to switch to.
  */
-void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
+
+/* same as dispatch_save but does not add back to runequeue */
+void dispatch_sleep(void)
 {
 	tcb_t* target_tcb;
 	tcb_t* temp_cur_tcb;
@@ -103,10 +115,11 @@ void dispatch_sleep(void) /*same as dispatch_save but no runqeue_add*/
 
 	next_task_prio = highest_prio(); //grab next one to run
 
-	//grab tcb of next task and remove from runq
+	/*grab tcb of next task and remove from runqueue*/
 	target_tcb = runqueue_remove(next_task_prio);  
+
 	temp_cur_tcb = get_cur_tcb();
-	cur_tcb = target_tcb;	//current tcb(global) after context switch
+	cur_tcb = target_tcb;	//update cur_tcb
 
 	ctx_switch_full(&(target_tcb->context), &(temp_cur_tcb->context));
 }

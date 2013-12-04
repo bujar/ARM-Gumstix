@@ -43,7 +43,11 @@ FUNC(launch_task)
 	ldr     lr, =0xdeadbeef   /* Causes a crash instead of calling the reset vector */
 	mov     pc, r4
 
-/* r0 points to the target context, r1 to the current context. */
+/* r0 points to the target context, r1 to the current context.
+ * These functinos perform context switching for the dispatcher.
+ * ctx_switch_full saves previous context and branches to 
+ * ctx_switch_half to switch the the next context.
+ */
 FUNC(ctx_switch_full)
 	stmia	r1, {r4-r11, sp, lr}	@store regs into r1, curent conext
 	bl	ctx_switch_half

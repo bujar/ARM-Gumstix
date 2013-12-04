@@ -33,6 +33,8 @@ uint32_t global_data;
 int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused)), uint32_t table)
 {
 
+	task_t main_task; //main task used to initialize scheduler
+	
 	app_startup(); // bss is valid after this point
 	global_data = table;
 
@@ -55,7 +57,6 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 
 	runqueue_init();
 	mutex_init();
-	task_t main_task;
 	sched_init(&main_task);
 	disable_interrupts();
 	dispatch_nosave();

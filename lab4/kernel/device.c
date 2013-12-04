@@ -129,7 +129,6 @@ void sleepqueue_wake(unsigned int dev){
 	/* remove and set each TCB as runnable */ 
 	while(curr != NULL){
 		next = next->sleep_queue;
-	//	printf("sleepqueue_wake\n");
 		runqueue_add(curr, curr->cur_prio); 
 		curr->sleep_queue = NULL;
 		curr = next;

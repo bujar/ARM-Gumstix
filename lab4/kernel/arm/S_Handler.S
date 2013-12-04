@@ -21,36 +21,36 @@
 
 S_Handler:
 
-	SUB	sp, sp, #4               @ leave room on stack for SPSR
-	STMFD	sp!, {r0-r12, lr}    @ store user's gp registers
-	MRS	r2, spsr                 @ get SPSR into gp register 
-	STR	r2, [sp, #14*4]          @ store SPSR above gp registers
-	MOV	r1, sp                   @ pointer to parameter on stack
-	LDR	r0, =global_data		 @ restore r8  
+	SUB	sp, sp, #4              @ leave room on stack for SPSR
+	STMFD	sp!, {r0-r12, lr}    	@ store user's gp registers
+	MRS	r2, spsr                @ get SPSR into gp register 
+	STR	r2, [sp, #14*4]         @ store SPSR above gp registers
+	MOV	r1, sp                  @ pointer to parameter on stack
+	LDR	r0, =global_data	@ restore r8  
 	LDR	r8, [r0]
-	LDR	r0, [lr, #-4]            @ extract SWI number
+	LDR	r0, [lr, #-4]           @ extract SWI number
 	BIC	r0, r0, #0xff000000      
 
-  	STMFD sp, {sp,lr}^           @ store user mode sp and lr
+  	STMFD sp, {sp,lr}^	        @ store user mode sp and lr
   	sub sp, sp, #8
 
-	MRS	ip,cpsr			         @ enable IRQ
+	MRS	ip,cpsr		        @ enable IRQ
 	BIC	ip, ip, #PSR_IRQ	
 	MSR	cpsr, ip
 
-	BL	C_SWI_Handler            @ goto handler
+	BL	C_SWI_Handler           @ goto handler
 
-	MRS ip,cpsr                  @ disable IRQ
+	MRS ip,cpsr                  	@ disable IRQ
 	ORR ip,ip, #PSR_IRQ
 	MSR cpsr,ip
 	  
-	LDMFD sp, {sp,lr}^
+	LDMFD sp, {sp,lr}^		@Load user mode sp and lr
   
 	ADD sp, sp, #8
 
-	LDR	r2, [sp, #14*4]          @ restore SPSR
-	MSR	spsr, r2                 @ restore SPSR from r2
-	ADD	sp, sp, #4               @ remove r0 from the top of stack
-	LDMFD	sp!, {r1-r12, lr}    @ unstack user's registers
-	ADD 	sp, sp, #4           @ remove space used to store SPSR 
+	LDR	r2, [sp, #14*4]         @ restore SPSR
+	MSR	spsr, r2                @ restore SPSR from r2
+	ADD	sp, sp, #4              @ remove r0 from the top of stack
+	LDMFD	sp!, {r1-r12, lr}	@ unstack user's registers
+	ADD 	sp, sp, #4		@ remove space used to store SPSR 
 	MOVS	pc, lr

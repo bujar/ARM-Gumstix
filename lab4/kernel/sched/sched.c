@@ -28,7 +28,7 @@
 
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
-/* stack for idle, should we align by 8? */
+/* stack for idle */
 uint32_t idle_stack[OS_KSTACK_SIZE/sizeof(uint32_t)];
 uint32_t idle_stack_high[0];
 
@@ -75,7 +75,7 @@ static void tcb_init(task_t* task, tcb_t* tcb, uint8_t prio)
 	tcb->native_prio = prio;
 	tcb->cur_prio = prio;
 
-	/* init context part, ????  */
+	/* init context part  */
 	ctx->r4 = (uint32_t)task->lambda;
 	ctx->r5 = (uint32_t)task->data; 
 	ctx->r6 = (uint32_t)task->stack_pos;
