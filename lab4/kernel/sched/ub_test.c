@@ -14,7 +14,7 @@
  */
 
 #define DEBUG 0
-
+#define FACTOR 10000
 #include <sched.h>
 #ifdef DEBUG
 #include <exports.h>
@@ -71,7 +71,7 @@ int assign_schedule(task_t** tasks, size_t num_tasks)
 	}
 	
 	C_total += B_total;	//adding blocking total to C (numerator)
-	C_total *= 10000;	//adjusting so that we can perform division w/o float
+	C_total *= FACTOR;	//adjusting so that we can perform division w/o float
 	
 	Esum = C_total/T_total;
 	if (Esum <= UKtable[i]) {
