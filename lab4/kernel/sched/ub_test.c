@@ -20,6 +20,13 @@
 #include <exports.h>
 #endif
 
+
+/** @bried Lookup table for U(k) values
+ *
+ * Since we are not using float, these values are adjusted
+ * by a factor of 10000 so we treat it as a long instead of 
+ * a decminal.
+ */
 static long unsigned UKtable[] = {  
 1000000, 828427, 779763, 756828, 743491, 734772, 728626, 
 724061, 720537, 717734, 715451, 713557, 711958, 710592, 
@@ -32,38 +39,42 @@ static long unsigned UKtable[] = {
 697378, 697305, 697234, 697166, 697100, 697036, 696974, 
 696914
 };
+
+
 /**
  * @brief Perform UB Test and reorder the task list.
  *
- * The task list at the end of this method will be sorted in order is priority
+ * The task list passed to this function will already be sorted in order 
  * -- from highest priority (lowest priority number) to lowest priority
- * (highest priority number).
+ * (highest priority number). We then perform the UB test to determine
+ * whether the tasks are schedulable in our kernel.
  *
  * @param tasks  An array of task pointers containing the task set to schedule.
  * @param num_tasks  The number of tasks in the array.
  *
  * @return 0  The test failed.
- * @return 1  Test succeeded.  The tasks are now in order.
+ * @return 1  Test succeeded.  The tasks are schedulable.
  */
 int assign_schedule(task_t** tasks, size_t num_tasks)
 {
 	int i;
-	unsigned long sum;
+	unsigned long Esum;	//will store result of E-summation(C/T)
 	unsigned long T_total = 0;
 	unsigned long C_total = 0;
-
+	unsigned long B_total = 0;
 	for (i = 0; i < (int) num_tasks; i++) {
 		C_total += tasks[i]->C;
-		//B_total += tasks[i]->B;
+		B_total += tasks[i]->B;
 		T_total += tasks[i]->T;
 		printf("C  = %lu\n", tasks[i]->C);
 		printf("T  = %lu\n\n", tasks[i]->T);
 	}
 	
-	C_total *= 10000;
+	C_total += B_total;	//adding blocking total to C (numerator)
+	C_total *= 10000;	//adjusting so that we can perform division w/o float
 	
-	sum = C_total/T_total;
-	if (sum <= UKtable[i]) {
+	Esum = C_total/T_total;
+	if (Esum <= UKtable[i]) {
 //		printf("This is schedulable");
 		return 1;
 	}
@@ -72,26 +83,3 @@ int assign_schedule(task_t** tasks, size_t num_tasks)
 		return 0;
 	}
 }
-
-/* This function assumes that the tasks are already sorted
- * so that it satisfies rate-monotonicity. 
- *
- * The UB test is performed to see if the tasks are schedulable
- *
- */
-/*int ubtest(task_t **tasks, size_t num_tasks){
-
-	int i;
-	int bound;
-	int k;
-	
-	k = num_tasks - 1;
-	bound = k *
-	for(i = 0; i < num_tasks; i++){
-	
-		
-	return 1;
-}
-	
-
-*/
