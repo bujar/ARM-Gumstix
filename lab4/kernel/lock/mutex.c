@@ -36,6 +36,7 @@ void mutex_init()
 		gtMutex[i].pHolding_Tcb = NULL;
 		gtMutex[i].bLock = FALSE;
 		gtMutex[i].pSleep_queue = NULL;
+		//gtMutex[i].mprio = IDLE_PRIO;
 	}	
 }
 
@@ -108,7 +109,8 @@ void mutex_queue_remove(int mutex)
 			/* give the first TCB on the queue the lock */
 			gtMutex[mutex].bLock = TRUE;
 			gtMutex[mutex].pHolding_Tcb = p1;
-			
+			/* Set HLP */
+			p1->cur_prio = HIGHEST_PRIO;
 			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
 			mtx->pSleep_queue = NULL;
@@ -120,7 +122,8 @@ void mutex_queue_remove(int mutex)
 			/* give the first TCB on the queue the lock */
 			gtMutex[mutex].bLock = TRUE;
 			gtMutex[mutex].pHolding_Tcb = p2;
-			
+			/* Set HLP */
+			p2->cur_prio = HIGHEST_PRIO;
 			p1 = p1->sleep_queue;
 			p2->sleep_queue = NULL;
 			mtx->pSleep_queue = p1;
@@ -161,6 +164,8 @@ int mutex_lock(int mutex)
 	else{ /* mutex is available to grab */
 		gtMutex[mutex].bLock = TRUE;
 		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
+		/* Set HLP */
+		cur_tcb->cur_prio = HIGHEST_PRIO;
 	}
 
 	enable_interrupts(); 
@@ -190,6 +195,7 @@ int mutex_unlock(int mutex)
 	
 	/* release mutex */
 	gtMutex[mutex].bLock = FALSE;
+	gtMutex[mutex].pHolding_Tcb->cur_prio = gtMutex[mutex].pHolding_Tcb->native_prio;
 	gtMutex[mutex].pHolding_Tcb = NULL;
 	
 	/* put the first task in mutex queue runnable */

@@ -13,9 +13,10 @@
  * @date 2008-11-20
  */
 
-#define DEBUG 0
-#define FACTOR 10000
 #include <sched.h>
+
+#define FACTOR 10000
+#define DEBUG 0
 #ifdef DEBUG
 #include <exports.h>
 #endif
@@ -28,16 +29,16 @@
  * a decminal.
  */
 static long unsigned UKtable[] = {  
-1000000, 828427, 779763, 756828, 743491, 734772, 728626, 
-724061, 720537, 717734, 715451, 713557, 711958, 710592, 
-709411, 708380, 707472, 706666, 705945, 705298, 704713, 
-704182, 703697, 703253, 702845, 702469, 702121, 701797, 
-701497, 701216, 700954, 700708, 700478, 700260, 700056,
-699863, 699680, 699507, 699343, 699187, 699039, 698898, 
-698763, 698635, 698513, 698395, 698283, 698176, 698072, 
-697973, 697878, 697787, 697699, 697614, 697533, 697454, 
-697378, 697305, 697234, 697166, 697100, 697036, 696974, 
-696914
+10000, 8284, 7798, 7568, 7435, 7348, 7286, 
+7241, 7205, 7177, 7155, 7136, 7120, 7106, 
+7094, 7084, 7075, 7067, 7060, 7053, 7047, 
+7042, 7037, 7033, 7029, 7025, 7021, 7018, 
+7015, 7012, 7010, 7007, 7005, 7003, 7001,
+6999, 6997, 6995, 6993, 6992, 6990, 6989, 
+6988, 6986, 6985, 6984, 6983, 6982, 6981, 
+6980, 6979, 6978, 6977, 6976, 6975, 6975, 
+6974, 6973, 6972, 6972, 6971, 6970, 6970, 
+6969
 };
 
 
@@ -58,27 +59,29 @@ static long unsigned UKtable[] = {
 int assign_schedule(task_t** tasks, size_t num_tasks)
 {
 	int i;
-	unsigned long Esum;	//will store result of E-summation(C/T)
-	unsigned long T_total = 0;
-	unsigned long C_total = 0;
-	unsigned long B_total = 0;
+	unsigned long Esum = 0;	//will store result of E-summation(C+B/T)
+	unsigned long curr_T = 0;
+	unsigned long curr_C = 0;
+	unsigned long curr_B = 0;
 	for (i = 0; i < (int) num_tasks; i++) {
-		C_total += tasks[i]->C;
-		B_total += tasks[i]->B;
-		T_total += tasks[i]->T;
-		printf("C  = %lu\n", tasks[i]->C);
-		printf("T  = %lu\n\n", tasks[i]->T);
+		curr_C = (tasks[i]->C * FACTOR);
+		curr_B = (tasks[i]->B * FACTOR);
+		curr_T = tasks[i]->T;
+		Esum += ((curr_C + curr_B) / curr_T);
+//		printf("C  = %lu\n", curr_C);
+//		printf("B  = %lu\n", curr_B);
+//		printf("T  = %lu\n", curr_T);
+//		printf(" C/T = %lu\n", (curr_C + curr_B) / curr_T);
+//		printf("Esum = %lu\n\n", Esum);
 	}
 	
-	C_total += B_total;	//adding blocking total to C (numerator)
-	C_total *= FACTOR;	//adjusting so that we can perform division w/o float
-	
-	Esum = C_total/T_total;
 	if (Esum <= UKtable[i]) {
+//		printf("%lu is < %lu", Esum, UKtable[i]);
 //		printf("This is schedulable");
 		return 1;
 	}
 	else {
+//		printf("%lu is < %lu", Esum, UKtable[i]);
 //		printf("This is not schedulable");
 		return 0;
 	}
