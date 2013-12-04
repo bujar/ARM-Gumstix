@@ -26,7 +26,7 @@
 #define IDLE_PRIO             63
 #define OS_MAX_TASKS          64
 #define OS_AVAIL_TASKS        63
-
+#define HIGHEST_PRIO          0
 /* OS_NUM_MUTEX must be at lease 32 */
 #define OS_NUM_MUTEX	32
 
