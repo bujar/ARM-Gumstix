@@ -13,7 +13,7 @@
 #ifndef _DEVICE_H_
 #define _DEVICE_H_
 
-#define NUM_DEVICES 4
+#define NUM_DEVICES  4
 
 extern const unsigned long dev_freq[NUM_DEVICES];
 
