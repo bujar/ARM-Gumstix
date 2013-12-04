@@ -62,6 +62,7 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
 	dispatch_nosave();
 
 	assert(0);        /* should never get here */
+	panic("error: reached end of kmain!!");
 	return status;
 }
 

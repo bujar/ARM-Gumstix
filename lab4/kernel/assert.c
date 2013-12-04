@@ -20,7 +20,7 @@ void panic(const char* fmt, ...)
 	va_start(list, fmt);
 	// XXX This is not working... fix it later.
 	//vprintf(fmt, list);
-	printf("PANIC!");
+	printf(fmt);
 	va_end(list);
 
 	disable_interrupts();
