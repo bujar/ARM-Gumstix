@@ -41,4 +41,5 @@
 
 #define ESCHED       100    /* Unable to schedule */
 
+#define EHOLDSLOCK	  60	/* Can not dev_wait while holding mutex */
 #endif /* BITS_ERRNO_H */
