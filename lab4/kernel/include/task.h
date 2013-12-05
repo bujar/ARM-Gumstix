@@ -61,6 +61,7 @@ struct tcb
 	/** Embed the kernel stack here -- AAPCS wants 8 byte alignment */
 	uint32_t         kstack[OS_KSTACK_SIZE/sizeof(uint32_t)];//(aligned(8));
 	uint32_t         kstack_high[0];
+	uint32_t		 num_mutex;			 /**< the number of mutex the tcb has grabed  */
 };
 typedef volatile struct tcb tcb_t;
 
