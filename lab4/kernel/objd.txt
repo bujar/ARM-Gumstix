@@ -1,0 +1,1401 @@
+
+kernel:     file format elf32-littlearm
+
+Disassembly of section .text:
+
+a3000000 <_start>:
+a3000000:	e1a02008 	mov	r2, r8
+a3000004:	ea00003a 	b	a30000f4 <kmain>
+
+a3000008 <panic>:
+a3000008:	e92d000f 	stmdb	sp!, {r0, r1, r2, r3}
+a300000c:	e24dd004 	sub	sp, sp, #4	; 0x4
+a3000010:	e28d3008 	add	r3, sp, #8	; 0x8
+a3000014:	e59f0014 	ldr	r0, [pc, #20]	; a3000030 <.text+0x30>
+a3000018:	e58d3000 	str	r3, [sp]
+a300001c:	eb000433 	bl	a30010f0 <printf>
+a3000020:	e10f3000 	mrs	r3, CPSR
+a3000024:	e38330c0 	orr	r3, r3, #192	; 0xc0
+a3000028:	e121f003 	msr	CPSR_c, r3
+a300002c:	eafffffe 	b	a300002c <panic+0x24>
+a3000030:	a3001300 	movwge	r1, #768	; 0x300
+
+a3000034 <install_handler>:
+a3000034:	e5903000 	ldr	r3, [r0]
+a3000038:	e59f2090 	ldr	r2, [pc, #144]	; a30000d0 <.text+0xd0>
+a300003c:	e1a0c000 	mov	ip, r0
+a3000040:	e1a00a03 	mov	r0, r3, lsl #20
+a3000044:	e0032002 	and	r2, r3, r2
+a3000048:	e59f3080 	ldr	r3, [pc, #128]	; a30000d0 <.text+0xd0>
+a300004c:	e1a00a20 	mov	r0, r0, lsr #20
+a3000050:	e52de004 	str	lr, [sp, #-4]!
+a3000054:	e1520003 	cmp	r2, r3
+a3000058:	e59fe074 	ldr	lr, [pc, #116]	; a30000d4 <.text+0xd4>
+a300005c:	e08c2000 	add	r2, ip, r0
+a3000060:	1a000018 	bne	a30000c8 <install_handler+0x94>
+a3000064:	e35c0008 	cmp	ip, #8	; 0x8
+a3000068:	e5920008 	ldr	r0, [r2, #8]
+a300006c:	1a000007 	bne	a3000090 <install_handler+0x5c>
+a3000070:	e59f3060 	ldr	r3, [pc, #96]	; a30000d8 <.text+0xd8>
+a3000074:	e5902000 	ldr	r2, [r0]
+a3000078:	e5830000 	str	r0, [r3]
+a300007c:	e59f3058 	ldr	r3, [pc, #88]	; a30000dc <.text+0xdc>
+a3000080:	e5832000 	str	r2, [r3]
+a3000084:	e5902004 	ldr	r2, [r0, #4]
+a3000088:	e59f3050 	ldr	r3, [pc, #80]	; a30000e0 <.text+0xe0>
+a300008c:	ea000008 	b	a30000b4 <install_handler+0x80>
+a3000090:	e35c0018 	cmp	ip, #24	; 0x18
+a3000094:	1a000007 	bne	a30000b8 <install_handler+0x84>
+a3000098:	e59f3044 	ldr	r3, [pc, #68]	; a30000e4 <.text+0xe4>
+a300009c:	e5902000 	ldr	r2, [r0]
+a30000a0:	e5830000 	str	r0, [r3]
+a30000a4:	e59f303c 	ldr	r3, [pc, #60]	; a30000e8 <.text+0xe8>
+a30000a8:	e5832000 	str	r2, [r3]
+a30000ac:	e5902004 	ldr	r2, [r0, #4]
+a30000b0:	e59f3034 	ldr	r3, [pc, #52]	; a30000ec <.text+0xec>
+a30000b4:	e5832000 	str	r2, [r3]
+a30000b8:	e59f3030 	ldr	r3, [pc, #48]	; a30000f0 <.text+0xf0>
+a30000bc:	e5801004 	str	r1, [r0, #4]
+a30000c0:	e3a0e000 	mov	lr, #0	; 0x0
+a30000c4:	e5803000 	str	r3, [r0]
+a30000c8:	e1a0000e 	mov	r0, lr
+a30000cc:	e49df004 	ldr	pc, [sp], #4
+a30000d0:	e59ff000 	ldr	pc, [pc, #0]	; a30000d8 <.text+0xd8>
+a30000d4:	0badc0de 	bleq	a1b70454 <_start-0x148fbac>
+a30000d8:	a3001700 	movwge	r1, #1792	; 0x700
+a30000dc:	a30016f4 	movwge	r1, #1780	; 0x6f4
+a30000e0:	a30016f8 	movwge	r1, #1784	; 0x6f8
+a30000e4:	a30016e8 	movwge	r1, #1768	; 0x6e8
+a30000e8:	a30016f0 	movwge	r1, #1776	; 0x6f0
+a30000ec:	a30016fc 	movwge	r1, #1788	; 0x6fc
+a30000f0:	e51ff004 	ldr	pc, [pc, #-4]	; a30000f4 <kmain>
+
+a30000f4 <kmain>:
+a30000f4:	e92d4010 	stmdb	sp!, {r4, lr}
+a30000f8:	e24dd014 	sub	sp, sp, #20	; 0x14
+a30000fc:	e1a04002 	mov	r4, r2
+a3000100:	eb000412 	bl	a3001150 <app_startup>
+a3000104:	e59f3068 	ldr	r3, [pc, #104]	; a3000174 <.text+0x174>
+a3000108:	e59f1068 	ldr	r1, [pc, #104]	; a3000178 <.text+0x178>
+a300010c:	e3a00008 	mov	r0, #8	; 0x8
+a3000110:	e5834000 	str	r4, [r3]
+a3000114:	ebffffc6 	bl	a3000034 <install_handler>
+a3000118:	e2504000 	subs	r4, r0, #0	; 0x0
+a300011c:	e59f1058 	ldr	r1, [pc, #88]	; a300017c <.text+0x17c>
+a3000120:	e3a00018 	mov	r0, #24	; 0x18
+a3000124:	1a00000f 	bne	a3000168 <kmain+0x74>
+a3000128:	ebffffc1 	bl	a3000034 <install_handler>
+a300012c:	e2504000 	subs	r4, r0, #0	; 0x0
+a3000130:	1a00000c 	bne	a3000168 <kmain+0x74>
+a3000134:	eb000193 	bl	a3000788 <timer_init>
+a3000138:	e59f2040 	ldr	r2, [pc, #64]	; a3000180 <.text+0x180>
+a300013c:	e3a03301 	mov	r3, #67108864	; 0x4000000
+a3000140:	e5823004 	str	r3, [r2, #4]
+a3000144:	e5824008 	str	r4, [r2, #8]
+a3000148:	eb000315 	bl	a3000da4 <runqueue_init>
+a300014c:	eb000362 	bl	a3000edc <mutex_init>
+a3000150:	e1a0000d 	mov	r0, sp
+a3000154:	eb0002b4 	bl	a3000c2c <sched_init>
+a3000158:	e10f3000 	mrs	r3, CPSR
+a300015c:	e38330c0 	orr	r3, r3, #192	; 0xc0
+a3000160:	e121f003 	msr	CPSR_c, r3
+a3000164:	eb0002df 	bl	a3000ce8 <dispatch_nosave>
+a3000168:	e1a00004 	mov	r0, r4
+a300016c:	e28dd014 	add	sp, sp, #20	; 0x14
+a3000170:	e8bd8010 	ldmia	sp!, {r4, pc}
+a3000174:	a30016ec 	movwge	r1, #1772	; 0x6ec
+a3000178:	a3000738 	movwge	r0, #1848	; 0x738
+a300017c:	a300060c 	movwge	r0, #1548	; 0x60c
+a3000180:	40d00000 	sbcmis	r0, r0, r0
+
+a3000184 <sum_region>:
+a3000184:	e3a0c000 	mov	ip, #0	; 0x0
+a3000188:	e1a0200c 	mov	r2, ip
+a300018c:	ea000002 	b	a300019c <sum_region+0x18>
+a3000190:	e7903102 	ldr	r3, [r0, r2, lsl #2]
+a3000194:	e2822001 	add	r2, r2, #1	; 0x1
+a3000198:	e08cc003 	add	ip, ip, r3
+a300019c:	e1520001 	cmp	r2, r1
+a30001a0:	1afffffa 	bne	a3000190 <sum_region+0xc>
+a30001a4:	e1a0000c 	mov	r0, ip
+a30001a8:	e12fff1e 	bx	lr
+
+a30001ac <ilog2>:
+a30001ac:	e3a03000 	mov	r3, #0	; 0x0
+a30001b0:	ea000000 	b	a30001b8 <ilog2+0xc>
+a30001b4:	e2833001 	add	r3, r3, #1	; 0x1
+a30001b8:	e1b000a0 	movs	r0, r0, lsr #1
+a30001bc:	1afffffc 	bne	a30001b4 <ilog2+0x8>
+a30001c0:	e1a00003 	mov	r0, r3
+a30001c4:	e12fff1e 	bx	lr
+
+a30001c8 <valid_addr>:
+a30001c8:	e1a0c003 	mov	ip, r3
+a30001cc:	e1500003 	cmp	r0, r3
+a30001d0:	33a03000 	movcc	r3, #0	; 0x0
+a30001d4:	23a03001 	movcs	r3, #1	; 0x1
+a30001d8:	e1500002 	cmp	r0, r2
+a30001dc:	33833001 	orrcc	r3, r3, #1	; 0x1
+a30001e0:	e3530000 	cmp	r3, #0	; 0x0
+a30001e4:	e3a03000 	mov	r3, #0	; 0x0
+a30001e8:	1a000005 	bne	a3000204 <valid_addr+0x3c>
+a30001ec:	e0902001 	adds	r2, r0, r1
+a30001f0:	33a03000 	movcc	r3, #0	; 0x0
+a30001f4:	23a03001 	movcs	r3, #1	; 0x1
+a30001f8:	e152000c 	cmp	r2, ip
+a30001fc:	83833001 	orrhi	r3, r3, #1	; 0x1
+a3000200:	e2233001 	eor	r3, r3, #1	; 0x1
+a3000204:	e1a00003 	mov	r0, r3
+a3000208:	e12fff1e 	bx	lr
+
+a300020c <raise>:
+a300020c:	e52de004 	str	lr, [sp, #-4]!
+a3000210:	e59f0004 	ldr	r0, [pc, #4]	; a300021c <.text+0x21c>
+a3000214:	eb0003b3 	bl	a30010e8 <puts>
+a3000218:	eafffffe 	b	a3000218 <raise+0xc>
+a300021c:	a3001308 	movwge	r1, #776	; 0x308
+
+a3000220 <isascii>:
+a3000220:	e350007f 	cmp	r0, #127	; 0x7f
+a3000224:	83a00000 	movhi	r0, #0	; 0x0
+a3000228:	93a00001 	movls	r0, #1	; 0x1
+a300022c:	e12fff1e 	bx	lr
+
+a3000230 <iscntrl>:
+a3000230:	e2400020 	sub	r0, r0, #32	; 0x20
+a3000234:	e350005e 	cmp	r0, #94	; 0x5e
+a3000238:	93a00000 	movls	r0, #0	; 0x0
+a300023c:	83a00001 	movhi	r0, #1	; 0x1
+a3000240:	e12fff1e 	bx	lr
+
+a3000244 <isdigit>:
+a3000244:	e2400030 	sub	r0, r0, #48	; 0x30
+a3000248:	e3500009 	cmp	r0, #9	; 0x9
+a300024c:	83a00000 	movhi	r0, #0	; 0x0
+a3000250:	93a00001 	movls	r0, #1	; 0x1
+a3000254:	e12fff1e 	bx	lr
+
+a3000258 <isgraph>:
+a3000258:	e2400021 	sub	r0, r0, #33	; 0x21
+a300025c:	e350005d 	cmp	r0, #93	; 0x5d
+a3000260:	83a00000 	movhi	r0, #0	; 0x0
+a3000264:	93a00001 	movls	r0, #1	; 0x1
+a3000268:	e12fff1e 	bx	lr
+
+a300026c <islower>:
+a300026c:	e2400061 	sub	r0, r0, #97	; 0x61
+a3000270:	e3500019 	cmp	r0, #25	; 0x19
+a3000274:	83a00000 	movhi	r0, #0	; 0x0
+a3000278:	93a00001 	movls	r0, #1	; 0x1
+a300027c:	e12fff1e 	bx	lr
+
+a3000280 <isprint>:
+a3000280:	e2400020 	sub	r0, r0, #32	; 0x20
+a3000284:	e350005e 	cmp	r0, #94	; 0x5e
+a3000288:	83a00000 	movhi	r0, #0	; 0x0
+a300028c:	93a00001 	movls	r0, #1	; 0x1
+a3000290:	e12fff1e 	bx	lr
+
+a3000294 <isspace>:
+a3000294:	e350000c 	cmp	r0, #12	; 0xc
+a3000298:	13500020 	cmpne	r0, #32	; 0x20
+a300029c:	0a000007 	beq	a30002c0 <isspace+0x2c>
+a30002a0:	e350000d 	cmp	r0, #13	; 0xd
+a30002a4:	1350000a 	cmpne	r0, #10	; 0xa
+a30002a8:	0a000004 	beq	a30002c0 <isspace+0x2c>
+a30002ac:	e350000b 	cmp	r0, #11	; 0xb
+a30002b0:	13500009 	cmpne	r0, #9	; 0x9
+a30002b4:	13a00000 	movne	r0, #0	; 0x0
+a30002b8:	03a00001 	moveq	r0, #1	; 0x1
+a30002bc:	e12fff1e 	bx	lr
+a30002c0:	e3a00001 	mov	r0, #1	; 0x1
+a30002c4:	e12fff1e 	bx	lr
+
+a30002c8 <isupper>:
+a30002c8:	e2400041 	sub	r0, r0, #65	; 0x41
+a30002cc:	e3500019 	cmp	r0, #25	; 0x19
+a30002d0:	83a00000 	movhi	r0, #0	; 0x0
+a30002d4:	93a00001 	movls	r0, #1	; 0x1
+a30002d8:	e12fff1e 	bx	lr
+
+a30002dc <isalpha>:
+a30002dc:	e2403061 	sub	r3, r0, #97	; 0x61
+a30002e0:	e3530019 	cmp	r3, #25	; 0x19
+a30002e4:	e2400041 	sub	r0, r0, #65	; 0x41
+a30002e8:	e3a03001 	mov	r3, #1	; 0x1
+a30002ec:	9a000002 	bls	a30002fc <isalpha+0x20>
+a30002f0:	e3500019 	cmp	r0, #25	; 0x19
+a30002f4:	83a03000 	movhi	r3, #0	; 0x0
+a30002f8:	93a03001 	movls	r3, #1	; 0x1
+a30002fc:	e1a00003 	mov	r0, r3
+a3000300:	e12fff1e 	bx	lr
+
+a3000304 <isalnum>:
+a3000304:	e92d4010 	stmdb	sp!, {r4, lr}
+a3000308:	e1a04000 	mov	r4, r0
+a300030c:	ebfffff2 	bl	a30002dc <isalpha>
+a3000310:	e3500000 	cmp	r0, #0	; 0x0
+a3000314:	e2444030 	sub	r4, r4, #48	; 0x30
+a3000318:	e3a00001 	mov	r0, #1	; 0x1
+a300031c:	1a000002 	bne	a300032c <isalnum+0x28>
+a3000320:	e3540009 	cmp	r4, #9	; 0x9
+a3000324:	83a00000 	movhi	r0, #0	; 0x0
+a3000328:	93a00001 	movls	r0, #1	; 0x1
+a300032c:	e8bd8010 	ldmia	sp!, {r4, pc}
+
+a3000330 <tolower>:
+a3000330:	e2403041 	sub	r3, r0, #65	; 0x41
+a3000334:	e3530019 	cmp	r3, #25	; 0x19
+a3000338:	92800020 	addls	r0, r0, #32	; 0x20
+a300033c:	e12fff1e 	bx	lr
+
+a3000340 <isxdigit>:
+a3000340:	e2403030 	sub	r3, r0, #48	; 0x30
+a3000344:	e3530009 	cmp	r3, #9	; 0x9
+a3000348:	e2402041 	sub	r2, r0, #65	; 0x41
+a300034c:	9a000006 	bls	a300036c <isxdigit+0x2c>
+a3000350:	e3520005 	cmp	r2, #5	; 0x5
+a3000354:	e2400061 	sub	r0, r0, #97	; 0x61
+a3000358:	9a000003 	bls	a300036c <isxdigit+0x2c>
+a300035c:	e3500005 	cmp	r0, #5	; 0x5
+a3000360:	83a00000 	movhi	r0, #0	; 0x0
+a3000364:	93a00001 	movls	r0, #1	; 0x1
+a3000368:	e12fff1e 	bx	lr
+a300036c:	e3a00001 	mov	r0, #1	; 0x1
+a3000370:	e12fff1e 	bx	lr
+
+a3000374 <ispunct>:
+a3000374:	e2403021 	sub	r3, r0, #33	; 0x21
+a3000378:	e353005d 	cmp	r3, #93	; 0x5d
+a300037c:	e52de004 	str	lr, [sp, #-4]!
+a3000380:	e3a03000 	mov	r3, #0	; 0x0
+a3000384:	8a000002 	bhi	a3000394 <ispunct+0x20>
+a3000388:	ebffffdd 	bl	a3000304 <isalnum>
+a300038c:	e2703001 	rsbs	r3, r0, #1	; 0x1
+a3000390:	33a03000 	movcc	r3, #0	; 0x0
+a3000394:	e1a00003 	mov	r0, r3
+a3000398:	e49df004 	ldr	pc, [sp], #4
+
+a300039c <toupper>:
+a300039c:	e2403061 	sub	r3, r0, #97	; 0x61
+a30003a0:	e3530019 	cmp	r3, #25	; 0x19
+a30003a4:	92400020 	subls	r0, r0, #32	; 0x20
+a30003a8:	e12fff1e 	bx	lr
+
+a30003ac <hexdump>:
+a30003ac:	e92d44f0 	stmdb	sp!, {r4, r5, r6, r7, sl, lr}
+a30003b0:	e1a0a000 	mov	sl, r0
+a30003b4:	e59f00d0 	ldr	r0, [pc, #208]	; a300048c <.text+0x48c>
+a30003b8:	e1a07001 	mov	r7, r1
+a30003bc:	eb00034b 	bl	a30010f0 <printf>
+a30003c0:	e3a05000 	mov	r5, #0	; 0x0
+a30003c4:	ea00002b 	b	a3000478 <hexdump+0xcc>
+a30003c8:	e59f00c0 	ldr	r0, [pc, #192]	; a3000490 <.text+0x490>
+a30003cc:	e1a01005 	mov	r1, r5
+a30003d0:	eb000346 	bl	a30010f0 <printf>
+a30003d4:	e1a04005 	mov	r4, r5
+a30003d8:	ea00000b 	b	a300040c <hexdump+0x60>
+a30003dc:	e3140003 	tst	r4, #3	; 0x3
+a30003e0:	1a000000 	bne	a30003e8 <hexdump+0x3c>
+a30003e4:	eb000341 	bl	a30010f0 <printf>
+a30003e8:	e1540007 	cmp	r4, r7
+a30003ec:	e59f00a0 	ldr	r0, [pc, #160]	; a3000494 <.text+0x494>
+a30003f0:	3a000001 	bcc	a30003fc <hexdump+0x50>
+a30003f4:	eb00033d 	bl	a30010f0 <printf>
+a30003f8:	ea000002 	b	a3000408 <hexdump+0x5c>
+a30003fc:	e7d4100a 	ldrb	r1, [r4, sl]
+a3000400:	e59f0090 	ldr	r0, [pc, #144]	; a3000498 <.text+0x498>
+a3000404:	eb000339 	bl	a30010f0 <printf>
+a3000408:	e2844001 	add	r4, r4, #1	; 0x1
+a300040c:	e2856010 	add	r6, r5, #16	; 0x10
+a3000410:	e1540006 	cmp	r4, r6
+a3000414:	e59f0080 	ldr	r0, [pc, #128]	; a300049c <.text+0x49c>
+a3000418:	3affffef 	bcc	a30003dc <hexdump+0x30>
+a300041c:	e59f007c 	ldr	r0, [pc, #124]	; a30004a0 <.text+0x4a0>
+a3000420:	eb000332 	bl	a30010f0 <printf>
+a3000424:	e08a4005 	add	r4, sl, r5
+a3000428:	ea00000c 	b	a3000460 <hexdump+0xb4>
+a300042c:	e1550007 	cmp	r5, r7
+a3000430:	3a000001 	bcc	a300043c <hexdump+0x90>
+a3000434:	eb00032d 	bl	a30010f0 <printf>
+a3000438:	ea000006 	b	a3000458 <hexdump+0xac>
+a300043c:	e5d43000 	ldrb	r3, [r4]
+a3000440:	e59f005c 	ldr	r0, [pc, #92]	; a30004a4 <.text+0x4a4>
+a3000444:	e2431021 	sub	r1, r3, #33	; 0x21
+a3000448:	e351005d 	cmp	r1, #93	; 0x5d
+a300044c:	91a01003 	movls	r1, r3
+a3000450:	83a0102e 	movhi	r1, #46	; 0x2e
+a3000454:	eb000325 	bl	a30010f0 <printf>
+a3000458:	e2855001 	add	r5, r5, #1	; 0x1
+a300045c:	e2844001 	add	r4, r4, #1	; 0x1
+a3000460:	e1550006 	cmp	r5, r6
+a3000464:	e59f0030 	ldr	r0, [pc, #48]	; a300049c <.text+0x49c>
+a3000468:	3affffef 	bcc	a300042c <hexdump+0x80>
+a300046c:	e59f0034 	ldr	r0, [pc, #52]	; a30004a8 <.text+0x4a8>
+a3000470:	eb00031e 	bl	a30010f0 <printf>
+a3000474:	e1a05006 	mov	r5, r6
+a3000478:	e1550007 	cmp	r5, r7
+a300047c:	3affffd1 	bcc	a30003c8 <hexdump+0x1c>
+a3000480:	e59f0024 	ldr	r0, [pc, #36]	; a30004ac <.text+0x4ac>
+a3000484:	e8bd44f0 	ldmia	sp!, {r4, r5, r6, r7, sl, lr}
+a3000488:	ea000318 	b	a30010f0 <printf>
+a300048c:	a3001328 	movwge	r1, #808	; 0x328
+a3000490:	a3001378 	movwge	r1, #888	; 0x378
+a3000494:	a3001390 	movwge	r1, #912	; 0x390
+a3000498:	a3001398 	movwge	r1, #920	; 0x398
+a300049c:	a3001388 	movwge	r1, #904	; 0x388
+a30004a0:	a30013a0 	movwge	r1, #928	; 0x3a0
+a30004a4:	a30013a8 	movwge	r1, #936	; 0x3a8
+a30004a8:	a30013b0 	movwge	r1, #944	; 0x3b0
+a30004ac:	a30013b8 	movwge	r1, #952	; 0x3b8
+
+a30004b0 <dev_init>:
+a30004b0:	e59f0028 	ldr	r0, [pc, #40]	; a30004e0 <.text+0x4e0>
+a30004b4:	e59f1028 	ldr	r1, [pc, #40]	; a30004e4 <.text+0x4e4>
+a30004b8:	e591300c 	ldr	r3, [r1, #12]
+a30004bc:	e59f2024 	ldr	r2, [pc, #36]	; a30004e8 <.text+0x4e8>
+a30004c0:	e2411004 	sub	r1, r1, #4	; 0x4
+a30004c4:	e580301c 	str	r3, [r0, #28]
+a30004c8:	e1510002 	cmp	r1, r2
+a30004cc:	e3a03000 	mov	r3, #0	; 0x0
+a30004d0:	e5803018 	str	r3, [r0, #24]
+a30004d4:	e2400008 	sub	r0, r0, #8	; 0x8
+a30004d8:	1afffff6 	bne	a30004b8 <dev_init+0x8>
+a30004dc:	e12fff1e 	bx	lr
+a30004e0:	a30015a8 	movwge	r1, #1448	; 0x5a8
+a30004e4:	a3001408 	movwge	r1, #1032	; 0x408
+a30004e8:	a30013f8 	movwge	r1, #1016	; 0x3f8
+
+a30004ec <dev_update>:
+a30004ec:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a30004f0:	e59f5080 	ldr	r5, [pc, #128]	; a3000578 <.text+0x578>
+a30004f4:	e1a06000 	mov	r6, r0
+a30004f8:	e5954018 	ldr	r4, [r5, #24]
+a30004fc:	e3540000 	cmp	r4, #0	; 0x0
+a3000500:	0a000010 	beq	a3000548 <dev_update+0x5c>
+a3000504:	e595101c 	ldr	r1, [r5, #28]
+a3000508:	e3510000 	cmp	r1, #0	; 0x0
+a300050c:	0a00000d 	beq	a3000548 <dev_update+0x5c>
+a3000510:	e1a00006 	mov	r0, r6
+a3000514:	eb000348 	bl	a300123c <__umodsi3>
+a3000518:	e3500000 	cmp	r0, #0	; 0x0
+a300051c:	1a000009 	bne	a3000548 <dev_update+0x5c>
+a3000520:	ea000004 	b	a3000538 <dev_update+0x4c>
+a3000524:	e3a03000 	mov	r3, #0	; 0x0
+a3000528:	e5944030 	ldr	r4, [r4, #48]
+a300052c:	e5823030 	str	r3, [r2, #48]
+a3000530:	e5d21001 	ldrb	r1, [r2, #1]
+a3000534:	eb00022f 	bl	a3000df8 <runqueue_add>
+a3000538:	e3540000 	cmp	r4, #0	; 0x0
+a300053c:	e1a02004 	mov	r2, r4
+a3000540:	e1a00004 	mov	r0, r4
+a3000544:	1afffff6 	bne	a3000524 <dev_update+0x38>
+a3000548:	e59f302c 	ldr	r3, [pc, #44]	; a300057c <.text+0x57c>
+a300054c:	e2455008 	sub	r5, r5, #8	; 0x8
+a3000550:	e1550003 	cmp	r5, r3
+a3000554:	1affffe7 	bne	a30004f8 <dev_update+0xc>
+a3000558:	e10f3000 	mrs	r3, CPSR
+a300055c:	e38330c0 	orr	r3, r3, #192	; 0xc0
+a3000560:	e121f003 	msr	CPSR_c, r3
+a3000564:	eb0001e8 	bl	a3000d0c <dispatch_save>
+a3000568:	e10f3000 	mrs	r3, CPSR
+a300056c:	e3c330c0 	bic	r3, r3, #192	; 0xc0
+a3000570:	e121f003 	msr	CPSR_c, r3
+a3000574:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000578:	a30015a8 	movwge	r1, #1448	; 0x5a8
+a300057c:	a3001588 	movwge	r1, #1416	; 0x588
+
+a3000580 <dev_wait>:
+a3000580:	e59f3038 	ldr	r3, [pc, #56]	; a30005c0 <.text+0x5c0>
+a3000584:	e92d4010 	stmdb	sp!, {r4, lr}
+a3000588:	e7934180 	ldr	r4, [r3, r0, lsl #3]
+a300058c:	e3540000 	cmp	r4, #0	; 0x0
+a3000590:	0a000001 	beq	a300059c <dev_wait+0x1c>
+a3000594:	eb0001c3 	bl	a3000ca8 <get_cur_tcb>
+a3000598:	e5804030 	str	r4, [r0, #48]
+a300059c:	eb0001c1 	bl	a3000ca8 <get_cur_tcb>
+a30005a0:	e10f3000 	mrs	r3, CPSR
+a30005a4:	e38330c0 	orr	r3, r3, #192	; 0xc0
+a30005a8:	e121f003 	msr	CPSR_c, r3
+a30005ac:	eb0001c1 	bl	a3000cb8 <dispatch_sleep>
+a30005b0:	e10f3000 	mrs	r3, CPSR
+a30005b4:	e3c330c0 	bic	r3, r3, #192	; 0xc0
+a30005b8:	e121f003 	msr	CPSR_c, r3
+a30005bc:	e8bd8010 	ldmia	sp!, {r4, pc}
+a30005c0:	a30015a8 	movwge	r1, #1448	; 0x5a8
+
+a30005c4 <reg_read>:
+a30005c4:	e2800101 	add	r0, r0, #1073741824	; 0x40000000
+a30005c8:	e5900000 	ldr	r0, [r0]
+a30005cc:	e12fff1e 	bx	lr
+
+a30005d0 <reg_write>:
+a30005d0:	e2800101 	add	r0, r0, #1073741824	; 0x40000000
+a30005d4:	e5801000 	str	r1, [r0]
+a30005d8:	e12fff1e 	bx	lr
+
+a30005dc <reg_set>:
+a30005dc:	e2800101 	add	r0, r0, #1073741824	; 0x40000000
+a30005e0:	e5903000 	ldr	r3, [r0]
+a30005e4:	e1833001 	orr	r3, r3, r1
+a30005e8:	e5803000 	str	r3, [r0]
+a30005ec:	e12fff1e 	bx	lr
+
+a30005f0 <reg_clear>:
+a30005f0:	e2800101 	add	r0, r0, #1073741824	; 0x40000000
+a30005f4:	e5903000 	ldr	r3, [r0]
+a30005f8:	e1c33001 	bic	r3, r3, r1
+a30005fc:	e5803000 	str	r3, [r0]
+a3000600:	e12fff1e 	bx	lr
+
+a3000604 <read_cpsr>:
+a3000604:	e10f0000 	mrs	r0, CPSR
+a3000608:	e12fff1e 	bx	lr
+
+a300060c <irq_wrapper>:
+a300060c:	e24ee004 	sub	lr, lr, #4	; 0x4
+a3000610:	e59fd048 	ldr	sp, [pc, #72]	; a3000660 <.text+0x660>
+a3000614:	e92d0003 	stmdb	sp!, {r0, r1}
+a3000618:	e14f0000 	mrs	r0, SPSR
+a300061c:	e1a0100e 	mov	r1, lr
+a3000620:	e321f093 	msr	CPSR_c, #147	; 0x93
+a3000624:	e169f000 	msr	SPSR_fc, r0
+a3000628:	e92d0002 	stmdb	sp!, {r1}
+a300062c:	e59f1030 	ldr	r1, [pc, #48]	; a3000664 <.text+0x664>
+a3000630:	e8910003 	ldmia	r1, {r0, r1}
+a3000634:	e92d510f 	stmdb	sp!, {r0, r1, r2, r3, r8, ip, lr}
+a3000638:	e14f0000 	mrs	r0, SPSR
+a300063c:	e94d6001 	stmdb	sp, {r0, sp, lr}^
+a3000640:	e24dd00c 	sub	sp, sp, #12	; 0xc
+a3000644:	e59fc01c 	ldr	ip, [pc, #28]	; a3000668 <.text+0x668>
+a3000648:	e59c8000 	ldr	r8, [ip]
+a300064c:	eb000006 	bl	a300066c <C_IRQ_Handler>
+a3000650:	e8dd6001 	ldmia	sp, {r0, sp, lr}^
+a3000654:	e28dd00c 	add	sp, sp, #12	; 0xc
+a3000658:	e169f000 	msr	SPSR_fc, r0
+a300065c:	e8fdd10f 	ldmia	sp!, {r0, r1, r2, r3, r8, ip, lr, pc}^
+a3000660:	a30015d0 	movwge	r1, #1488	; 0x5d0
+a3000664:	a30015c8 	movwge	r1, #1480	; 0x5c8
+a3000668:	a30016ec 	movwge	r1, #1772	; 0x6ec
+
+a300066c <C_IRQ_Handler>:
+a300066c:	ea000054 	b	a30007c4 <timer_inc>
+
+a3000670 <C_SWI_Handler>:
+a3000670:	e2400609 	sub	r0, r0, #9437184	; 0x900000
+a3000674:	e2400003 	sub	r0, r0, #3	; 0x3
+a3000678:	e52de004 	str	lr, [sp, #-4]!
+a300067c:	e1a03001 	mov	r3, r1
+a3000680:	e3500011 	cmp	r0, #17	; 0x11
+a3000684:	979ff100 	ldrls	pc, [pc, r0, lsl #2]
+a3000688:	ea000024 	b	a3000720 <.text+0x720>
+a300068c:	a30006d4 	movwge	r0, #1748	; 0x6d4
+a3000690:	a30006e0 	movwge	r0, #1760	; 0x6e0
+a3000694:	a3000720 	movwge	r0, #1824	; 0x720
+a3000698:	a30006fc 	movwge	r0, #1788	; 0x6fc
+a300069c:	a30006ec 	movwge	r0, #1772	; 0x6ec
+a30006a0:	a3000720 	movwge	r0, #1824	; 0x720
+a30006a4:	a3000720 	movwge	r0, #1824	; 0x720
+a30006a8:	a3000704 	movwge	r0, #1796	; 0x704
+a30006ac:	a3000720 	movwge	r0, #1824	; 0x720
+a30006b0:	a3000720 	movwge	r0, #1824	; 0x720
+a30006b4:	a3000720 	movwge	r0, #1824	; 0x720
+a30006b8:	a3000720 	movwge	r0, #1824	; 0x720
+a30006bc:	a30006f4 	movwge	r0, #1780	; 0x6f4
+a30006c0:	a30006f4 	movwge	r0, #1780	; 0x6f4
+a30006c4:	a30006f4 	movwge	r0, #1780	; 0x6f4
+a30006c8:	a3000720 	movwge	r0, #1824	; 0x720
+a30006cc:	a3000720 	movwge	r0, #1824	; 0x720
+a30006d0:	a3000714 	movwge	r0, #1812	; 0x714
+a30006d4:	e8910007 	ldmia	r1, {r0, r1, r2}
+a30006d8:	e49de004 	ldr	lr, [sp], #4
+a30006dc:	ea000094 	b	a3000934 <read_syscall>
+a30006e0:	e8910007 	ldmia	r1, {r0, r1, r2}
+a30006e4:	e49de004 	ldr	lr, [sp], #4
+a30006e8:	ea00006f 	b	a30008ac <write_syscall>
+a30006ec:	e5910000 	ldr	r0, [r1]
+a30006f0:	eb000117 	bl	a3000b54 <sleep_syscall>
+a30006f4:	e3a00000 	mov	r0, #0	; 0x0
+a30006f8:	e49df004 	ldr	pc, [sp], #4
+a30006fc:	e49de004 	ldr	lr, [sp], #4
+a3000700:	ea00010d 	b	a3000b3c <time_syscall>
+a3000704:	e5911004 	ldr	r1, [r1, #4]
+a3000708:	e5930000 	ldr	r0, [r3]
+a300070c:	e49de004 	ldr	lr, [sp], #4
+a3000710:	ea0000cb 	b	a3000a44 <task_create>
+a3000714:	e5910000 	ldr	r0, [r1]
+a3000718:	e49de004 	ldr	lr, [sp], #4
+a300071c:	ea0000c0 	b	a3000a24 <event_wait>
+a3000720:	e59f0008 	ldr	r0, [pc, #8]	; a3000730 <.text+0x730>
+a3000724:	eb000271 	bl	a30010f0 <printf>
+a3000728:	e59f0004 	ldr	r0, [pc, #4]	; a3000734 <.text+0x734>
+a300072c:	e49df004 	ldr	pc, [sp], #4
+a3000730:	a3001418 	movwge	r1, #1048	; 0x418
+a3000734:	0badc0de 	bleq	a1b70ab4 <_start-0x148f54c>
+
+a3000738 <S_Handler>:
+a3000738:	e24dd004 	sub	sp, sp, #4	; 0x4
+a300073c:	e92d5fff 	stmdb	sp!, {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+a3000740:	e14f2000 	mrs	r2, SPSR
+a3000744:	e58d2038 	str	r2, [sp, #56]
+a3000748:	e1a0100d 	mov	r1, sp
+a300074c:	e59f0030 	ldr	r0, [pc, #48]	; a3000784 <.text+0x784>
+a3000750:	e5908000 	ldr	r8, [r0]
+a3000754:	e51e0004 	ldr	r0, [lr, #-4]
+a3000758:	e3c004ff 	bic	r0, r0, #-16777216	; 0xff000000
+a300075c:	e10fc000 	mrs	ip, CPSR
+a3000760:	e3ccc080 	bic	ip, ip, #128	; 0x80
+a3000764:	e129f00c 	msr	CPSR_fc, ip
+a3000768:	ebffffc0 	bl	a3000670 <C_SWI_Handler>
+a300076c:	e59d2038 	ldr	r2, [sp, #56]
+a3000770:	e169f002 	msr	SPSR_fc, r2
+a3000774:	e28dd004 	add	sp, sp, #4	; 0x4
+a3000778:	e8bd5ffe 	ldmia	sp!, {r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+a300077c:	e28dd004 	add	sp, sp, #4	; 0x4
+a3000780:	e1b0f00e 	movs	pc, lr
+a3000784:	a30016ec 	movwge	r1, #1772	; 0x6ec
+
+a3000788 <timer_init>:
+a3000788:	e59f1028 	ldr	r1, [pc, #40]	; a30007b8 <.text+0x7b8>
+a300078c:	e59f3028 	ldr	r3, [pc, #40]	; a30007bc <.text+0x7bc>
+a3000790:	e59f2028 	ldr	r2, [pc, #40]	; a30007c0 <.text+0x7c0>
+a3000794:	e5813000 	str	r3, [r1]
+a3000798:	e3a03000 	mov	r3, #0	; 0x0
+a300079c:	e5823010 	str	r3, [r2, #16]
+a30007a0:	e5913000 	ldr	r3, [r1]
+a30007a4:	e5823000 	str	r3, [r2]
+a30007a8:	e592301c 	ldr	r3, [r2, #28]
+a30007ac:	e3833001 	orr	r3, r3, #1	; 0x1
+a30007b0:	e582301c 	str	r3, [r2, #28]
+a30007b4:	e12fff1e 	bx	lr
+a30007b8:	a30015d4 	movwge	r1, #1492	; 0x5d4
+a30007bc:	00007ef4 	streqd	r7, [r0], -r4
+a30007c0:	40a00000 	adcmi	r0, r0, r0
+
+a30007c4 <timer_inc>:
+a30007c4:	e92d4030 	stmdb	sp!, {r4, r5, lr}
+a30007c8:	e59f4074 	ldr	r4, [pc, #116]	; a3000844 <.text+0x844>
+a30007cc:	e59f2074 	ldr	r2, [pc, #116]	; a3000848 <.text+0x848>
+a30007d0:	e59f5074 	ldr	r5, [pc, #116]	; a300084c <.text+0x84c>
+a30007d4:	e5943000 	ldr	r3, [r4]
+a30007d8:	e2833c7e 	add	r3, r3, #32256	; 0x7e00
+a30007dc:	e28330f4 	add	r3, r3, #244	; 0xf4
+a30007e0:	e5843000 	str	r3, [r4]
+a30007e4:	e5943000 	ldr	r3, [r4]
+a30007e8:	e5823000 	str	r3, [r2]
+a30007ec:	e5923014 	ldr	r3, [r2, #20]
+a30007f0:	e3833001 	orr	r3, r3, #1	; 0x1
+a30007f4:	e5823014 	str	r3, [r2, #20]
+a30007f8:	e5953000 	ldr	r3, [r5]
+a30007fc:	e2833001 	add	r3, r3, #1	; 0x1
+a3000800:	e5853000 	str	r3, [r5]
+a3000804:	e5950000 	ldr	r0, [r5]
+a3000808:	ebffff37 	bl	a30004ec <dev_update>
+a300080c:	e5942000 	ldr	r2, [r4]
+a3000810:	e59f3038 	ldr	r3, [pc, #56]	; a3000850 <.text+0x850>
+a3000814:	e1520003 	cmp	r2, r3
+a3000818:	9a000002 	bls	a3000828 <timer_inc+0x64>
+a300081c:	ebffffd9 	bl	a3000788 <timer_init>
+a3000820:	e59f002c 	ldr	r0, [pc, #44]	; a3000854 <.text+0x854>
+a3000824:	eb000231 	bl	a30010f0 <printf>
+a3000828:	e5953000 	ldr	r3, [r5]
+a300082c:	e59f0024 	ldr	r0, [pc, #36]	; a3000858 <.text+0x858>
+a3000830:	e3530000 	cmp	r3, #0	; 0x0
+a3000834:	1a000001 	bne	a3000840 <timer_inc+0x7c>
+a3000838:	e8bd4030 	ldmia	sp!, {r4, r5, lr}
+a300083c:	ea00022b 	b	a30010f0 <printf>
+a3000840:	e8bd8030 	ldmia	sp!, {r4, r5, pc}
+a3000844:	a30015d4 	movwge	r1, #1492	; 0x5d4
+a3000848:	40a00000 	adcmi	r0, r0, r0
+a300084c:	a30015d0 	movwge	r1, #1488	; 0x5d0
+a3000850:	0b9f76bf 	bleq	a17de354 <_start-0x1821cac>
+a3000854:	a3001430 	movwge	r1, #1072	; 0x430
+a3000858:	a3001440 	movwge	r1, #1088	; 0x440
+
+a300085c <userSetup>:
+a300085c:	e10fc000 	mrs	ip, CPSR
+a3000860:	e3ccc0ff 	bic	ip, ip, #255	; 0xff
+a3000864:	e38cc010 	orr	ip, ip, #16	; 0x10
+a3000868:	e38cc040 	orr	ip, ip, #64	; 0x40
+a300086c:	e129f00c 	msr	CPSR_fc, ip
+a3000870:	e3a0d4a3 	mov	sp, #-1560281088	; 0xa3000000
+a3000874:	e1a04000 	mov	r4, r0
+a3000878:	e1a05004 	mov	r5, r4
+a300087c:	e1a05105 	mov	r5, r5, lsl #2
+
+a3000880 <loop>:
+a3000880:	e7912005 	ldr	r2, [r1, r5]
+a3000884:	e2455004 	sub	r5, r5, #4	; 0x4
+a3000888:	e92d0004 	stmdb	sp!, {r2}
+a300088c:	e2544001 	subs	r4, r4, #1	; 0x1
+a3000890:	aafffffa 	bge	a3000880 <loop>
+a3000894:	e92d0001 	stmdb	sp!, {r0}
+a3000898:	e10fc000 	mrs	ip, CPSR
+a300089c:	e3ccc0ff 	bic	ip, ip, #255	; 0xff
+a30008a0:	e38cc013 	orr	ip, ip, #19	; 0x13
+a30008a4:	e129f00c 	msr	CPSR_fc, ip
+a30008a8:	e1a0f00e 	mov	pc, lr
+
+a30008ac <write_syscall>:
+a30008ac:	e3500001 	cmp	r0, #1	; 0x1
+a30008b0:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a30008b4:	e1a05001 	mov	r5, r1
+a30008b8:	e1a06002 	mov	r6, r2
+a30008bc:	0a000003 	beq	a30008d0 <write_syscall+0x24>
+a30008c0:	e59f0068 	ldr	r0, [pc, #104]	; a3000930 <.text+0x930>
+a30008c4:	eb000207 	bl	a30010e8 <puts>
+a30008c8:	e3e00008 	mvn	r0, #8	; 0x8
+a30008cc:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a30008d0:	e0812002 	add	r2, r1, r2
+a30008d4:	e352020a 	cmp	r2, #-1610612736	; 0xa0000000
+a30008d8:	93a03000 	movls	r3, #0	; 0x0
+a30008dc:	83a03001 	movhi	r3, #1	; 0x1
+a30008e0:	e1933fa1 	orrs	r3, r3, r1, lsr #31
+a30008e4:	1a00000f 	bne	a3000928 <write_syscall+0x7c>
+a30008e8:	e3510401 	cmp	r1, #16777216	; 0x1000000
+a30008ec:	33a03000 	movcc	r3, #0	; 0x0
+a30008f0:	23a03001 	movcs	r3, #1	; 0x1
+a30008f4:	e3720216 	cmn	r2, #1610612737	; 0x60000001
+a30008f8:	83a03000 	movhi	r3, #0	; 0x0
+a30008fc:	e3530000 	cmp	r3, #0	; 0x0
+a3000900:	01a04003 	moveq	r4, r3
+a3000904:	0a000003 	beq	a3000918 <write_syscall+0x6c>
+a3000908:	ea000006 	b	a3000928 <write_syscall+0x7c>
+a300090c:	e7d40005 	ldrb	r0, [r4, r5]
+a3000910:	e2844001 	add	r4, r4, #1	; 0x1
+a3000914:	eb0001f1 	bl	a30010e0 <putc>
+a3000918:	e1540006 	cmp	r4, r6
+a300091c:	1afffffa 	bne	a300090c <write_syscall+0x60>
+a3000920:	e1a00006 	mov	r0, r6
+a3000924:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000928:	e3e00008 	mvn	r0, #8	; 0x8
+a300092c:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000930:	a3001458 	movwge	r1, #1112	; 0x458
+
+a3000934 <read_syscall>:
+a3000934:	e0813002 	add	r3, r1, r2
+a3000938:	e92d40f0 	stmdb	sp!, {r4, r5, r6, r7, lr}
+a300093c:	e3730357 	cmn	r3, #1543503873	; 0x5c000001
+a3000940:	93a03000 	movls	r3, #0	; 0x0
+a3000944:	83a03001 	movhi	r3, #1	; 0x1
+a3000948:	e1a07002 	mov	r7, r2
+a300094c:	e3710216 	cmn	r1, #1610612737	; 0x60000001
+a3000950:	83a02000 	movhi	r2, #0	; 0x0
+a3000954:	93a02001 	movls	r2, #1	; 0x1
+a3000958:	e1922003 	orrs	r2, r2, r3
+a300095c:	e1a06001 	mov	r6, r1
+a3000960:	13e0500d 	mvnne	r5, #13	; 0xd
+a3000964:	1a000024 	bne	a30009fc <read_syscall+0xc8>
+a3000968:	e3500000 	cmp	r0, #0	; 0x0
+a300096c:	13e05008 	mvnne	r5, #8	; 0x8
+a3000970:	01a05000 	moveq	r5, r0
+a3000974:	0a00001a 	beq	a30009e4 <read_syscall+0xb0>
+a3000978:	ea00001f 	b	a30009fc <read_syscall+0xc8>
+a300097c:	e354000d 	cmp	r4, #13	; 0xd
+a3000980:	e1a00004 	mov	r0, r4
+a3000984:	0a000003 	beq	a3000998 <read_syscall+0x64>
+a3000988:	e354007f 	cmp	r4, #127	; 0x7f
+a300098c:	0a000006 	beq	a30009ac <read_syscall+0x78>
+a3000990:	e354000a 	cmp	r4, #10	; 0xa
+a3000994:	1a00000f 	bne	a30009d8 <read_syscall+0xa4>
+a3000998:	e3a0000a 	mov	r0, #10	; 0xa
+a300099c:	eb0001cf 	bl	a30010e0 <putc>
+a30009a0:	e7c64005 	strb	r4, [r6, r5]
+a30009a4:	e2855001 	add	r5, r5, #1	; 0x1
+a30009a8:	ea000013 	b	a30009fc <read_syscall+0xc8>
+a30009ac:	e3550000 	cmp	r5, #0	; 0x0
+a30009b0:	e3a00008 	mov	r0, #8	; 0x8
+a30009b4:	d2455001 	suble	r5, r5, #1	; 0x1
+a30009b8:	da000008 	ble	a30009e0 <read_syscall+0xac>
+a30009bc:	eb0001c7 	bl	a30010e0 <putc>
+a30009c0:	e3a00020 	mov	r0, #32	; 0x20
+a30009c4:	eb0001c5 	bl	a30010e0 <putc>
+a30009c8:	e3a00008 	mov	r0, #8	; 0x8
+a30009cc:	e2455002 	sub	r5, r5, #2	; 0x2
+a30009d0:	eb0001c2 	bl	a30010e0 <putc>
+a30009d4:	ea000001 	b	a30009e0 <read_syscall+0xac>
+a30009d8:	eb0001c0 	bl	a30010e0 <putc>
+a30009dc:	e7c64005 	strb	r4, [r6, r5]
+a30009e0:	e2855001 	add	r5, r5, #1	; 0x1
+a30009e4:	eb0001b9 	bl	a30010d0 <getc>
+a30009e8:	e20040ff 	and	r4, r0, #255	; 0xff
+a30009ec:	e3540004 	cmp	r4, #4	; 0x4
+a30009f0:	0a000001 	beq	a30009fc <read_syscall+0xc8>
+a30009f4:	e1550007 	cmp	r5, r7
+a30009f8:	3affffdf 	bcc	a300097c <read_syscall+0x48>
+a30009fc:	e1a00005 	mov	r0, r5
+a3000a00:	e8bd80f0 	ldmia	sp!, {r4, r5, r6, r7, pc}
+
+a3000a04 <invalid_syscall>:
+a3000a04:	e1a01000 	mov	r1, r0
+a3000a08:	e59f0010 	ldr	r0, [pc, #16]	; a3000a20 <.text+0xa20>
+a3000a0c:	eb0001b7 	bl	a30010f0 <printf>
+a3000a10:	e10f3000 	mrs	r3, CPSR
+a3000a14:	e38330c0 	orr	r3, r3, #192	; 0xc0
+a3000a18:	e121f003 	msr	CPSR_c, r3
+a3000a1c:	eafffffe 	b	a3000a1c <invalid_syscall+0x18>
+a3000a20:	a3001470 	movwge	r1, #1136	; 0x470
+
+a3000a24 <event_wait>:
+a3000a24:	e3500003 	cmp	r0, #3	; 0x3
+a3000a28:	e52de004 	str	lr, [sp, #-4]!
+a3000a2c:	e3a03016 	mov	r3, #22	; 0x16
+a3000a30:	8a000001 	bhi	a3000a3c <event_wait+0x18>
+a3000a34:	ebfffed1 	bl	a3000580 <dev_wait>
+a3000a38:	e3a03000 	mov	r3, #0	; 0x0
+a3000a3c:	e1a00003 	mov	r0, r3
+a3000a40:	e49df004 	ldr	pc, [sp], #4
+
+a3000a44 <task_create>:
+a3000a44:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a3000a48:	e1a03000 	mov	r3, r0
+a3000a4c:	e1a05001 	mov	r5, r1
+a3000a50:	e3a0e000 	mov	lr, #0	; 0x0
+a3000a54:	ea000008 	b	a3000a7c <task_create+0x38>
+a3000a58:	e593200c 	ldr	r2, [r3, #12]
+a3000a5c:	e593c010 	ldr	ip, [r3, #16]
+a3000a60:	e2833014 	add	r3, r3, #20	; 0x14
+a3000a64:	e152000c 	cmp	r2, ip
+a3000a68:	8a00000b 	bhi	a3000a9c <task_create+0x58>
+a3000a6c:	e3520000 	cmp	r2, #0	; 0x0
+a3000a70:	0a00000b 	beq	a3000aa4 <task_create+0x60>
+a3000a74:	e35c0000 	cmp	ip, #0	; 0x0
+a3000a78:	0a000009 	beq	a3000aa4 <task_create+0x60>
+a3000a7c:	e15e0005 	cmp	lr, r5
+a3000a80:	e28ee001 	add	lr, lr, #1	; 0x1
+a3000a84:	1afffff3 	bne	a3000a58 <task_create+0x14>
+a3000a88:	e3550040 	cmp	r5, #64	; 0x40
+a3000a8c:	959f30a0 	ldrls	r3, [pc, #160]	; a3000b34 <.text+0xb34>
+a3000a90:	93a06000 	movls	r6, #0	; 0x0
+a3000a94:	9a000007 	bls	a3000ab8 <task_create+0x74>
+a3000a98:	ea000001 	b	a3000aa4 <task_create+0x60>
+a3000a9c:	e3a00064 	mov	r0, #100	; 0x64
+a3000aa0:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000aa4:	e3a00016 	mov	r0, #22	; 0x16
+a3000aa8:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000aac:	e5030004 	str	r0, [r3, #-4]
+a3000ab0:	e2866001 	add	r6, r6, #1	; 0x1
+a3000ab4:	e2800014 	add	r0, r0, #20	; 0x14
+a3000ab8:	e1560005 	cmp	r6, r5
+a3000abc:	e2833004 	add	r3, r3, #4	; 0x4
+a3000ac0:	1afffff9 	bne	a3000aac <task_create+0x68>
+a3000ac4:	e59fc06c 	ldr	ip, [pc, #108]	; a3000b38 <.text+0xb38>
+a3000ac8:	e3a01001 	mov	r1, #1	; 0x1
+a3000acc:	ea000010 	b	a3000b14 <task_create+0xd0>
+a3000ad0:	e59c3000 	ldr	r3, [ip]
+a3000ad4:	e2410001 	sub	r0, r1, #1	; 0x1
+a3000ad8:	e1a0e00c 	mov	lr, ip
+a3000adc:	e5934010 	ldr	r4, [r3, #16]
+a3000ae0:	ea000001 	b	a3000aec <task_create+0xa8>
+a3000ae4:	e58c2004 	str	r2, [ip, #4]
+a3000ae8:	e2400001 	sub	r0, r0, #1	; 0x1
+a3000aec:	e3500000 	cmp	r0, #0	; 0x0
+a3000af0:	ba000003 	blt	a3000b04 <task_create+0xc0>
+a3000af4:	e53e2004 	ldr	r2, [lr, #-4]!
+a3000af8:	e5923010 	ldr	r3, [r2, #16]
+a3000afc:	e1530004 	cmp	r3, r4
+a3000b00:	8afffff7 	bhi	a3000ae4 <task_create+0xa0>
+a3000b04:	e49c2004 	ldr	r2, [ip], #4
+a3000b08:	e59f3028 	ldr	r3, [pc, #40]	; a3000b38 <.text+0xb38>
+a3000b0c:	e2811001 	add	r1, r1, #1	; 0x1
+a3000b10:	e7832100 	str	r2, [r3, r0, lsl #2]
+a3000b14:	e1510006 	cmp	r1, r6
+a3000b18:	baffffec 	blt	a3000ad0 <task_create+0x8c>
+a3000b1c:	e1a01005 	mov	r1, r5
+a3000b20:	e59f000c 	ldr	r0, [pc, #12]	; a3000b34 <.text+0xb34>
+a3000b24:	eb00002e 	bl	a3000be4 <allocate_tasks>
+a3000b28:	eb00006e 	bl	a3000ce8 <dispatch_nosave>
+a3000b2c:	e3a00001 	mov	r0, #1	; 0x1
+a3000b30:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000b34:	a3001704 	movwge	r1, #1796	; 0x704
+a3000b38:	a3001708 	movwge	r1, #1800	; 0x708
+
+a3000b3c <time_syscall>:
+a3000b3c:	e59f300c 	ldr	r3, [pc, #12]	; a3000b50 <.text+0xb50>
+a3000b40:	e5932000 	ldr	r2, [r3]
+a3000b44:	e3a0300a 	mov	r3, #10	; 0xa
+a3000b48:	e0000392 	mul	r0, r2, r3
+a3000b4c:	e12fff1e 	bx	lr
+a3000b50:	a30015d0 	movwge	r1, #1488	; 0x5d0
+
+a3000b54 <sleep_syscall>:
+a3000b54:	e59f3024 	ldr	r3, [pc, #36]	; a3000b80 <.text+0xb80>
+a3000b58:	e92d4010 	stmdb	sp!, {r4, lr}
+a3000b5c:	e3a0100a 	mov	r1, #10	; 0xa
+a3000b60:	e5934000 	ldr	r4, [r3]
+a3000b64:	eb000183 	bl	a3001178 <__aeabi_uidiv>
+a3000b68:	e0844000 	add	r4, r4, r0
+a3000b6c:	e59f300c 	ldr	r3, [pc, #12]	; a3000b80 <.text+0xb80>
+a3000b70:	e5933000 	ldr	r3, [r3]
+a3000b74:	e1530004 	cmp	r3, r4
+a3000b78:	3afffffb 	bcc	a3000b6c <sleep_syscall+0x18>
+a3000b7c:	e8bd8010 	ldmia	sp!, {r4, pc}
+a3000b80:	a30015d0 	movwge	r1, #1488	; 0x5d0
+
+a3000b84 <tcb_init>:
+a3000b84:	e20220ff 	and	r2, r2, #255	; 0xff
+a3000b88:	e5c12000 	strb	r2, [r1]
+a3000b8c:	e5c12001 	strb	r2, [r1, #1]
+a3000b90:	e5903000 	ldr	r3, [r0]
+a3000b94:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a3000b98:	e5813004 	str	r3, [r1, #4]
+a3000b9c:	e9900030 	ldmib	r0, {r4, r5}
+a3000ba0:	e5906010 	ldr	r6, [r0, #16]
+a3000ba4:	e590e00c 	ldr	lr, [r0, #12]
+a3000ba8:	e59f3030 	ldr	r3, [pc, #48]	; a3000be0 <.text+0xbe0>
+a3000bac:	e2810a01 	add	r0, r1, #4096	; 0x1000
+a3000bb0:	e2812004 	add	r2, r1, #4	; 0x4
+a3000bb4:	e3a0c000 	mov	ip, #0	; 0x0
+a3000bb8:	e2800038 	add	r0, r0, #56	; 0x38
+a3000bbc:	e5824004 	str	r4, [r2, #4]
+a3000bc0:	e5825008 	str	r5, [r2, #8]
+a3000bc4:	e582e00c 	str	lr, [r2, #12]
+a3000bc8:	e5826010 	str	r6, [r2, #16]
+a3000bcc:	e5823024 	str	r3, [r2, #36]
+a3000bd0:	e5820020 	str	r0, [r2, #32]
+a3000bd4:	e581c02c 	str	ip, [r1, #44]
+a3000bd8:	e581c030 	str	ip, [r1, #48]
+a3000bdc:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000be0:	a3000d60 	movwge	r0, #3424	; 0xd60
+
+a3000be4 <allocate_tasks>:
+a3000be4:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a3000be8:	e1a06000 	mov	r6, r0
+a3000bec:	e1a05001 	mov	r5, r1
+a3000bf0:	e3a04000 	mov	r4, #0	; 0x0
+a3000bf4:	ea000001 	b	a3000c00 <allocate_tasks+0x1c>
+a3000bf8:	e7960100 	ldr	r0, [r6, r0, lsl #2]
+a3000bfc:	ebffffe0 	bl	a3000b84 <tcb_init>
+a3000c00:	e59f101c 	ldr	r1, [pc, #28]	; a3000c24 <.text+0xc24>
+a3000c04:	e59f301c 	ldr	r3, [pc, #28]	; a3000c28 <.text+0xc28>
+a3000c08:	e20400ff 	and	r0, r4, #255	; 0xff
+a3000c0c:	e1500005 	cmp	r0, r5
+a3000c10:	e1a02000 	mov	r2, r0
+a3000c14:	e0213190 	mla	r1, r0, r1, r3
+a3000c18:	e2844001 	add	r4, r4, #1	; 0x1
+a3000c1c:	3afffff5 	bcc	a3000bf8 <allocate_tasks+0x14>
+a3000c20:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000c24:	00001038 	andeq	r1, r0, r8, lsr r0
+a3000c28:	a3001808 	movwge	r1, #2056	; 0x808
+
+a3000c2c <sched_init>:
+a3000c2c:	e92d4010 	stmdb	sp!, {r4, lr}
+a3000c30:	e59f4040 	ldr	r4, [pc, #64]	; a3000c78 <.text+0xc78>
+a3000c34:	e3a0320a 	mov	r3, #-1610612736	; 0xa0000000
+a3000c38:	e3a01000 	mov	r1, #0	; 0x0
+a3000c3c:	e5803000 	str	r3, [r0]
+a3000c40:	e2833403 	add	r3, r3, #50331648	; 0x3000000
+a3000c44:	e5803008 	str	r3, [r0, #8]
+a3000c48:	e5801010 	str	r1, [r0, #16]
+a3000c4c:	e5801004 	str	r1, [r0, #4]
+a3000c50:	e580100c 	str	r1, [r0, #12]
+a3000c54:	e3a0203f 	mov	r2, #63	; 0x3f
+a3000c58:	e1a01004 	mov	r1, r4
+a3000c5c:	ebffffc8 	bl	a3000b84 <tcb_init>
+a3000c60:	e1a00004 	mov	r0, r4
+a3000c64:	e3a0103f 	mov	r1, #63	; 0x3f
+a3000c68:	eb000062 	bl	a3000df8 <runqueue_add>
+a3000c6c:	e1a00004 	mov	r0, r4
+a3000c70:	e8bd4010 	ldmia	sp!, {r4, lr}
+a3000c74:	ea000002 	b	a3000c84 <dispatch_init>
+a3000c78:	a30415d0 	movwge	r1, #17872	; 0x45d0
+
+a3000c7c <assign_schedule>:
+a3000c7c:	e3a00001 	mov	r0, #1	; 0x1
+a3000c80:	e12fff1e 	bx	lr
+
+a3000c84 <dispatch_init>:
+a3000c84:	e59f3004 	ldr	r3, [pc, #4]	; a3000c90 <.text+0xc90>
+a3000c88:	e5830000 	str	r0, [r3]
+a3000c8c:	e12fff1e 	bx	lr
+a3000c90:	a30015d8 	movwge	r1, #1496	; 0x5d8
+
+a3000c94 <get_cur_prio>:
+a3000c94:	e59f3008 	ldr	r3, [pc, #8]	; a3000ca4 <.text+0xca4>
+a3000c98:	e5933000 	ldr	r3, [r3]
+a3000c9c:	e5d30001 	ldrb	r0, [r3, #1]
+a3000ca0:	e12fff1e 	bx	lr
+a3000ca4:	a30015d8 	movwge	r1, #1496	; 0x5d8
+
+a3000ca8 <get_cur_tcb>:
+a3000ca8:	e59f3004 	ldr	r3, [pc, #4]	; a3000cb4 <.text+0xcb4>
+a3000cac:	e5930000 	ldr	r0, [r3]
+a3000cb0:	e12fff1e 	bx	lr
+a3000cb4:	a30015d8 	movwge	r1, #1496	; 0x5d8
+
+a3000cb8 <dispatch_sleep>:
+a3000cb8:	e52de004 	str	lr, [sp, #-4]!
+a3000cbc:	eb000076 	bl	a3000e9c <highest_prio>
+a3000cc0:	eb00005f 	bl	a3000e44 <runqueue_remove>
+a3000cc4:	e59f2018 	ldr	r2, [pc, #24]	; a3000ce4 <.text+0xce4>
+a3000cc8:	e1a03000 	mov	r3, r0
+a3000ccc:	e2800004 	add	r0, r0, #4	; 0x4
+a3000cd0:	e5921000 	ldr	r1, [r2]
+a3000cd4:	e5823000 	str	r3, [r2]
+a3000cd8:	e2811004 	add	r1, r1, #4	; 0x4
+a3000cdc:	e49de004 	ldr	lr, [sp], #4
+a3000ce0:	ea00002a 	b	a3000d90 <ctx_switch_full>
+a3000ce4:	a30015d8 	movwge	r1, #1496	; 0x5d8
+
+a3000ce8 <dispatch_nosave>:
+a3000ce8:	e52de004 	str	lr, [sp, #-4]!
+a3000cec:	eb00006a 	bl	a3000e9c <highest_prio>
+a3000cf0:	eb000053 	bl	a3000e44 <runqueue_remove>
+a3000cf4:	e59f300c 	ldr	r3, [pc, #12]	; a3000d08 <.text+0xd08>
+a3000cf8:	e1a02000 	mov	r2, r0
+a3000cfc:	e2800004 	add	r0, r0, #4	; 0x4
+a3000d00:	e5832000 	str	r2, [r3]
+a3000d04:	eb000023 	bl	a3000d98 <ctx_switch_half>
+a3000d08:	a30015d8 	movwge	r1, #1496	; 0x5d8
+
+a3000d0c <dispatch_save>:
+a3000d0c:	e92d4010 	stmdb	sp!, {r4, lr}
+a3000d10:	e59f4044 	ldr	r4, [pc, #68]	; a3000d5c <.text+0xd5c>
+a3000d14:	e5940000 	ldr	r0, [r4]
+a3000d18:	e5d01001 	ldrb	r1, [r0, #1]
+a3000d1c:	eb000035 	bl	a3000df8 <runqueue_add>
+a3000d20:	eb00005d 	bl	a3000e9c <highest_prio>
+a3000d24:	e5943000 	ldr	r3, [r4]
+a3000d28:	e5d33001 	ldrb	r3, [r3, #1]
+a3000d2c:	e1530000 	cmp	r3, r0
+a3000d30:	1a000001 	bne	a3000d3c <dispatch_save+0x30>
+a3000d34:	e8bd4010 	ldmia	sp!, {r4, lr}
+a3000d38:	ea000041 	b	a3000e44 <runqueue_remove>
+a3000d3c:	eb000040 	bl	a3000e44 <runqueue_remove>
+a3000d40:	e5941000 	ldr	r1, [r4]
+a3000d44:	e1a03000 	mov	r3, r0
+a3000d48:	e2800004 	add	r0, r0, #4	; 0x4
+a3000d4c:	e2811004 	add	r1, r1, #4	; 0x4
+a3000d50:	e5843000 	str	r3, [r4]
+a3000d54:	e8bd4010 	ldmia	sp!, {r4, lr}
+a3000d58:	ea00000c 	b	a3000d90 <ctx_switch_full>
+a3000d5c:	a30015d8 	movwge	r1, #1496	; 0x5d8
+
+a3000d60 <launch_task>:
+a3000d60:	e1a00005 	mov	r0, r5
+a3000d64:	e3a01000 	mov	r1, #0	; 0x0
+a3000d68:	e3a02000 	mov	r2, #0	; 0x0
+a3000d6c:	e3a03000 	mov	r3, #0	; 0x0
+a3000d70:	e3a05000 	mov	r5, #0	; 0x0
+a3000d74:	e3a08000 	mov	r8, #0	; 0x0
+a3000d78:	e3a0c000 	mov	ip, #0	; 0x0
+a3000d7c:	e321f010 	msr	CPSR_c, #16	; 0x10
+a3000d80:	e1a0d006 	mov	sp, r6
+a3000d84:	e3a06000 	mov	r6, #0	; 0x0
+a3000d88:	e59fe010 	ldr	lr, [pc, #16]	; a3000da0 <.text+0xda0>
+a3000d8c:	e1a0f004 	mov	pc, r4
+
+a3000d90 <ctx_switch_full>:
+a3000d90:	e9016ff0 	stmdb	r1, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+a3000d94:	eaffffff 	b	a3000d98 <ctx_switch_half>
+
+a3000d98 <ctx_switch_half>:
+a3000d98:	e8906ff0 	ldmia	r0, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+a3000d9c:	e1a0f00e 	mov	pc, lr
+a3000da0:	deadbeef 	cdple	14, 10, cr11, cr13, cr15, {7}
+
+a3000da4 <runqueue_init>:
+a3000da4:	e59f3038 	ldr	r3, [pc, #56]	; a3000de4 <.text+0xde4>
+a3000da8:	e59f1038 	ldr	r1, [pc, #56]	; a3000de8 <.text+0xde8>
+a3000dac:	e3a02000 	mov	r2, #0	; 0x0
+a3000db0:	e5c32000 	strb	r2, [r3]
+a3000db4:	e3a03000 	mov	r3, #0	; 0x0
+a3000db8:	e4c13001 	strb	r3, [r1], #1
+a3000dbc:	e59f3028 	ldr	r3, [pc, #40]	; a3000dec <.text+0xdec>
+a3000dc0:	e1510003 	cmp	r1, r3
+a3000dc4:	1afffffa 	bne	a3000db4 <runqueue_init+0x10>
+a3000dc8:	e59f2020 	ldr	r2, [pc, #32]	; a3000df0 <.text+0xdf0>
+a3000dcc:	e3a03000 	mov	r3, #0	; 0x0
+a3000dd0:	e4823004 	str	r3, [r2], #4
+a3000dd4:	e59f3018 	ldr	r3, [pc, #24]	; a3000df4 <.text+0xdf4>
+a3000dd8:	e1520003 	cmp	r2, r3
+a3000ddc:	1afffffa 	bne	a3000dcc <runqueue_init+0x28>
+a3000de0:	e12fff1e 	bx	lr
+a3000de4:	a30016e4 	movwge	r1, #1764	; 0x6e4
+a3000de8:	a30016dc 	movwge	r1, #1756	; 0x6dc
+a3000dec:	a30016e4 	movwge	r1, #1764	; 0x6e4
+a3000df0:	a30015dc 	movwge	r1, #1500	; 0x5dc
+a3000df4:	a30016dc 	movwge	r1, #1756	; 0x6dc
+
+a3000df8 <runqueue_add>:
+a3000df8:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a3000dfc:	e59f4034 	ldr	r4, [pc, #52]	; a3000e38 <.text+0xe38>
+a3000e00:	e20160ff 	and	r6, r1, #255	; 0xff
+a3000e04:	e1a0c1a6 	mov	ip, r6, lsr #3
+a3000e08:	e59f502c 	ldr	r5, [pc, #44]	; a3000e3c <.text+0xe3c>
+a3000e0c:	e7d4300c 	ldrb	r3, [r4, ip]
+a3000e10:	e3a02001 	mov	r2, #1	; 0x1
+a3000e14:	e2011007 	and	r1, r1, #7	; 0x7
+a3000e18:	e5d5e000 	ldrb	lr, [r5]
+a3000e1c:	e1833112 	orr	r3, r3, r2, lsl r1
+a3000e20:	e18eec12 	orr	lr, lr, r2, lsl ip
+a3000e24:	e7c4300c 	strb	r3, [r4, ip]
+a3000e28:	e59f3010 	ldr	r3, [pc, #16]	; a3000e40 <.text+0xe40>
+a3000e2c:	e5c5e000 	strb	lr, [r5]
+a3000e30:	e7830106 	str	r0, [r3, r6, lsl #2]
+a3000e34:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3000e38:	a30016dc 	movwge	r1, #1756	; 0x6dc
+a3000e3c:	a30016e4 	movwge	r1, #1764	; 0x6e4
+a3000e40:	a30015dc 	movwge	r1, #1500	; 0x5dc
+
+a3000e44 <runqueue_remove>:
+a3000e44:	e59fc044 	ldr	ip, [pc, #68]	; a3000e90 <.text+0xe90>
+a3000e48:	e20020ff 	and	r2, r0, #255	; 0xff
+a3000e4c:	e92d4030 	stmdb	sp!, {r4, r5, lr}
+a3000e50:	e1a0e1a2 	mov	lr, r2, lsr #3
+a3000e54:	e7dc300e 	ldrb	r3, [ip, lr]
+a3000e58:	e3a04001 	mov	r4, #1	; 0x1
+a3000e5c:	e2000007 	and	r0, r0, #7	; 0x7
+a3000e60:	e1c33014 	bic	r3, r3, r4, lsl r0
+a3000e64:	e59f5028 	ldr	r5, [pc, #40]	; a3000e94 <.text+0xe94>
+a3000e68:	e59f1028 	ldr	r1, [pc, #40]	; a3000e98 <.text+0xe98>
+a3000e6c:	e3530000 	cmp	r3, #0	; 0x0
+a3000e70:	e7cc300e 	strb	r3, [ip, lr]
+a3000e74:	e3a03000 	mov	r3, #0	; 0x0
+a3000e78:	e7910102 	ldr	r0, [r1, r2, lsl #2]
+a3000e7c:	e7813102 	str	r3, [r1, r2, lsl #2]
+a3000e80:	05d53000 	ldreqb	r3, [r5]
+a3000e84:	01c33e14 	biceq	r3, r3, r4, lsl lr
+a3000e88:	05c53000 	streqb	r3, [r5]
+a3000e8c:	e8bd8030 	ldmia	sp!, {r4, r5, pc}
+a3000e90:	a30016dc 	movwge	r1, #1756	; 0x6dc
+a3000e94:	a30016e4 	movwge	r1, #1764	; 0x6e4
+a3000e98:	a30015dc 	movwge	r1, #1500	; 0x5dc
+
+a3000e9c <highest_prio>:
+a3000e9c:	e59f302c 	ldr	r3, [pc, #44]	; a3000ed0 <.text+0xed0>
+a3000ea0:	e59f102c 	ldr	r1, [pc, #44]	; a3000ed4 <.text+0xed4>
+a3000ea4:	e5d33000 	ldrb	r3, [r3]
+a3000ea8:	e3a0003f 	mov	r0, #63	; 0x3f
+a3000eac:	e3530000 	cmp	r3, #0	; 0x0
+a3000eb0:	012fff1e 	bxeq	lr
+a3000eb4:	e7d12003 	ldrb	r2, [r1, r3]
+a3000eb8:	e59f3018 	ldr	r3, [pc, #24]	; a3000ed8 <.text+0xed8>
+a3000ebc:	e7d33002 	ldrb	r3, [r3, r2]
+a3000ec0:	e7d13003 	ldrb	r3, [r1, r3]
+a3000ec4:	e0833182 	add	r3, r3, r2, lsl #3
+a3000ec8:	e20300ff 	and	r0, r3, #255	; 0xff
+a3000ecc:	e12fff1e 	bx	lr
+a3000ed0:	a30016e4 	movwge	r1, #1764	; 0x6e4
+a3000ed4:	a30014a0 	movwge	r1, #1184	; 0x4a0
+a3000ed8:	a30016dc 	movwge	r1, #1756	; 0x6dc
+
+a3000edc <mutex_init>:
+a3000edc:	e59f1028 	ldr	r1, [pc, #40]	; a3000f0c <.text+0xf0c>
+a3000ee0:	e3a03000 	mov	r3, #0	; 0x0
+a3000ee4:	e581300c 	str	r3, [r1, #12]
+a3000ee8:	e5813004 	str	r3, [r1, #4]
+a3000eec:	e5813008 	str	r3, [r1, #8]
+a3000ef0:	e59f3018 	ldr	r3, [pc, #24]	; a3000f10 <.text+0xf10>
+a3000ef4:	e3a02001 	mov	r2, #1	; 0x1
+a3000ef8:	e5812000 	str	r2, [r1]
+a3000efc:	e2811010 	add	r1, r1, #16	; 0x10
+a3000f00:	e1510003 	cmp	r1, r3
+a3000f04:	1afffff5 	bne	a3000ee0 <mutex_init+0x4>
+a3000f08:	e12fff1e 	bx	lr
+a3000f0c:	a3042608 	movwge	r2, #17928	; 0x4608
+a3000f10:	a3042808 	movwge	r2, #18440	; 0x4808
+
+a3000f14 <mutex_create>:
+a3000f14:	e59f2038 	ldr	r2, [pc, #56]	; a3000f54 <.text+0xf54>
+a3000f18:	e3a01000 	mov	r1, #0	; 0x0
+a3000f1c:	e5923000 	ldr	r3, [r2]
+a3000f20:	e2822010 	add	r2, r2, #16	; 0x10
+a3000f24:	e3530001 	cmp	r3, #1	; 0x1
+a3000f28:	1a000004 	bne	a3000f40 <mutex_create+0x2c>
+a3000f2c:	e59f3020 	ldr	r3, [pc, #32]	; a3000f54 <.text+0xf54>
+a3000f30:	e3a02000 	mov	r2, #0	; 0x0
+a3000f34:	e1a00001 	mov	r0, r1
+a3000f38:	e7832201 	str	r2, [r3, r1, lsl #4]
+a3000f3c:	e12fff1e 	bx	lr
+a3000f40:	e2811001 	add	r1, r1, #1	; 0x1
+a3000f44:	e3510020 	cmp	r1, #32	; 0x20
+a3000f48:	1afffff3 	bne	a3000f1c <mutex_create+0x8>
+a3000f4c:	e3e0000b 	mvn	r0, #11	; 0xb
+a3000f50:	e12fff1e 	bx	lr
+a3000f54:	a3042608 	movwge	r2, #17928	; 0x4608
+
+a3000f58 <mutex_queue_add>:
+a3000f58:	e59f3030 	ldr	r3, [pc, #48]	; a3000f90 <.text+0xf90>
+a3000f5c:	e0832200 	add	r2, r3, r0, lsl #4
+a3000f60:	e592300c 	ldr	r3, [r2, #12]
+a3000f64:	e3530000 	cmp	r3, #0	; 0x0
+a3000f68:	0582100c 	streq	r1, [r2, #12]
+a3000f6c:	05813030 	streq	r3, [r1, #48]
+a3000f70:	012fff1e 	bxeq	lr
+a3000f74:	ea000000 	b	a3000f7c <mutex_queue_add+0x24>
+a3000f78:	e5933030 	ldr	r3, [r3, #48]
+a3000f7c:	e5932030 	ldr	r2, [r3, #48]
+a3000f80:	e3520000 	cmp	r2, #0	; 0x0
+a3000f84:	1afffffb 	bne	a3000f78 <mutex_queue_add+0x20>
+a3000f88:	e5812030 	str	r2, [r1, #48]
+a3000f8c:	e12fff1e 	bx	lr
+a3000f90:	a3042608 	movwge	r2, #17928	; 0x4608
+
+a3000f94 <mutex_lock>:
+a3000f94:	e3500020 	cmp	r0, #32	; 0x20
+a3000f98:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a3000f9c:	e59f506c 	ldr	r5, [pc, #108]	; a3001010 <.text+0x1010>
+a3000fa0:	e1a04000 	mov	r4, r0
+a3000fa4:	8a000016 	bhi	a3001004 <mutex_lock+0x70>
+a3000fa8:	e7956200 	ldr	r6, [r5, r0, lsl #4]
+a3000fac:	e3560000 	cmp	r6, #0	; 0x0
+a3000fb0:	1a000013 	bne	a3001004 <mutex_lock+0x70>
+a3000fb4:	ebffff3b 	bl	a3000ca8 <get_cur_tcb>
+a3000fb8:	e0852204 	add	r2, r5, r4, lsl #4
+a3000fbc:	e5923004 	ldr	r3, [r2, #4]
+a3000fc0:	e1a0c000 	mov	ip, r0
+a3000fc4:	e3e0e039 	mvn	lr, #57	; 0x39
+a3000fc8:	e1500003 	cmp	r0, r3
+a3000fcc:	0a00000d 	beq	a3001008 <mutex_lock+0x74>
+a3000fd0:	e5923008 	ldr	r3, [r2, #8]
+a3000fd4:	e1a00004 	mov	r0, r4
+a3000fd8:	e1a0100c 	mov	r1, ip
+a3000fdc:	e3530000 	cmp	r3, #0	; 0x0
+a3000fe0:	e1a0e003 	mov	lr, r3
+a3000fe4:	02833001 	addeq	r3, r3, #1	; 0x1
+a3000fe8:	0582c004 	streq	ip, [r2, #4]
+a3000fec:	05823008 	streq	r3, [r2, #8]
+a3000ff0:	0a000004 	beq	a3001008 <mutex_lock+0x74>
+a3000ff4:	ebffffd7 	bl	a3000f58 <mutex_queue_add>
+a3000ff8:	ebffff2e 	bl	a3000cb8 <dispatch_sleep>
+a3000ffc:	e1a0e006 	mov	lr, r6
+a3001000:	ea000000 	b	a3001008 <mutex_lock+0x74>
+a3001004:	e3e0e015 	mvn	lr, #21	; 0x15
+a3001008:	e1a0000e 	mov	r0, lr
+a300100c:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a3001010:	a3042608 	movwge	r2, #17928	; 0x4608
+
+a3001014 <mutex_queue_remove>:
+a3001014:	e59f3048 	ldr	r3, [pc, #72]	; a3001064 <.text+0x1064>
+a3001018:	e92d4030 	stmdb	sp!, {r4, r5, lr}
+a300101c:	e0835200 	add	r5, r3, r0, lsl #4
+a3001020:	e595200c 	ldr	r2, [r5, #12]
+a3001024:	e3520000 	cmp	r2, #0	; 0x0
+a3001028:	0a00000c 	beq	a3001060 <mutex_queue_remove+0x4c>
+a300102c:	e5924030 	ldr	r4, [r2, #48]
+a3001030:	e1a00002 	mov	r0, r2
+a3001034:	e3540000 	cmp	r4, #0	; 0x0
+a3001038:	1a000003 	bne	a300104c <mutex_queue_remove+0x38>
+a300103c:	e5d21001 	ldrb	r1, [r2, #1]
+a3001040:	ebffff6c 	bl	a3000df8 <runqueue_add>
+a3001044:	e585400c 	str	r4, [r5, #12]
+a3001048:	e8bd8030 	ldmia	sp!, {r4, r5, pc}
+a300104c:	e5923030 	ldr	r3, [r2, #48]
+a3001050:	e5d21001 	ldrb	r1, [r2, #1]
+a3001054:	e1a00002 	mov	r0, r2
+a3001058:	e8bd4030 	ldmia	sp!, {r4, r5, lr}
+a300105c:	eaffff65 	b	a3000df8 <runqueue_add>
+a3001060:	e8bd8030 	ldmia	sp!, {r4, r5, pc}
+a3001064:	a3042608 	movwge	r2, #17928	; 0x4608
+
+a3001068 <mutex_unlock>:
+a3001068:	e3500020 	cmp	r0, #32	; 0x20
+a300106c:	e92d4070 	stmdb	sp!, {r4, r5, r6, lr}
+a3001070:	e59f604c 	ldr	r6, [pc, #76]	; a30010c4 <.text+0x10c4>
+a3001074:	e1a04000 	mov	r4, r0
+a3001078:	8a00000e 	bhi	a30010b8 <mutex_unlock+0x50>
+a300107c:	e7965200 	ldr	r5, [r6, r0, lsl #4]
+a3001080:	e3550000 	cmp	r5, #0	; 0x0
+a3001084:	1a00000b 	bne	a30010b8 <mutex_unlock+0x50>
+a3001088:	ebffff06 	bl	a3000ca8 <get_cur_tcb>
+a300108c:	e0862204 	add	r2, r6, r4, lsl #4
+a3001090:	e5923004 	ldr	r3, [r2, #4]
+a3001094:	e3e01000 	mvn	r1, #0	; 0x0
+a3001098:	e1500003 	cmp	r0, r3
+a300109c:	e1a00004 	mov	r0, r4
+a30010a0:	0a000005 	beq	a30010bc <mutex_unlock+0x54>
+a30010a4:	e5825004 	str	r5, [r2, #4]
+a30010a8:	e5825008 	str	r5, [r2, #8]
+a30010ac:	ebffffd8 	bl	a3001014 <mutex_queue_remove>
+a30010b0:	e1a01005 	mov	r1, r5
+a30010b4:	ea000000 	b	a30010bc <mutex_unlock+0x54>
+a30010b8:	e3e01015 	mvn	r1, #21	; 0x15
+a30010bc:	e1a00001 	mov	r0, r1
+a30010c0:	e8bd8070 	ldmia	sp!, {r4, r5, r6, pc}
+a30010c4:	a3042608 	movwge	r2, #17928	; 0x4608
+
+a30010c8 <dummy>:
+a30010c8:	e598c020 	ldr	ip, [r8, #32]
+a30010cc:	e59cf000 	ldr	pc, [ip]
+
+a30010d0 <getc>:
+a30010d0:	e598c020 	ldr	ip, [r8, #32]
+a30010d4:	e59cf004 	ldr	pc, [ip, #4]
+
+a30010d8 <tstc>:
+a30010d8:	e598c020 	ldr	ip, [r8, #32]
+a30010dc:	e59cf008 	ldr	pc, [ip, #8]
+
+a30010e0 <putc>:
+a30010e0:	e598c020 	ldr	ip, [r8, #32]
+a30010e4:	e59cf00c 	ldr	pc, [ip, #12]
+
+a30010e8 <puts>:
+a30010e8:	e598c020 	ldr	ip, [r8, #32]
+a30010ec:	e59cf010 	ldr	pc, [ip, #16]
+
+a30010f0 <printf>:
+a30010f0:	e598c020 	ldr	ip, [r8, #32]
+a30010f4:	e59cf014 	ldr	pc, [ip, #20]
+
+a30010f8 <install_hdlr>:
+a30010f8:	e598c020 	ldr	ip, [r8, #32]
+a30010fc:	e59cf018 	ldr	pc, [ip, #24]
+
+a3001100 <free_hdlr>:
+a3001100:	e598c020 	ldr	ip, [r8, #32]
+a3001104:	e59cf01c 	ldr	pc, [ip, #28]
+
+a3001108 <malloc>:
+a3001108:	e598c020 	ldr	ip, [r8, #32]
+a300110c:	e59cf020 	ldr	pc, [ip, #32]
+
+a3001110 <free>:
+a3001110:	e598c020 	ldr	ip, [r8, #32]
+a3001114:	e59cf024 	ldr	pc, [ip, #36]
+
+a3001118 <udelay>:
+a3001118:	e598c020 	ldr	ip, [r8, #32]
+a300111c:	e59cf028 	ldr	pc, [ip, #40]
+
+a3001120 <get_timer>:
+a3001120:	e598c020 	ldr	ip, [r8, #32]
+a3001124:	e59cf02c 	ldr	pc, [ip, #44]
+
+a3001128 <vprintf>:
+a3001128:	e598c020 	ldr	ip, [r8, #32]
+a300112c:	e59cf030 	ldr	pc, [ip, #48]
+
+a3001130 <do_reset>:
+a3001130:	e598c020 	ldr	ip, [r8, #32]
+a3001134:	e59cf034 	ldr	pc, [ip, #52]
+
+a3001138 <getenv>:
+a3001138:	e598c020 	ldr	ip, [r8, #32]
+a300113c:	e59cf038 	ldr	pc, [ip, #56]
+
+a3001140 <setenv>:
+a3001140:	e598c020 	ldr	ip, [r8, #32]
+a3001144:	e59cf03c 	ldr	pc, [ip, #60]
+
+a3001148 <simple_strtoul>:
+a3001148:	e598c020 	ldr	ip, [r8, #32]
+a300114c:	e59cf040 	ldr	pc, [ip, #64]
+
+a3001150 <app_startup>:
+a3001150:	e59f2018 	ldr	r2, [pc, #24]	; a3001170 <.text+0x1170>
+a3001154:	ea000001 	b	a3001160 <app_startup+0x10>
+a3001158:	e3a03000 	mov	r3, #0	; 0x0
+a300115c:	e4823004 	str	r3, [r2], #4
+a3001160:	e59f300c 	ldr	r3, [pc, #12]	; a3001174 <.text+0x1174>
+a3001164:	e1520003 	cmp	r2, r3
+a3001168:	3afffffa 	bcc	a3001158 <app_startup+0x8>
+a300116c:	e12fff1e 	bx	lr
+a3001170:	a30015a8 	movwge	r1, #1448	; 0x5a8
+a3001174:	a3042808 	movwge	r2, #18440	; 0x4808
+
+a3001178 <__aeabi_uidiv>:
+a3001178:	e2512001 	subs	r2, r1, #1	; 0x1
+a300117c:	012fff1e 	bxeq	lr
+a3001180:	3a000023 	bcc	a3001214 <__aeabi_uidiv+0x9c>
+a3001184:	e1500001 	cmp	r0, r1
+a3001188:	9a00001a 	bls	a30011f8 <__aeabi_uidiv+0x80>
+a300118c:	e1110002 	tst	r1, r2
+a3001190:	0a00001b 	beq	a3001204 <__aeabi_uidiv+0x8c>
+a3001194:	e16f3f11 	clz	r3, r1
+a3001198:	e16f2f10 	clz	r2, r0
+a300119c:	e0432002 	sub	r2, r3, r2
+a30011a0:	e3a03001 	mov	r3, #1	; 0x1
+a30011a4:	e1a01211 	mov	r1, r1, lsl r2
+a30011a8:	e1a03213 	mov	r3, r3, lsl r2
+a30011ac:	e3a02000 	mov	r2, #0	; 0x0
+a30011b0:	e1500001 	cmp	r0, r1
+a30011b4:	20400001 	subcs	r0, r0, r1
+a30011b8:	21822003 	orrcs	r2, r2, r3
+a30011bc:	e15000a1 	cmp	r0, r1, lsr #1
+a30011c0:	204000a1 	subcs	r0, r0, r1, lsr #1
+a30011c4:	218220a3 	orrcs	r2, r2, r3, lsr #1
+a30011c8:	e1500121 	cmp	r0, r1, lsr #2
+a30011cc:	20400121 	subcs	r0, r0, r1, lsr #2
+a30011d0:	21822123 	orrcs	r2, r2, r3, lsr #2
+a30011d4:	e15001a1 	cmp	r0, r1, lsr #3
+a30011d8:	204001a1 	subcs	r0, r0, r1, lsr #3
+a30011dc:	218221a3 	orrcs	r2, r2, r3, lsr #3
+a30011e0:	e3500000 	cmp	r0, #0	; 0x0
+a30011e4:	11b03223 	movnes	r3, r3, lsr #4
+a30011e8:	11a01221 	movne	r1, r1, lsr #4
+a30011ec:	1affffef 	bne	a30011b0 <__aeabi_uidiv+0x38>
+a30011f0:	e1a00002 	mov	r0, r2
+a30011f4:	e12fff1e 	bx	lr
+a30011f8:	03a00001 	moveq	r0, #1	; 0x1
+a30011fc:	13a00000 	movne	r0, #0	; 0x0
+a3001200:	e12fff1e 	bx	lr
+a3001204:	e16f2f11 	clz	r2, r1
+a3001208:	e262201f 	rsb	r2, r2, #31	; 0x1f
+a300120c:	e1a00230 	mov	r0, r0, lsr r2
+a3001210:	e12fff1e 	bx	lr
+a3001214:	e52de008 	str	lr, [sp, #-8]!
+a3001218:	eb000033 	bl	a30012ec <__div0>
+a300121c:	e3a00000 	mov	r0, #0	; 0x0
+a3001220:	e49df008 	ldr	pc, [sp], #8
+
+a3001224 <__aeabi_uidivmod>:
+a3001224:	e92d4003 	stmdb	sp!, {r0, r1, lr}
+a3001228:	ebffffd2 	bl	a3001178 <__aeabi_uidiv>
+a300122c:	e8bd4006 	ldmia	sp!, {r1, r2, lr}
+a3001230:	e0030092 	mul	r3, r2, r0
+a3001234:	e0411003 	sub	r1, r1, r3
+a3001238:	e12fff1e 	bx	lr
+
+a300123c <__umodsi3>:
+a300123c:	e2512001 	subs	r2, r1, #1	; 0x1
+a3001240:	3a000025 	bcc	a30012dc <__umodsi3+0xa0>
+a3001244:	11500001 	cmpne	r0, r1
+a3001248:	03a00000 	moveq	r0, #0	; 0x0
+a300124c:	81110002 	tsthi	r1, r2
+a3001250:	00000002 	andeq	r0, r0, r2
+a3001254:	912fff1e 	bxls	lr
+a3001258:	e16f2f11 	clz	r2, r1
+a300125c:	e16f3f10 	clz	r3, r0
+a3001260:	e0422003 	sub	r2, r2, r3
+a3001264:	e1a01211 	mov	r1, r1, lsl r2
+a3001268:	e2522003 	subs	r2, r2, #3	; 0x3
+a300126c:	ba00000e 	blt	a30012ac <__umodsi3+0x70>
+a3001270:	e1500001 	cmp	r0, r1
+a3001274:	20400001 	subcs	r0, r0, r1
+a3001278:	e15000a1 	cmp	r0, r1, lsr #1
+a300127c:	204000a1 	subcs	r0, r0, r1, lsr #1
+a3001280:	e1500121 	cmp	r0, r1, lsr #2
+a3001284:	20400121 	subcs	r0, r0, r1, lsr #2
+a3001288:	e15001a1 	cmp	r0, r1, lsr #3
+a300128c:	204001a1 	subcs	r0, r0, r1, lsr #3
+a3001290:	e3500001 	cmp	r0, #1	; 0x1
+a3001294:	e1a01221 	mov	r1, r1, lsr #4
+a3001298:	a2522004 	subges	r2, r2, #4	; 0x4
+a300129c:	aafffff3 	bge	a3001270 <__umodsi3+0x34>
+a30012a0:	e3120003 	tst	r2, #3	; 0x3
+a30012a4:	13300000 	teqne	r0, #0	; 0x0
+a30012a8:	0a00000a 	beq	a30012d8 <__umodsi3+0x9c>
+a30012ac:	e3720002 	cmn	r2, #2	; 0x2
+a30012b0:	ba000006 	blt	a30012d0 <__umodsi3+0x94>
+a30012b4:	0a000002 	beq	a30012c4 <__umodsi3+0x88>
+a30012b8:	e1500001 	cmp	r0, r1
+a30012bc:	20400001 	subcs	r0, r0, r1
+a30012c0:	e1a010a1 	mov	r1, r1, lsr #1
+a30012c4:	e1500001 	cmp	r0, r1
+a30012c8:	20400001 	subcs	r0, r0, r1
+a30012cc:	e1a010a1 	mov	r1, r1, lsr #1
+a30012d0:	e1500001 	cmp	r0, r1
+a30012d4:	20400001 	subcs	r0, r0, r1
+a30012d8:	e12fff1e 	bx	lr
+a30012dc:	e52de008 	str	lr, [sp, #-8]!
+a30012e0:	eb000001 	bl	a30012ec <__div0>
+a30012e4:	e3a00000 	mov	r0, #0	; 0x0
+a30012e8:	e49df008 	ldr	pc, [sp], #8
+
+a30012ec <__div0>:
+a30012ec:	e92d4002 	stmdb	sp!, {r1, lr}
+a30012f0:	e3a00008 	mov	r0, #8	; 0x8
+a30012f4:	ebfffbc4 	bl	a300020c <raise>
+a30012f8:	e8bd8002 	ldmia	sp!, {r1, pc}

@@ -1,0 +1,6 @@
+PROGS_SYS_ERR_OBJS := sys_err.o
+PROGS_SYS_ERR_OBJS := $(PROGS_SYS_ERR_OBJS:%=$(TDIR)/sys_err/%)
+ALL_OBJS += $(PROGS_SYS_ERR_OBJS)
+
+$(TDIR)/bin/sys_err : $(TSTART) $(PROGS_SYS_ERR_OBJS) $(TLIBC)
+
