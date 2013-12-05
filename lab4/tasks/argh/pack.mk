@@ -1,6 +1,0 @@
-PROGS_ARGH_OBJS := argh.o
-PROGS_ARGH_OBJS := $(PROGS_ARGH_OBJS:%=$(TDIR)/argh/%)
-ALL_OBJS += $(PROGS_ARGH_OBJS)
-
-$(TDIR)/bin/argh : $(TSTART) $(PROGS_ARGH_OBJS) $(TLIBC)
-
