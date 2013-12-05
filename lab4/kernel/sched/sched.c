@@ -24,7 +24,7 @@
 #include <arm/exception.h>
 #include <arm/physmem.h>
 
-#define FIRST_MAIN_PRIO 3 /*unique number < IDLE_PRIO*/
+#define FIRST_MAIN_PRIO 0 /*unique number < IDLE_PRIO*/
 
 tcb_t system_tcb[OS_MAX_TASKS]; /*allocate memory for system TCBs */
 
@@ -123,15 +123,15 @@ void sched_init(task_t* main_task)
  * @param tasks  A list of scheduled task descriptors.
  * @param size   The number of tasks is the list.
  */
-void allocate_tasks(task_t** ptasks, size_t num_tasks)
+void allocate_tasks(task_t** tasks, size_t num_tasks)
 {
 	//set up system tcb for each task in 'tasks' - loop through each task
 	uint8_t i;
 	runqueue_init();
 	dev_init();
-	for(i = 1; i <= num_tasks; i++)
+	for(i = 0; i < num_tasks; i++)
 	{
-		tcb_init(ptasks[i], &system_tcb[i], i);
+		tcb_init(tasks[i], &system_tcb[i], i);
 		runqueue_add(&system_tcb[i], i);
 	}
 

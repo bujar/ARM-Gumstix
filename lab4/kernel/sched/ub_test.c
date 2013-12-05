@@ -68,21 +68,21 @@ int assign_schedule(task_t** tasks, size_t num_tasks)
 		curr_B = (tasks[i]->B * FACTOR);
 		curr_T = tasks[i]->T;
 		Esum += ((curr_C + curr_B) / curr_T);
-		printf("C  = %lu\n", curr_C);
-		printf("B  = %lu\n", curr_B);
-		printf("T  = %lu\n", curr_T);
-		printf(" C/T = %lu\n", (curr_C + curr_B) / curr_T);
-		printf("Esum = %lu\n\n", Esum);
+//		printf("C  = %lu\n", curr_C);
+//		printf("B  = %lu\n", curr_B);
+//		printf("T  = %lu\n", curr_T);
+//		printf(" C/T = %lu\n", (curr_C + curr_B) / curr_T);
+//		printf("Esum = %lu\n\n", Esum);
 	}
 	
 	if (Esum <= UKtable[i-1]) {
-		printf("%lu is < %lu", Esum, UKtable[i-1]);
-		printf("This is schedulable");
+//		printf("%lu is < %lu", Esum, UKtable[i]);
+//		printf("This is schedulable");
 		return 1;
 	}
 	else {
-		printf("%lu is < %lu", Esum, UKtable[i-1]);
-		printf("This is not schedulable");
+//		printf("%lu is < %lu", Esum, UKtable[i]);
+//		printf("This is not schedulable");
 		return 0;
 	}
 }

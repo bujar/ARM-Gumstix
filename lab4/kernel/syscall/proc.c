@@ -73,18 +73,14 @@ static int schedulable(task_t* tasks, size_t num_tasks) {
 
 	clear_ptasks(); 
 	
-	/* create pointers to tasks array for sorting
-	 * system_ptasks start with index 1 to reserve for priotask 0
-	 */
+	// create pointers to tasks array for sorting
 	for( i = 0; i < (unsigned int) num_tasks; i++){
-		system_ptasks[i+1] = &tasks[i];
+		system_ptasks[i] = &tasks[i];
 	}
 
-	/* sort by stack pointers to determine if user tasks may conflict 
-	 * and detect any bad stack pointer arrangements 
-     */
-	insertion_sort_sp(&system_ptasks[1], num_tasks);	
-	for( i = 1; i < (unsigned int) num_tasks - 1; i++){
+	insertion_sort_sp(system_ptasks, num_tasks);	
+
+	for( i = 0; i < (unsigned int) num_tasks - 1; i++){
 		if(system_ptasks[i]->stack_pos == system_ptasks[i+1]->stack_pos){
 			panic("multiple tasks have same stack pointers\n");
 		}
@@ -116,9 +112,7 @@ static void insertion_sort_per(task_t** ptasks, size_t num_tasks){
 	}
 }
 
-/* task insertion sort by sp 
- * @use when figuring out if multiple tasks have same stack pointers
- */
+/* task insertion sort by sp */
 static void insertion_sort_sp(task_t** ptasks, size_t num_tasks){
 	int i, j;
 	unsigned long sp;
@@ -150,11 +144,12 @@ int task_create(task_t* tasks, size_t num_tasks){
 		return error;
 	}
 
-	insertion_sort_per(&system_ptasks[1], num_tasks);
-	
-	if (assign_schedule(&system_ptasks[1], num_tasks) != 1) {
-		return ESCHED;
+	error = assign_schedule(system_ptasks, num_tasks);
+	if (error != 1){
+		printf("These tasks are not schedulable");
+//		return -ESCHED;
 	}
+	insertion_sort_per(system_ptasks, num_tasks);
 	allocate_tasks(system_ptasks, num_tasks);
 	dispatch_nosave();
 
