@@ -56,12 +56,12 @@ struct tcb
 	uint8_t          native_prio;        /**< The native priority of the task without escalation */
 	uint8_t          cur_prio;           /**< The current priority of the task after priority inheritance */
 	sched_context_t  context;            /**< The task's serialized context -- if not running */
-	int              holds_lock;         /**< 1 if the task is currently owning a lock */
+	int              holds_lock;         /**< The number of mutex the task is currently owning */
 	volatile struct tcb* sleep_queue;    /**< If this task is asleep, this is its sleep queue link */
 	/** Embed the kernel stack here -- AAPCS wants 8 byte alignment */
 	uint32_t         kstack[OS_KSTACK_SIZE/sizeof(uint32_t)];//(aligned(8));
 	uint32_t         kstack_high[0];
-	uint32_t		 num_mutex;			 /**< the number of mutex the tcb has grabed  */
+	//uint32_t		 num_mutex;			 /**< the number of mutex the tcb has grabed  */
 };
 typedef volatile struct tcb tcb_t;
 
