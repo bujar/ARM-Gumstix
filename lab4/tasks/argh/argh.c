@@ -30,7 +30,7 @@ void panic(const char* str)
 }
 
 void fun3(void* str){
-	printf(str);   
+	putchar((int)str);   
 	if(mutex_lock(MUTEX1))
 		panic("Failed to acquire mutex");
 	if(mutex_unlock(MUTEX1)){
@@ -57,7 +57,7 @@ void fun3(void* str){
 
 void fun0(void* str){
 	while(1){
-		printf(str);   
+		putchar((int)str);   
 		printf("I'm just a lonely bystander\n");
 		if (event_wait(0) < 0)
             panic("Dev 0 failed");
@@ -66,7 +66,7 @@ void fun0(void* str){
 
 
 void fun1(void* str){
-	printf(str);   
+	putchar((int)str);   
 	if(mutex_lock(MUTEX1))
 		panic("Failed to acquire mutex");
 	if(mutex_unlock(MUTEX1)){

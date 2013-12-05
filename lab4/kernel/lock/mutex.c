@@ -109,9 +109,11 @@ void mutex_queue_remove(int mutex)
 			/* give the first TCB on the queue the lock */
 			gtMutex[mutex].bLock = TRUE;
 			gtMutex[mutex].pHolding_Tcb = p1;
+
 			/* Set HLP */
 			p1->cur_prio = HIGHEST_PRIO;
 			++(p1->holds_lock);
+
 			/* make the task runnable */
 			runqueue_add(p1, p1->cur_prio);
 			mtx->pSleep_queue = NULL;
@@ -123,9 +125,11 @@ void mutex_queue_remove(int mutex)
 			/* give the first TCB on the queue the lock */
 			gtMutex[mutex].bLock = TRUE;
 			gtMutex[mutex].pHolding_Tcb = p2;
+	
 			/* Set HLP */
 			p2->cur_prio = HIGHEST_PRIO;
 			++(p2->holds_lock);
+	
 			p1 = p1->sleep_queue;
 			p2->sleep_queue = NULL;
 			mtx->pSleep_queue = p1;
@@ -166,6 +170,7 @@ int mutex_lock(int mutex)
 	else{ /* mutex is available to grab */
 		gtMutex[mutex].bLock = TRUE;
 		gtMutex[mutex].pHolding_Tcb =  cur_tcb;
+	
 		/* Set HLP */
 		cur_tcb->cur_prio = HIGHEST_PRIO;
 		++(cur_tcb->holds_lock);
