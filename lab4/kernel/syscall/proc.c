@@ -168,6 +168,9 @@ int event_wait(unsigned int dev)
 	if(dev > NUM_DEVICES - 1){
 		return EINVAL;
 	}
+	if(get_cur_tcb()->cur_prio == 0){
+		return EHOLDSLOCK;
+	}
 	dev_wait(dev);
 	return 0;
 }
