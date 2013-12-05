@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 	tasks[1].T = PERIOD_DEV1;
 
     //highest priority task
-    tasks[2].lambda = fun1;
+    tasks[2].lambda = fun3;
 	tasks[2].data = (void*)'3';
 	tasks[2].stack_pos = (void*)0xa2500000;
 	tasks[2].C = 1;
