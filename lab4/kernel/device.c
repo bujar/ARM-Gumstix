@@ -20,7 +20,7 @@
 #include <arm/reg.h>
 #include <arm/psr.h>
 #include <arm/exception.h>
-
+#include <syscall.h>
 #define NULL 0
 
 /**
@@ -70,6 +70,7 @@ void dev_init(void)
  */
 void dev_wait(unsigned int dev)
 {
+
 	disable_interrupts();
 	/* save new sleep task at front of queue */
 	tcb_t *front = devices[dev].sleep_queue;

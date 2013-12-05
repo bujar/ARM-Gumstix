@@ -18,6 +18,7 @@
 #include <bits/errno.h>
 #include <arm/psr.h>
 #include <arm/exception.h>
+#include <syscall.h>
 
 #ifdef DEBUG_MUTEX
 #include <exports.h> // temp
