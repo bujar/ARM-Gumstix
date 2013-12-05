@@ -14,7 +14,7 @@ MAKEFLAGS += -rR
 # Make sure there are no name clashes.  Add new ones here if you make your own
 # tests (which I recommend you do).
 
-PACKAGES = dagger sys_err simple_mutex cyclone mutex_chaser stress
+PACKAGES = dagger sys_err simple_mutex cyclone mutex_chaser stress argh
 
 .PHONY: all package clean clobber $(PACKAGES)
 all: package kernel
